@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">Eyeres</string>
+    <string name="notifications">Notifications</string>
+    <string name="si_su">Please Sign in or sign up .</string>
+    <string name="ok">Ok</string>
+    <string name="sign_in">Sign In</string>
+    <string name="back">Back</string>
+    <string name="sign_in_btn">Sign In</string>
+    <string name="new_account">New Account</string>
+    <string name="field_req">Field required</string>
+    <string name="inv_phone">Invalid phone</string>
+    <string name="signning_in">Signing In...</string>
+    <string name="full_name">Full name</string>
+    <string name="phone">Phone</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="wait">Wait...</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="perm_image_denied">Permission denied</string>
+    <string name="upload_personal_photo">Upload personal photo</string>
+    <string name="rsa">SR</string>
+    <string name="home">Home</string>
+    <string name="offers">Offers</string>
+    <string name="my_order">My orders</string>
+    <string name="fav">Favourite</string>
+    <string name="me">Me</string>
+    <string name="cancel">Cancel</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+    <string name="update">Update</string>
+    <string name="contact_us">Contact us</string>
+    <string name="delete">Delete</string>
+
+    <string name="update_password">Update password</string>
+    <string name="current_password">Current password</string>
+    <string name="new_password">New password</string>
+    <string name="update_phone">Update phone</string>
+    <string name="succ">Success</string>
+    <string name="failed">Failed try again later</string>
+    <string name="phone_number_not_exists">Phone number not exists</string>
+    <string name="sgin_out">Signing out...</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="order_sent_successfully">Order sent successfully</string>
+    <string name="updating_phone">Updating phone number...</string>
+    <string name="incorrect_old_password">incorrect old password</string>
+    <string name="skip">Skip</string>
+
+    <string name="inc_phonr_password">Incorrect user phone or password</string>
+    <string name="signingup">Signing Up ...</string>
+    <string name="phone_number_exists">Phone number is exists</string>
+    <string name="personal_information">Personal information</string>
+    <string name="_500_500_pixel">500 * 500 pixel</string>
+    <string name="country">Country</string>
+    <string name="pers_photo_req">Personal photo required</string>
+    <string name="inv_email">Invalid email</string>
+    <string name="inc_img_path">incorrect image path</string>
+    <string name="something">Something went haywire</string>
+    <string name="add_recently">Recently Added </string>
+    <string name="most_seller">Most seller</string>
+    <string name="transparent">Transparent</string>
+    <string name="color">Color</string>
+    <string name="tools">Tools</string>
+    <string name="store">Store</string>
+    <string name="orders">Orders</string>
+    <string name="favourite">Favourite</string>
+    <string name="more">More</string>
+
+
+</resources>

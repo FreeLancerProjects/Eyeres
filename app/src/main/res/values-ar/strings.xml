@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ايرس</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="si_su">قم بتسجيل الدخول أو إنشاء حساب جديد .</string>
+    <string name="ok">حسنا</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="back">عودة</string>
+    <string name="sign_in_btn">دخول</string>
+    <string name="new_account">تسجيل جديد</string>
+    <string name="field_req">الحقل مطلوب</string>
+    <string name="inv_phone">رقم الجوال غير صحيح</string>
+    <string name="signning_in">جار تسجيل الدخول</string>
+    <string name="full_name">الاسم</string>
+    <string name="phone">رقم الهاتف</string>
+    <string name="email_address">البريد الالكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="sign_up">سجل</string>
+    <string name="perm_image_denied">لم يتمكن التطبيق للوصل الى الصور</string>
+    <string name="upload_personal_photo">رفع الصورة الشخصية</string>
+    <string name="wait">إنتظر قليلا...</string>
+    <string name="rsa">ر.س</string>
+    <string name="home">متجر</string>
+    <string name="offers">العروض</string>
+    <string name="my_order">طلباتي</string>
+    <string name="fav">مفضلة</string>
+
+    <string name="me">حسابي</string>
+    <string name="cancel">إلغاء</string>
+    <string name="message">الرسالة</string>
+    <string name="send">إرسال</string>
+    <string name="update">تعديل</string>
+    <string name="contact_us">إتصل بنا</string>
+    <string name="delete">حذف</string>
+
+    <string name="update_password">تعديل كلمة المرور</string>
+    <string name="current_password">كلمة المرور الحالية</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="update_phone">تعديل رقم الهاتف</string>
+    <string name="succ">تم بنجاح</string>
+    <string name="failed">فشل حاول مرة اخرى لاحقا</string>
+
+    <string name="phone_number_not_exists">لم يتم التسجيل برقم الجوال من قبل</string>
+    <string name="sgin_out">جار تسجيل الخروج...</string>
+    <string name="sign_out">تسجيل الخروج</string>
+    <string name="order_sent_successfully">تم إرسال الطلب بنجاح</string>
+    <string name="updating_phone">جار تعديل رقم الجوال...</string>
+    <string name="incorrect_old_password">كلمة المرور القديمة غير صحيحة</string>
+    <string name="skip">تخطي</string>
+    <string name="inc_phonr_password">رقم الجوال او كلمة المرور غير صحيح</string>
+    <string name="signingup">جار انشاء حساب جديد...</string>
+    <string name="phone_number_exists">رقم الجوال تم التسجيل بة من قبل</string>
+    <string name="personal_information">المعلومات الشخصية</string>
+    <string name="_500_500_pixel">500 * 500 بكسل</string>
+    <string name="country">المدينة</string>
+    <string name="pers_photo_req">الصورة الشخصية مطلوبة</string>
+    <string name="inv_email">البريد الالكتروني غير صحيح</string>
+    <string name="inc_img_path">مسار الصورة غير صحيح</string>
+    <string name="something">خطأ تحقق من الاتصال بالانترنت</string>
+    <string name="add_recently">أضيف مؤخرا</string>
+    <string name="most_seller">الاكثر مبيعا</string>
+    <string name="transparent">عدسات شفافة</string>
+    <string name="color">عدسات ملونة</string>
+    <string name="tools">ملحقات</string>
+    <string name="store">متجر</string>
+    <string name="orders">طلبات خاصة</string>
+    <string name="favourite">مفضلة</string>
+    <string name="more">المزيد</string>
+
+</resources>
