@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+        android:id="@+id/ah_tab"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        >
+
+    </com.aurelhubert.ahbottomnavigation.AHBottomNavigation>
+
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ah_tab"
+        android:layout_above="@id/ll"
+        android:layout_marginBottom="5dp"
+        android:fitsSystemWindows="true"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:id="@+id/ll_slider_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    >
+
+                </android.support.v4.view.ViewPager>
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_slider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_horizontal"
+                    app:tabGravity="fill"
+                    app:tabMode="scrollable"
+                    app:tabMaxWidth="20dp"
+                    app:tabMinWidth="20dp"
+                    app:tabIndicatorHeight="0dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    app:tabBackground="@drawable/tab_indicator"
+
+                    >
+
+                </android.support.design.widget.TabLayout>
+            </LinearLayout>
+            <FrameLayout
+                android:id="@+id/store_fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                >
+            </FrameLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ah_bottom"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentBottom="true"
+        >
+        <LinearLayout
+            android:id="@+id/ll_add_recent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:background="@drawable/ll_add_recent_bg"
+            android:layout_marginEnd="5dp"
+            tools:ignore="RtlCompat"
+            android:descendantFocusability="blocksDescendants"
+
+            >
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/add_to_cart"
+                android:padding="3dp"
+                android:clickable="false"
+                android:longClickable="false"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:text="@string/add_recently"
+                android:clickable="false"
+                android:longClickable="false"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_most_seller"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:background="@drawable/ll_add_most_bg"
+            android:layout_marginStart="5dp"
+            android:descendantFocusability="blocksDescendants"
+            tools:ignore="RtlCompat">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/stats"
+                android:padding="3dp"
+                android:clickable="false"
+                android:longClickable="false"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:text="@string/most_seller"
+                android:clickable="false"
+                android:longClickable="false"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

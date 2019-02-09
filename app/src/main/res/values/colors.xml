@@ -17,6 +17,7 @@
     <color name="bg">#FCFCFC</color>
     <color name="color_press">#18a9ac</color>
     <color name="brown">#7a6256</color>
+    <color name="offer_trans">#55bababa</color>
 
 
 </resources>

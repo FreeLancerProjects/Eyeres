@@ -23,8 +23,8 @@ import java.util.Locale;
 public class SignInActivity extends AppCompatActivity {
     private ImageView image_arrow;
     private LinearLayout ll_back;
-    private EditText edt_phone,edt_password;
-    private Button btn_sign_in,btn_new_account,btn_skip;
+    private EditText edt_phone;
+    private Button btn_sign_in,btn_skip;
     private View root;
     private Snackbar snackbar;
     private UserSingleTone userSingleTone;
@@ -52,18 +52,10 @@ public class SignInActivity extends AppCompatActivity {
         root = findViewById(R.id.root);
         ll_back  = findViewById(R.id.ll_back);
         edt_phone  = findViewById(R.id.edt_phone);
-        edt_password  = findViewById(R.id.edt_password);
         btn_sign_in  = findViewById(R.id.btn_sign_in);
-        btn_new_account  = findViewById(R.id.btn_new_account);
         btn_skip  = findViewById(R.id.btn_skip);
 
 
-        btn_new_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavigateToSignUpActivity();
-            }
-        });
 
         btn_sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,16 +95,13 @@ public class SignInActivity extends AppCompatActivity {
     private void CheckData() {
 
         String mPhone = edt_phone.getText().toString().trim();
-        String mPassword = edt_password.getText().toString().trim();
 
         if (!TextUtils.isEmpty(mPhone) &&
-                mPhone.length()==9 &&
-                TextUtils.isEmpty(mPassword))
+                mPhone.length()==9)
         {
             Common.CloseKeyBoard(this,edt_phone);
             edt_phone.setError(null);
-            edt_password.setError(null);
-            Sign_in(mPhone,mPassword);
+            Sign_in(mPhone);
 
         }else
             {
@@ -124,14 +113,10 @@ public class SignInActivity extends AppCompatActivity {
 
                 }
 
-                if (TextUtils.isEmpty(mPassword))
-                {
-                    edt_password.setError(getString(R.string.field_req));
-                }
             }
     }
 
-    private void Sign_in(String mPhone, String mPassword) {
+    private void Sign_in(String mPhone) {
         final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.signning_in));
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
