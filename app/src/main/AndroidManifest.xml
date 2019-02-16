@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.appzone.eyeres">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,10 +25,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities_fragments.activity_sign_in.SignInActivity"
+            android:name=".activities_fragments.activity_sign_in.activity.SignInActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities_fragments.activity_sign_up.SignUpActivity" />
-        <activity android:name=".activities_fragments.activity_home.activity.HomeActivity"></activity>
+        <activity android:name=".activities_fragments.activity_home.activity.HomeActivity" />
+        <activity android:name=".activities_fragments.activity_terms_conditions.TermsConditionsActivity"></activity>
     </application>
 
 </manifest>

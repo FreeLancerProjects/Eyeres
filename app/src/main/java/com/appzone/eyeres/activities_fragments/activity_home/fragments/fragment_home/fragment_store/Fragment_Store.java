@@ -11,15 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 public class Fragment_Store extends Fragment{
-    private AHBottomNavigation ah_tab;
-    private LinearLayout ll_slider_container,ll_add_recent,ll_most_seller;
+    private LinearLayout ll_slider_container,ll_add_recent,ll_most_seller,ll_transparent,ll_color,ll_accessories;
+    private TextView tv_transparent,tv_colored,tv_accessories;
     private ViewPager pager_slider;
     private TabLayout tab_slider;
     private HomeActivity activity;
@@ -39,61 +38,65 @@ public class Fragment_Store extends Fragment{
     private void initView(View view) {
 
         activity = (HomeActivity) getActivity();
-        ah_tab = view.findViewById(R.id.ah_tab);
         ll_slider_container = view.findViewById(R.id.ll_slider_container);
         ll_add_recent = view.findViewById(R.id.ll_add_recent);
         ll_most_seller = view.findViewById(R.id.ll_most_seller);
         pager_slider = view.findViewById(R.id.pager_slider);
         tab_slider = view.findViewById(R.id.tab_slider);
-        setUpTabUI();
 
-        UpdateAHBottomNavigationPosition(0);
-        activity.DisplayFragmentTransparent();
+        ll_transparent = view.findViewById(R.id.ll_transparent);
+        ll_color = view.findViewById(R.id.ll_color);
+        ll_accessories = view.findViewById(R.id.ll_accessories);
 
-        ah_tab.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+        tv_transparent = view.findViewById(R.id.tv_transparent);
+        tv_colored = view.findViewById(R.id.tv_colored);
+        tv_accessories = view.findViewById(R.id.tv_accessories);
+
+
+        ll_transparent.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
+            public void onClick(View v) {
 
-                UpdateAHBottomNavigationPosition(position);
-                switch (position){
-                    case 0:
-                        activity.DisplayFragmentTransparent();
-                        break;
-                    case 1:
-                        activity.DisplayFragmentColor();
-                        break;
-                    case 2:
-                        activity.DisplayFragmentTools();
-                        break;
-                }
-
-
-                return false;
+                activity.DisplayFragmentTransparent();
+                UpdateUITextColor();
             }
         });
+
+        ll_color.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                activity.DisplayFragmentColor();
+                tv_transparent.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
+                tv_colored.setTextColor(ContextCompat.getColor(activity,R.color.white));
+                tv_accessories.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
+
+            }
+        });
+        ll_accessories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                activity.DisplayFragmentTools();
+                tv_transparent.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
+                tv_colored.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
+                tv_accessories.setTextColor(ContextCompat.getColor(activity,R.color.white));
+
+            }
+        });
+
+        activity.DisplayFragmentTransparent();
+
+
     }
-    private void setUpTabUI()
+
+    public void UpdateUITextColor()
     {
-
-        ah_tab.setInactiveColor(ContextCompat.getColor(getActivity(),R.color.white));
-        ah_tab.setAccentColor(ContextCompat.getColor(getActivity(),R.color.white));
-        ah_tab.setInactiveColor(ContextCompat.getColor(getActivity(),R.color.white));
-        ah_tab.setForceTint(true);
-        ah_tab.setColored(false);
-        ah_tab.setTitleTextSizeInSp(15,13);
-        ah_tab.setDefaultBackgroundColor(ContextCompat.getColor(getActivity(),R.color.transparent));
-        ah_tab.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(getString(R.string.transparent), ContextCompat.getDrawable(getActivity(),R.drawable.trans_eye));
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getString(R.string.color), ContextCompat.getDrawable(getActivity(),R.drawable.color_eye));
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(getString(R.string.tools), ContextCompat.getDrawable(getActivity(),R.drawable.tools_eye));
-        ah_tab.addItem(item1);
-        ah_tab.addItem(item2);
-        ah_tab.addItem(item3);
+        tv_transparent.setTextColor(ContextCompat.getColor(activity,R.color.white));
+        tv_colored.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
+        tv_accessories.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
 
     }
 
-    public void UpdateAHBottomNavigationPosition(int pos)
-    {
-        ah_tab.setCurrentItem(pos,false);
-    }
+
 }

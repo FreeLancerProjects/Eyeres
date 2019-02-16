@@ -64,15 +64,16 @@ public class Fragment_Home extends Fragment{
             }
         });
 
+        activity.DisplayFragmentStore();
+        UpdateAHBottomNavigationPosition(0);
 
     }
 
     private void setUpBottomTabUI()
     {
 
-        ah_bottom.setInactiveColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
-        ah_bottom.setInactiveColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
-        ah_bottom.setAccentColor(ContextCompat.getColor(getActivity(),R.color.white));
+        ah_bottom.setInactiveColor(ContextCompat.getColor(getActivity(),R.color.gray));
+        ah_bottom.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
         ah_bottom.setTitleTextSizeInSp(15,13);
         ah_bottom.setDefaultBackgroundColor(ContextCompat.getColor(getActivity(),R.color.white));
         ah_bottom.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);

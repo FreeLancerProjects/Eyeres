@@ -7,21 +7,118 @@
     android:layout_height="match_parent"
     >
 
-    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
-        android:id="@+id/ah_tab"
+    <LinearLayout
+        android:id="@+id/ll_tab"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
         >
+        <LinearLayout
+            android:id="@+id/ll_transparent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@color/colorPrimary"
+            >
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/transparent"
+                android:clickable="false"
+                android:longClickable="false"
+                />
+            <TextView
+                android:id="@+id/tv_transparent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:text="@string/transparent"
+                android:clickable="false"
+                android:longClickable="false"
 
-    </com.aurelhubert.ahbottomnavigation.AHBottomNavigation>
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_color"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@color/colorPrimary"
+            >
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/color"
+                android:clickable="false"
+                android:longClickable="false"
+                />
+            <TextView
+                android:id="@+id/tv_colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/gray3"
+                android:textSize="15sp"
+                android:text="@string/color"
+                android:clickable="false"
+                android:longClickable="false"
+                />
+        </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_accessories"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@color/colorPrimary"
+            >
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/accessories"
+                android:clickable="false"
+                android:longClickable="false"
+                />
+            <TextView
+                android:id="@+id/tv_accessories"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/gray3"
+                android:textSize="15sp"
+                android:text="@string/tools"
+                android:clickable="false"
+                android:longClickable="false"
+
+                />
+        </LinearLayout>
+
+    </LinearLayout>
 
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ah_tab"
+        android:layout_below="@id/ll_tab"
         android:layout_above="@id/ll"
         android:layout_marginBottom="5dp"
         android:fitsSystemWindows="true"
@@ -39,31 +136,41 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 >
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/pager_slider"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="130dp"
+                    android:layout_height="wrap_content"
                     >
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/pager_slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        >
 
-                </android.support.v4.view.ViewPager>
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_slider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_horizontal"
-                    app:tabGravity="fill"
-                    app:tabMode="scrollable"
-                    app:tabMaxWidth="20dp"
-                    app:tabMinWidth="20dp"
-                    app:tabIndicatorHeight="0dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    app:tabBackground="@drawable/tab_indicator"
+                    </android.support.v4.view.ViewPager>
 
-                    >
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tab_slider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_horizontal|bottom"
+                        app:tabGravity="fill"
+                        app:tabMode="scrollable"
+                        app:tabMaxWidth="20dp"
+                        app:tabMinWidth="20dp"
+                        app:tabIndicatorHeight="0dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="8dp"
+                        app:tabBackground="@drawable/tab_indicator"
 
-                </android.support.design.widget.TabLayout>
+
+                        >
+
+                    </android.support.design.widget.TabLayout>
+                </FrameLayout>
+
             </LinearLayout>
             <FrameLayout
                 android:id="@+id/store_fragment_container"

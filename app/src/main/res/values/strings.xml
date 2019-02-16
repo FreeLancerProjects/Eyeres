@@ -11,7 +11,7 @@
     <string name="inv_phone">Invalid phone</string>
     <string name="signning_in">Signing In...</string>
     <string name="full_name">Full name</string>
-    <string name="phone">Phone</string>
+    <string name="phone">Phone number</string>
     <string name="email_address">Email address</string>
     <string name="password">Password</string>
     <string name="wait">Wait...</string>
@@ -58,12 +58,26 @@
     <string name="add_recently">Recently Added </string>
     <string name="most_seller">Most seller</string>
     <string name="transparent">Transparent</string>
-    <string name="color">Color</string>
-    <string name="tools">Tools</string>
+    <string name="color">Colored</string>
+    <string name="tools">Accessories</string>
     <string name="store">Store</string>
     <string name="orders">Orders</string>
     <string name="favourite">Favourite</string>
     <string name="more">More</string>
+    <string name="package_size">Package size</string>
+    <string name="a_different_prescription_for_each_eye">A different prescription for each eye</string>
+    <string name="degree_of_length_or_shortness_of_victory">Degree of length or shortness of victory</string>
+    <string name="left_eye">Left eye</string>
+    <string name="right_eye">Right eye</string>
+    <string name="number_of_boxes">Number of boxes</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="sign_up_using_phone">Sign up using phone</string>
+    <string name="profile">Profile</string>
+    <string name="you_are_just_one_step_away">You are just one step away...</string>
+    <string name="never_share_phone_number">We will never share or sell your phone number</string>
+    <string name="your_privacy_guaranteed">Your privacy is 100% guaranteed</string>
+    <string name="by_using_this_app_you_agree_to">By using this app you agree to</string>
+    <string name="terms_and_conditions">Terms and conditions</string>
 
 
 </resources>

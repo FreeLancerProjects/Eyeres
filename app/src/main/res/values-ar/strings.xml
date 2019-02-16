@@ -12,7 +12,7 @@
     <string name="inv_phone">رقم الجوال غير صحيح</string>
     <string name="signning_in">جار تسجيل الدخول</string>
     <string name="full_name">الاسم</string>
-    <string name="phone">رقم الهاتف</string>
+    <string name="phone">رقم الجوال</string>
     <string name="email_address">البريد الالكتروني</string>
     <string name="password">كلمة المرور</string>
     <string name="sign_up">سجل</string>
@@ -66,5 +66,19 @@
     <string name="orders">طلبات خاصة</string>
     <string name="favourite">مفضلة</string>
     <string name="more">المزيد</string>
+    <string name="package_size">حجم العبوة</string>
+    <string name="a_different_prescription_for_each_eye">وصفة طبية مختلفة لكل عين</string>
+    <string name="degree_of_length_or_shortness_of_victory">درجة طول او قصر النظر</string>
+    <string name="left_eye">العين اليسرى</string>
+    <string name="right_eye">العين اليمنى</string>
+    <string name="number_of_boxes">عدد الصناديق</string>
+    <string name="add_to_cart">أضف إلى السلة</string>
+    <string name="sign_up_using_phone">تسجيل برقم الجوال</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="you_are_just_one_step_away">خطوة اخيرة...</string>
+    <string name="never_share_phone_number">بياناتك في الحفظ والصون لدينا,</string>
+    <string name="your_privacy_guaranteed">لن نقوم بمشاركة بياناتك لاي احد ولا لأي سبب.</string>
+    <string name="by_using_this_app_you_agree_to">إستخدامك لهذا التطبيق يعني الموافقة على</string>
+    <string name="terms_and_conditions">الشروط والاحكام</string>
 
 </resources>

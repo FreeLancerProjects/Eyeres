@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
-import com.appzone.eyeres.activities_fragments.activity_sign_in.SignInActivity;
+import com.appzone.eyeres.activities_fragments.activity_sign_in.activity.SignInActivity;
 import com.appzone.eyeres.models.UserModel;
 import com.appzone.eyeres.preferences.Preferences;
 import com.appzone.eyeres.singletone.UserSingleTone;
