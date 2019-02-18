@@ -80,5 +80,7 @@
     <string name="your_privacy_guaranteed">لن نقوم بمشاركة بياناتك لاي احد ولا لأي سبب.</string>
     <string name="by_using_this_app_you_agree_to">إستخدامك لهذا التطبيق يعني الموافقة على</string>
     <string name="terms_and_conditions">الشروط والاحكام</string>
+    <string name="details">التفاصيل</string>
+    <string name="choose2">-إختر-</string>
 
 </resources>

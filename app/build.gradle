@@ -51,4 +51,6 @@ dependencies {
     implementation 'com.github.FlyingPumba:SimpleRatingBar:v0.1.5'
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
     implementation 'com.github.mukeshsolanki:country-picker-android:2.0.1'
+
+    implementation 'com.github.varunest:sparkbutton:1.0.6'
 }

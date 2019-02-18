@@ -26,6 +26,7 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Transparent;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_search.Fragment_Search;
 import com.appzone.eyeres.activities_fragments.activity_sign_in.activity.SignInActivity;
+import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.models.UserModel;
 import com.appzone.eyeres.singletone.UserSingleTone;
 
@@ -121,7 +122,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /////////////////////////////////////////////////////
-    public void DisplayFragmentHome() {
+    public void DisplayFragmentHome()
+    {
         if (fragment_details != null && fragment_details.isAdded() && fragment_details.isVisible()) {
             fragment_details = null;
             fragmentManager.popBackStack("fragment_details", FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -136,11 +138,9 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    /// product details
-    public void DisplayFragmentDetails() {
-        if (fragment_details == null) {
-            fragment_details = Fragment_Details.newInstance(null);
-        }
+    public void DisplayFragmentDetails(ProductDataModel.ProductModel productModel)
+    {
+        fragment_details = Fragment_Details.newInstance(productModel);
 
         if (!fragment_details.isAdded()) {
             fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_details, "fragment_details").addToBackStack("fragment_details").commit();
@@ -149,7 +149,8 @@ public class HomeActivity extends AppCompatActivity {
 
     /////////////////////////////////////////////////////////////////
 
-    public void DisplayFragmentTransparent() {
+    public void DisplayFragmentTransparent()
+    {
         lastSelectedFragmentStorePos = 0;
         if (fragment_color != null && fragment_color.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_color).commit();
@@ -173,8 +174,8 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
-
-    public void DisplayFragmentColor() {
+    public void DisplayFragmentColor()
+    {
         lastSelectedFragmentStorePos = 1;
 
         if (fragment_transparent != null && fragment_transparent.isAdded()) {
@@ -195,8 +196,8 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
-
-    public void DisplayFragmentTools() {
+    public void DisplayFragmentTools()
+    {
         lastSelectedFragmentStorePos = 2;
 
         if (fragment_transparent != null && fragment_transparent.isAdded()) {
@@ -217,9 +218,9 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
-
     //////////////////////////////////////////////////////////////////
-    public void DisplayFragmentSearch() {
+    public void DisplayFragmentSearch()
+    {
         fragment_search = Fragment_Search.newInstance();
 
         if (!fragment_search.isAdded()) {
@@ -229,8 +230,8 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
-
-    public void DisplayFragmentCart() {
+    public void DisplayFragmentCart()
+    {
         fragment_cart = Fragment_Cart.newInstance();
 
         if (!fragment_cart.isAdded()) {
@@ -240,9 +241,9 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
-
     //////////////////////////////////////////////////////////////////
-    public void DisplayFragmentStore() {
+    public void DisplayFragmentStore()
+    {
         if (fragment_orders != null && fragment_orders.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_orders).commit();
         }
@@ -270,8 +271,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
-    public void DisplayFragmentOrders() {
+    public void DisplayFragmentOrders()
+    {
         if (fragment_store != null && fragment_store.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_store).commit();
         }
@@ -299,8 +300,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
-    public void DisplayFragmentOffers() {
+    public void DisplayFragmentOffers()
+    {
         if (fragment_store != null && fragment_store.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_store).commit();
         }
@@ -328,8 +329,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
-    public void DisplayFragmentFavourite() {
+    public void DisplayFragmentFavourite()
+    {
         if (fragment_store != null && fragment_store.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_store).commit();
         }
@@ -357,8 +358,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
-    public void DisplayFragmentMore() {
+    public void DisplayFragmentMore()
+    {
         if (fragment_store != null && fragment_store.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_store).commit();
         }
@@ -386,8 +387,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
-
 
     private void UpdateBottomNavigationPosition(int pos) {
         if (fragment_home != null && fragment_home.isAdded()) {
@@ -426,11 +425,16 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void Back() {
+    public void Back()
+    {
         if (fragment_search!=null&&fragment_search.isVisible())
         {
             super.onBackPressed();
         }else if (fragment_cart!=null&&fragment_cart.isVisible())
+        {
+            super.onBackPressed();
+
+        }else if (fragment_details!=null&&fragment_details.isVisible())
         {
             super.onBackPressed();
 

@@ -1,13 +1,12 @@
 package com.appzone.eyeres.share;
 
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -18,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -311,16 +311,21 @@ public class Common {
         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"),data);
         return requestBody;
     }
-    public static ProgressDialog createProgressDialog(Context context , String msg)
+    public static Dialog createProgressDialog(Context context , String msg)
     {
-        ProgressDialog  dialog = new ProgressDialog(context);
-        dialog.setMessage(msg);
-        dialog.setCancelable(true);
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_progress_dialog);
+
+        ProgressBar progBar = dialog.findViewById(R.id.progBar);
+        TextView tv_msg = dialog.findViewById(R.id.tv_msg);
+
+        progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        tv_msg.setText(msg);
+
+        dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
-        ProgressBar bar = new ProgressBar(context);
-        Drawable drawable = bar.getIndeterminateDrawable().mutate();
-        drawable.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
-        dialog.setIndeterminateDrawable(drawable);
+
         return dialog;
 
     }

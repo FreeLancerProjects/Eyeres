@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,8 +21,11 @@ import com.mukesh.countrypicker.Country;
 import com.mukesh.countrypicker.CountryPicker;
 import com.mukesh.countrypicker.listeners.OnCountryPickerListener;
 
+import java.util.Locale;
+
 public class Fragment_Phone extends Fragment implements OnCountryPickerListener{
     private LinearLayout ll_country;
+    private ImageView arrow;
     private TextView tv_country,tv_code,tv_note;
     private EditText edt_phone;
     private FloatingActionButton fab;
@@ -41,6 +45,17 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener{
     private void initView(View view) {
 
         activity = (SignInActivity) getActivity();
+        arrow = view.findViewById(R.id.arrow);
+
+        if (Locale.getDefault().getLanguage().equals("ar"))
+        {
+            arrow.setImageResource(R.drawable.green_right_arrow);
+        }else
+            {
+                arrow.setImageResource(R.drawable.green_left_arrow);
+
+            }
+
         ll_country = view.findViewById(R.id.ll_country);
         tv_country = view.findViewById(R.id.tv_country);
         tv_note = view.findViewById(R.id.tv_note);
@@ -72,7 +87,7 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener{
         {
             edt_phone.setError(null);
             Common.CloseKeyBoard(activity,edt_phone);
-            activity.DisplayFragmentCompleteProfile(phone);
+            activity.signIn(phone);
         }else
             {
                 if (TextUtils.isEmpty(phone))

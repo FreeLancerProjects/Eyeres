@@ -2,7 +2,6 @@ package com.appzone.eyeres.activities_fragments.activity_sign_in.fragments;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -31,9 +30,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.Locale;
-
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 public class Fragment_Complete_Profile extends Fragment {
 
@@ -104,7 +100,8 @@ public class Fragment_Complete_Profile extends Fragment {
 
     }
 
-    private void CheckData() {
+    private void CheckData()
+    {
         String m_name = edt_name.getText().toString().trim();
         String m_email = edt_email.getText().toString().trim();
 
@@ -121,7 +118,8 @@ public class Fragment_Complete_Profile extends Fragment {
             edt_name.setError(null);
             edt_email.setError(null);
 
-            Sign_Up(activity.phone,m_name,m_email);
+            activity.signUp(m_name,m_email,uri);
+
         }else
         {
             if (TextUtils.isEmpty(m_name))
@@ -152,78 +150,6 @@ public class Fragment_Complete_Profile extends Fragment {
             }
         }
     }
-
-    private void Sign_Up(String m_phone, String m_name, String m_email) {
-        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.signingup));
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-
-        RequestBody name_part = Common.getRequestBodyText(m_name);
-        RequestBody phone_part = Common.getRequestBodyText(m_phone);
-        RequestBody email_part = Common.getRequestBodyText(m_email);
-
-        try {
-            MultipartBody.Part avatar_part = Common.getMultiPart(activity,uri,"avatar");
-           /* Api.getService()
-                    .SignUp(name_part,phone_part,password_part,email_part,country_part,avatar_part)
-                    .enqueue(new Callback<UserModel>() {
-                        @Override
-                        public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-
-
-                            if (response.isSuccessful())
-                            {
-                                dialog.dismiss();
-                                dismissSnackBar();
-
-                                if (response.body()!=null && response.body().getUser()!=null)
-                                {
-                                    UserSingleTone userSingleTone = UserSingleTone.getInstance();
-                                    Preferences preferences = Preferences.getInstance();
-                                    UserModel userModel = response.body();
-                                    userSingleTone.setUserModel(userModel);
-                                    preferences.create_update_userData(SignUpActivity.this,userModel);
-
-                                    NavigateToHomeActivity();
-
-
-
-                                }else
-                                {
-                                    Common.CreateSignAlertDialog(SignInActivity.this,getString(R.string.something));
-                                }
-                            }else
-                            {
-
-                                dismissSnackBar();
-                                dialog.dismiss();
-
-                                if (response.code()==422)
-                                {
-                                    Common.CreateSignAlertDialog(SignUpActivity.this,getString(R.string.phone_number_exists));
-
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<UserModel> call, Throwable t) {
-                            try {
-                                dialog.dismiss();
-                                CreateSnackBar(getString(R.string.something));
-                                Log.e("Error",t.getMessage());
-                            }catch (Exception e){}
-                        }
-                    });
-*/
-        }catch (Exception e)
-        {
-            Toast.makeText(activity, R.string.inc_img_path, Toast.LENGTH_SHORT).show();
-
-        }
-    }
-
 
     private void Check_ReadPermission(int img_req)
     {

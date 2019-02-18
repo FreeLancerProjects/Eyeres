@@ -78,6 +78,8 @@
     <string name="your_privacy_guaranteed">Your privacy is 100% guaranteed</string>
     <string name="by_using_this_app_you_agree_to">By using this app you agree to</string>
     <string name="terms_and_conditions">Terms and conditions</string>
+    <string name="details">Details</string>
+    <string name="choose2">-Choose-</string>
 
 
 </resources>

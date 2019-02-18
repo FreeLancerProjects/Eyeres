@@ -1,13 +1,17 @@
 package com.appzone.eyeres.activities_fragments.activity_sign_in.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
@@ -15,9 +19,20 @@ import com.appzone.eyeres.activities_fragments.activity_sign_in.fragments.Fragme
 import com.appzone.eyeres.activities_fragments.activity_sign_in.fragments.Fragment_Complete_Profile;
 import com.appzone.eyeres.activities_fragments.activity_sign_in.fragments.Fragment_Phone;
 import com.appzone.eyeres.activities_fragments.activity_terms_conditions.TermsConditionsActivity;
+import com.appzone.eyeres.models.UserModel;
+import com.appzone.eyeres.preferences.Preferences;
+import com.appzone.eyeres.remote.Api;
 import com.appzone.eyeres.share.Common;
+import com.appzone.eyeres.singletone.UserSingleTone;
 
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -28,6 +43,8 @@ public class SignInActivity extends AppCompatActivity {
     private Fragment_Phone fragment_phone;
     private Fragment_Complete_Profile fragment_complete_profile;
     public String phone="";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +54,11 @@ public class SignInActivity extends AppCompatActivity {
 
     private void initView() {
 
+
         fragmentManager = getSupportFragmentManager();
         root = findViewById(R.id.root);
         DisplayFragmentChooser();
+
 
 
 
@@ -109,11 +128,148 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
-    public void NavigateToTermsActivity() {
+    public void NavigateToTermsActivity()
+    {
         Intent intent = new Intent(this, TermsConditionsActivity.class);
         startActivity(intent);
     }
 
+    public void signIn(final String phone)
+    {
+        final Dialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.show();
+        Api.getService()
+                .SignIn(phone)
+                .enqueue(new Callback<UserModel>() {
+                    @Override
+                    public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                        if (response.isSuccessful())
+                        {
+                            DismissSnackBar();
+                            dialog.dismiss();
+
+                            if (response.body()!=null)
+                            {
+                                UserSingleTone userSingleTone = UserSingleTone.getInstance();
+                                Preferences preferences = Preferences.getInstance();
+
+                                UserModel userModel = response.body();
+
+                                userSingleTone.setUserModel(userModel);
+                                preferences.create_update_userData(SignInActivity.this,userModel);
+                                NavigateToHomeActivity(false);
+                            }
+
+
+
+                        }else
+                            {
+                                dialog.dismiss();
+
+                                if (response.code() == 402)
+                                {
+                                    DisplayFragmentCompleteProfile(phone);
+                                }else
+                                    {
+                                        CreateSnackBar(getString(R.string.failed));
+
+                                    }
+                                try {
+                                    Log.e("error_code",response.code()+"_"+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserModel> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            CreateSnackBar(getString(R.string.something));
+                            Log.e("Error",t.getMessage());
+
+                        }catch (Exception e){}
+                    }
+                });
+    }
+    public void signUp(String name, String email, Uri avatar_uri)
+    {
+        final Dialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.show();
+
+        RequestBody name_part = Common.getRequestBodyText(name);
+        RequestBody phone_part = Common.getRequestBodyText(phone);
+        RequestBody email_part = Common.getRequestBodyText(email);
+
+        try {
+            MultipartBody.Part avatar_part = Common.getMultiPart(this,avatar_uri,"avatar");
+            Api.getService()
+                    .SignUp(name_part,phone_part,email_part,avatar_part)
+                    .enqueue(new Callback<UserModel>() {
+                        @Override
+                        public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+
+
+                            if (response.isSuccessful())
+                            {
+                                dialog.dismiss();
+                                DismissSnackBar();
+
+                                if (response.body()!=null)
+                                {
+                                    UserSingleTone userSingleTone = UserSingleTone.getInstance();
+                                    Preferences preferences = Preferences.getInstance();
+                                    UserModel userModel = response.body();
+                                    userSingleTone.setUserModel(userModel);
+                                    preferences.create_update_userData(SignInActivity.this,userModel);
+
+                                    NavigateToHomeActivity(false);
+
+
+
+                                }else
+                                {
+                                    Common.CreateSignAlertDialog(SignInActivity.this,getString(R.string.something));
+                                }
+                            }else
+                            {
+
+                                dialog.dismiss();
+
+                                if (response.code()==422)
+                                {
+                                    Common.CreateSignAlertDialog(SignInActivity.this,getString(R.string.phone_number_exists));
+
+                                }else
+                                    {
+                                        CreateSnackBar(getString(R.string.failed));
+                                    }
+
+                                try {
+                                    Log.e("error_code",response.code()+"_"+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserModel> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                CreateSnackBar(getString(R.string.something));
+                                Log.e("Error",t.getMessage());
+                            }catch (Exception e){}
+                        }
+                    });
+        }catch (Exception e)
+        {
+            Toast.makeText(this, R.string.inc_img_path, Toast.LENGTH_SHORT).show();
+
+        }
+    }
     private void CreateSnackBar(String msg)
     {
         snackbar = Common.CreateSnackBar(this,root,msg);

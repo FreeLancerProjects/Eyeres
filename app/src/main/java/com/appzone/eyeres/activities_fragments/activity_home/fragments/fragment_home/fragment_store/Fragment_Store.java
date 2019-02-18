@@ -17,7 +17,7 @@ import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 
 public class Fragment_Store extends Fragment{
-    private LinearLayout ll_slider_container,ll_add_recent,ll_most_seller,ll_transparent,ll_color,ll_accessories;
+    private LinearLayout ll_slider_container,ll_transparent,ll_color,ll_accessories;
     private TextView tv_transparent,tv_colored,tv_accessories;
     private ViewPager pager_slider;
     private TabLayout tab_slider;
@@ -39,8 +39,7 @@ public class Fragment_Store extends Fragment{
 
         activity = (HomeActivity) getActivity();
         ll_slider_container = view.findViewById(R.id.ll_slider_container);
-        ll_add_recent = view.findViewById(R.id.ll_add_recent);
-        ll_most_seller = view.findViewById(R.id.ll_most_seller);
+
         pager_slider = view.findViewById(R.id.pager_slider);
         tab_slider = view.findViewById(R.id.tab_slider);
 
@@ -51,6 +50,7 @@ public class Fragment_Store extends Fragment{
         tv_transparent = view.findViewById(R.id.tv_transparent);
         tv_colored = view.findViewById(R.id.tv_colored);
         tv_accessories = view.findViewById(R.id.tv_accessories);
+
 
 
         ll_transparent.setOnClickListener(new View.OnClickListener() {
