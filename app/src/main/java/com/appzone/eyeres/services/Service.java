@@ -1,10 +1,14 @@
 package com.appzone.eyeres.services;
 
+import com.appzone.eyeres.models.FavoriteIdModel;
+import com.appzone.eyeres.models.PackageSizeModel;
 import com.appzone.eyeres.models.ProductDataModel;
+import com.appzone.eyeres.models.Terms_ConditionModel;
 import com.appzone.eyeres.models.UserModel;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -38,6 +42,52 @@ public interface Service {
                                        @Query("token") String token
                                        );
 
+
+    @FormUrlEncoded
+    @POST("/api/favorites")
+    Call<FavoriteIdModel> makeFavorite(@Field("token") String token,
+                                       @Field("product_id") int product_id
+                                       );
+
+    @FormUrlEncoded
+    @POST("/api/favorites/{favorite_id}")
+    Call<ResponseBody> deleteFavorite(@Path("favorite_id") int favorite_id,
+                                      @Field("token") String token,
+                                      @Field("_method") String delete
+    );
+
+    @GET("/api/favorites")
+    Call<ProductDataModel> getFavorites(@Query("token") String user_token,@Query("page") int page);
+
+    @GET("api/offers")
+    Call<ProductDataModel> getOffers(@Query("page") int page_index);
+
+    @GET("/api/get-terms-condition")
+    Call<Terms_ConditionModel> getTerms();
+
+    @GET("/api/packages")
+    Call<PackageSizeModel> getPackageSize();
+
+    @FormUrlEncoded
+    @POST("/api/logout")
+    Call<ResponseBody> logout(@Field("token") String user_token);
+
+    @Multipart
+    @POST("/api/edit-profile")
+    Call<UserModel> updateImage(@Part("token") RequestBody user_token,
+                                @Part MultipartBody.Part avatar
+                                );
+
+    @FormUrlEncoded
+    @POST("/api/edit-profile")
+    Call<UserModel> updateName(@Field("token") String user_token,
+                                @Field("name") String name
+    );
+    @FormUrlEncoded
+    @POST("/api/edit-profile")
+    Call<UserModel> updateEmail(@Field("token") String user_token,
+                               @Field("email") String email
+    );
 
 
 }

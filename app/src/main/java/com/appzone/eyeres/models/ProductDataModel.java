@@ -96,6 +96,10 @@ public class ProductDataModel implements Serializable {
         public void setIs_favorite(int is_favorite) {
             this.is_favorite = is_favorite;
         }
+
+        public void setFavorite_id(int favorite_id) {
+            this.favorite_id = favorite_id;
+        }
     }
 
     public class Brand implements Serializable

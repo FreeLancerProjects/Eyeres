@@ -17,7 +17,7 @@
         android:textSize="15sp"
         android:textStyle="bold"
         android:layout_marginTop="8dp"
-        android:text="@string/update_phone"
+        android:text="@string/update_email"
         />
     <View
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:text="@string/phone"
+            android:text="@string/full_name"
             />
 
         <LinearLayout
@@ -52,32 +52,30 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/edt_contact_bg"
             >
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="37dp"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical"
-                android:text="+966"
-
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/user"
+                android:padding="8dp"
                 />
             <EditText
-                android:id="@+id/edt_phone"
+                android:id="@+id/edt_email"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:layout_gravity="center_vertical"
                 android:background="@color/white"
-                android:hint="533332583"
+                android:hint="@string/email_address"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:inputType="phone"
+                android:inputType="textEmailAddress"
                 android:textColorHint="@color/gray"
                 android:textColor="@color/black"
                 android:singleLine="true"
                 android:gravity="center_vertical"
+                android:textSize="16sp"
 
                 />
+
         </LinearLayout>
 
     </LinearLayout>

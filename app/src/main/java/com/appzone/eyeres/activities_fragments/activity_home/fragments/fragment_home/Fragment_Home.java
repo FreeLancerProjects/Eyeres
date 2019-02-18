@@ -40,7 +40,7 @@ public class Fragment_Home extends Fragment{
         ah_bottom.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
-                UpdateAHBottomNavigationPosition(position);
+                //UpdateAHBottomNavigationPosition(position);
                 switch (position)
                 {
                     case 0:
@@ -56,7 +56,7 @@ public class Fragment_Home extends Fragment{
                         activity.DisplayFragmentFavourite();
                         break;
                     case 4:
-                        activity.DisplayFragmentMore();
+                        activity.DisplayFragmentProfile();
                         break;
 
                 }
@@ -84,7 +84,7 @@ public class Fragment_Home extends Fragment{
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(getString(R.string.orders), ContextCompat.getDrawable(getActivity(),R.drawable.nav_cart),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(getString(R.string.offers), ContextCompat.getDrawable(getActivity(),R.drawable.nav_offer),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
         AHBottomNavigationItem item4 = new AHBottomNavigationItem(getString(R.string.favourite), ContextCompat.getDrawable(getActivity(),R.drawable.star),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
-        AHBottomNavigationItem item5 = new AHBottomNavigationItem(getString(R.string.more), ContextCompat.getDrawable(getActivity(),R.drawable.more),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+        AHBottomNavigationItem item5 = new AHBottomNavigationItem(getString(R.string.profile), ContextCompat.getDrawable(getActivity(),R.drawable.nav_profile),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
 
         ah_bottom.addItem(item1);
         ah_bottom.addItem(item2);

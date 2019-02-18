@@ -1,6 +1,9 @@
 package com.appzone.eyeres.singletone;
 
+import android.content.Context;
+
 import com.appzone.eyeres.models.UserModel;
+import com.appzone.eyeres.preferences.Preferences;
 
 public class UserSingleTone {
 
@@ -29,9 +32,11 @@ public class UserSingleTone {
     public void setUserModel(UserModel userModel) {
         this.userModel = userModel;
     }
-    public void clear()
+    public void clear(Context context)
     {
         this.userModel=null;
+        Preferences preferences = Preferences.getInstance();
+        preferences.Clear(context);
     }
 
 }

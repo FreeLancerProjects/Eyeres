@@ -59,4 +59,16 @@ public class Preferences {
         String session = preferences.getString("state", Tags.session_logout);
         return session;
     }
+
+    public void Clear(Context context)
+    {
+        SharedPreferences preferences1 = context.getSharedPreferences("user",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = preferences1.edit();
+        editor1.clear();
+        editor1.apply();
+        SharedPreferences preferences2 = context.getSharedPreferences("session",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = preferences2.edit();
+        editor2.clear();
+        editor2.apply();
+    }
 }

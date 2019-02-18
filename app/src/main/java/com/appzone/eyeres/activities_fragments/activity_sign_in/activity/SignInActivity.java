@@ -196,6 +196,7 @@ public class SignInActivity extends AppCompatActivity {
     }
     public void signUp(String name, String email, Uri avatar_uri)
     {
+
         final Dialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
         dialog.show();
 

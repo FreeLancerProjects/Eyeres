@@ -49,7 +49,7 @@
     <string name="skip">تخطي</string>
     <string name="inc_phonr_password">رقم الجوال او كلمة المرور غير صحيح</string>
     <string name="signingup">جار انشاء حساب جديد...</string>
-    <string name="phone_number_exists">رقم الجوال تم التسجيل بة من قبل</string>
+    <string name="phone_number_exists">رقم الجوال او البريد الالكتروني تم التسجيل بهم من قبل</string>
     <string name="personal_information">المعلومات الشخصية</string>
     <string name="_500_500_pixel">500 * 500 بكسل</string>
     <string name="country">المدينة</string>
@@ -74,7 +74,7 @@
     <string name="number_of_boxes">عدد الصناديق</string>
     <string name="add_to_cart">أضف إلى السلة</string>
     <string name="sign_up_using_phone">تسجيل برقم الجوال</string>
-    <string name="profile">الملف الشخصي</string>
+    <string name="profile">حسابي</string>
     <string name="you_are_just_one_step_away">خطوة اخيرة...</string>
     <string name="never_share_phone_number">بياناتك في الحفظ والصون لدينا,</string>
     <string name="your_privacy_guaranteed">لن نقوم بمشاركة بياناتك لاي احد ولا لأي سبب.</string>
@@ -82,5 +82,15 @@
     <string name="terms_and_conditions">الشروط والاحكام</string>
     <string name="details">التفاصيل</string>
     <string name="choose2">-إختر-</string>
+    <string name="there_are_no_products_to_display">لا توجد منتجات لعرضها</string>
+    <string name="new_order">الجديدة</string>
+    <string name="current_order">الحالية</string>
+    <string name="previous_order">السابقة</string>
+    <string name="package_of">عبوة من </string>
+    <string name="lenses">عدسة</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="logging_out">جار تسجيل الخروج</string>
+    <string name="update_name">تعديل الاسم</string>
+    <string name="update_email">تعديل البريد الالكتروني</string>
 
 </resources>

@@ -23,6 +23,18 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_no_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:text="@string/there_are_no_products_to_display"
+            android:visibility="gone"
+            />
     </FrameLayout>
 
     <FrameLayout

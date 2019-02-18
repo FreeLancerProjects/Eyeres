@@ -47,7 +47,7 @@
 
     <string name="inc_phonr_password">Incorrect user phone or password</string>
     <string name="signingup">Signing Up ...</string>
-    <string name="phone_number_exists">Phone number is exists</string>
+    <string name="phone_number_exists">Phone number or email are exist</string>
     <string name="personal_information">Personal information</string>
     <string name="_500_500_pixel">500 * 500 pixel</string>
     <string name="country">Country</string>
@@ -80,6 +80,16 @@
     <string name="terms_and_conditions">Terms and conditions</string>
     <string name="details">Details</string>
     <string name="choose2">-Choose-</string>
+    <string name="there_are_no_products_to_display">There are no products to display</string>
+    <string name="new_order">New</string>
+    <string name="current_order">Current</string>
+    <string name="previous_order">Previous</string>
+    <string name="package_of">package of</string>
+    <string name="lenses">lenses</string>
+    <string name="logout">Logout</string>
+    <string name="logging_out">Logging out...</string>
+    <string name="update_name">Update name</string>
+    <string name="update_email">Update email</string>
 
 
 </resources>

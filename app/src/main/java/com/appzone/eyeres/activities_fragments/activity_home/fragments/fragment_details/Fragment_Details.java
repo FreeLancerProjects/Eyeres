@@ -1,11 +1,13 @@
 package com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +18,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 import com.appzone.eyeres.adapters.SliderAdapter;
+import com.appzone.eyeres.models.PackageSizeModel;
 import com.appzone.eyeres.models.ProductDataModel;
+import com.appzone.eyeres.remote.Api;
+import com.appzone.eyeres.share.Common;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Fragment_Details extends Fragment{
     private static String TAG="productModel";
@@ -36,6 +47,7 @@ public class Fragment_Details extends Fragment{
     private TabLayout tab_slider;
     private TextView tv_name,tv_details,tv_counter_2_left,tv_counter_2_right,tv_counter_1_left_right;
     private Spinner spinner_package_size,spinner_2_left,spinner_2_right,spinner_1_left_right;
+    private List<String> sizesList;
     private CheckBox checkbox;
     private int similar_eye = 1;
     private int counter_left_right = 1,counter_left=1,counter_right=1;
@@ -64,6 +76,8 @@ public class Fragment_Details extends Fragment{
         return fragment_details;
     }
     private void initView(View view) {
+        sizesList = new ArrayList<>();
+
         activity = (HomeActivity) getActivity();
         arrow = view.findViewById(R.id.arrow);
         current_lang = Locale.getDefault().getLanguage();
@@ -236,7 +250,11 @@ public class Fragment_Details extends Fragment{
             productModel = (ProductDataModel.ProductModel) bundle.getSerializable(TAG);
             UpdateUI(productModel);
         }
+
+        getPackageSize();
     }
+
+
 
     private void UpdateUI(ProductDataModel.ProductModel productModel)
     {
@@ -272,6 +290,60 @@ public class Fragment_Details extends Fragment{
                 }
 
 
+
+    }
+    private void getPackageSize()
+    {
+
+        final Dialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.show();
+        Api.getService()
+                .getPackageSize()
+                .enqueue(new Callback<PackageSizeModel>() {
+                    @Override
+                    public void onResponse(Call<PackageSizeModel> call, Response<PackageSizeModel> response) {
+                        if (response.isSuccessful() && response.body()!=null)
+                        {
+                            dialog.dismiss();
+
+                            UpdatePackageAdapter(response.body().getSizes());
+
+                        }else
+                            {
+                                dialog.dismiss();
+                                Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                try {
+                                    Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PackageSizeModel> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
+    }
+    private void UpdatePackageAdapter(List<String> sizesList)
+    {
+        this.sizesList.clear();
+        this.sizesList.add(getString(R.string.choose2));
+
+        for (String size : sizesList)
+        {
+            String s = getString(R.string.package_of)+" "+size+" "+getString(R.string.lenses);
+            this.sizesList.add(s);
+        }
+
+
+        spinner_package_size.setAdapter(new ArrayAdapter<>(activity,R.layout.spinner_row,sizesList));
 
     }
     private void increase_2_left_eye_counter()
@@ -361,7 +433,8 @@ public class Fragment_Details extends Fragment{
     }
 
     @Override
-    public void onDestroyView() {
+    public void onDestroyView()
+    {
         if (timer!=null)
         {
             timer.purge();

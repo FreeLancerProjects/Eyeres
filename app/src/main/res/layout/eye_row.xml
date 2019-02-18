@@ -49,18 +49,14 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 >
-                <com.varunest.sparkbutton.SparkButton
-                    android:id="@+id/btnFav"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:sparkbutton_activeImage="@drawable/heart"
-                    app:sparkbutton_inActiveImage="@drawable/fav_heart"
-                    app:sparkbutton_iconSize="20dp"
-                    app:sparkbutton_animationSpeed="1.5"
-
-                    >
-
-                </com.varunest.sparkbutton.SparkButton>
+                <ImageView
+                    android:id="@+id/image_fav"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/check_box_fav"
+                    android:padding="5dp"
+                    />
             </FrameLayout>
 
 

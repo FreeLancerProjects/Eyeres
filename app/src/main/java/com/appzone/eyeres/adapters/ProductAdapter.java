@@ -18,8 +18,6 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.tags.Tags;
 import com.squareup.picasso.Picasso;
-import com.varunest.sparkbutton.SparkButton;
-import com.varunest.sparkbutton.SparkEventListener;
 
 import java.util.List;
 import java.util.Locale;
@@ -49,37 +47,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder
     public void onBindViewHolder(@NonNull final MyHolder holder, int position) {
         ProductDataModel.ProductModel productModel = productModelList.get(position);
         holder.BindData(productModel);
-        holder.btnFav.setEventListener(new SparkEventListener() {
+        holder.image_fav.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onEvent(ImageView button, boolean buttonState) {
-
+            public void onClick(View v) {
+                ProductDataModel.ProductModel productModel = productModelList.get(holder.getAdapterPosition());
 
                 if (fragment instanceof Fragment_Transparent)
                 {
                     Fragment_Transparent fragment_transparent = (Fragment_Transparent) fragment;
-                    fragment_transparent.UpdateFavorite(buttonState,holder.getAdapterPosition());
+                    fragment_transparent.UpdateFavorite(productModel,holder.getAdapterPosition());
                 }else if (fragment instanceof Fragment_Color)
                 {
                     Fragment_Color fragment_color = (Fragment_Color) fragment;
-                    fragment_color.UpdateFavorite(buttonState,holder.getAdapterPosition());
+                    fragment_color.UpdateFavorite(productModel,holder.getAdapterPosition());
 
                 }else if (fragment instanceof Fragment_Tools)
                 {
                     Fragment_Tools fragment_tools = (Fragment_Tools) fragment;
-                    fragment_tools.UpdateFavorite(buttonState,holder.getAdapterPosition());
+                    fragment_tools.UpdateFavorite(productModel,holder.getAdapterPosition());
 
                 }
-
-            }
-
-            @Override
-            public void onEventAnimationEnd(ImageView button, boolean buttonState) {
-
-            }
-
-            @Override
-            public void onEventAnimationStart(ImageView button, boolean buttonState) {
-
             }
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +102,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder
 
     public class MyHolder extends RecyclerView.ViewHolder {
         private TextView tv_name, tv_price;
-        private ImageView image;
-        private SparkButton btnFav;
+        private ImageView image,image_fav;
 
         public MyHolder(View itemView) {
             super(itemView);
@@ -124,26 +110,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_price = itemView.findViewById(R.id.tv_price);
             image = itemView.findViewById(R.id.image);
-            btnFav = itemView.findViewById(R.id.btnFav);
-            btnFav.setChecked(false);
+            image_fav = itemView.findViewById(R.id.image_fav);
 
         }
 
         public void BindData(ProductDataModel.ProductModel productModel) {
             if (isSignUp) {
-                btnFav.setVisibility(View.VISIBLE);
+                image_fav.setVisibility(View.VISIBLE);
 
                 if (productModel.getIs_favorite() == 0)
                 {
-                    btnFav.setChecked(false);
+                    image_fav.setImageResource(R.drawable.check_box_fav);
+
                 }else
                     {
-                        btnFav.setChecked(true);
+                        image_fav.setImageResource(R.drawable.fav_heart);
+
 
                     }
 
             } else {
-                btnFav.setVisibility(View.INVISIBLE);
+                image_fav.setVisibility(View.INVISIBLE);
 
             }
 

@@ -1,5 +1,6 @@
 package com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store;
 
+import android.app.Dialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,19 +16,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 import com.appzone.eyeres.adapters.ProductAdapter;
+import com.appzone.eyeres.models.FavoriteIdModel;
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.models.UserModel;
 import com.appzone.eyeres.remote.Api;
+import com.appzone.eyeres.share.Common;
 import com.appzone.eyeres.singletone.UserSingleTone;
 import com.appzone.eyeres.tags.Tags;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +53,7 @@ public class Fragment_Transparent extends Fragment {
     private UserModel userModel;
     private boolean isLoading = false;
     private String user_token = "";
+    private TextView tv_no_product;
 
     @Nullable
     @Override
@@ -63,11 +71,13 @@ public class Fragment_Transparent extends Fragment {
     private void initView(View view) {
         userSingleTone = UserSingleTone.getInstance();
         userModel = userSingleTone.getUserModel();
+
         activity = (HomeActivity) getActivity();
         productModelList = new ArrayList<>();
         first20RecentProductList = new ArrayList<>();
         first20MostProductList = new ArrayList<>();
 
+        tv_no_product = view.findViewById(R.id.tv_no_product);
         progBar = view.findViewById(R.id.progBar);
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
         progBarLoadMore = view.findViewById(R.id.progBarLoadMore);
@@ -85,9 +95,10 @@ public class Fragment_Transparent extends Fragment {
         recView.setItemViewCacheSize(25);
 
         if (userModel == null) {
+
             adapter = new ProductAdapter(productModelList, activity, false,this);
         } else {
-
+            user_token = userModel.getToken();
             adapter = new ProductAdapter(productModelList, activity, true,this);
 
         }
@@ -124,11 +135,11 @@ public class Fragment_Transparent extends Fragment {
                 if (first20MostProductList.size()>0)
                 {
                     productModelList.clear();
-                    productModelList.addAll(first20RecentProductList);
+                    productModelList.addAll(first20MostProductList);
                     adapter.notifyDataSetChanged();
                 }else
                     {
-                        getProducts(current_page,Tags.type_most_sell);
+                        getProducts();
                     }
 
 
@@ -144,7 +155,7 @@ public class Fragment_Transparent extends Fragment {
                 if (dy>0)
                 {
                     int lastVisibleItemPos = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                    if (lastVisibleItemPos >=(recyclerView.getLayoutManager().getChildCount()-10)&& !isLoading){
+                    if (lastVisibleItemPos ==(recyclerView.getLayoutManager().getChildCount()-10)&& !isLoading){
                         isLoading = true;
                         int nextPageIndex = current_page+1;
                         LoadMore(nextPageIndex,orderBy);
@@ -152,13 +163,13 @@ public class Fragment_Transparent extends Fragment {
                 }
             }
         });
-        getProducts(current_page, orderBy);
+        getProducts();
     }
 
-    private void getProducts(int page_index, final int orderBy)
+    public void getProducts()
     {
         Api.getService()
-                .getProducts(1, page_index, orderBy,user_token)
+                .getProducts(1, 1, orderBy,user_token)
                 .enqueue(new Callback<ProductDataModel>() {
                     @Override
                     public void onResponse(Call<ProductDataModel> call, Response<ProductDataModel> response) {
@@ -167,24 +178,33 @@ public class Fragment_Transparent extends Fragment {
                             if (response.body() != null) {
 
                                 productModelList.clear();
-                                first20RecentProductList.clear();
-                                first20MostProductList.clear();
 
-                                if (orderBy == Tags.type_add_recent)
+                                if (current_page == 1)
                                 {
-                                    first20RecentProductList.addAll(response.body().getData());
-                                }else
+                                    if (orderBy == Tags.type_add_recent)
                                     {
+                                        first20RecentProductList.clear();
+
+                                        first20RecentProductList.addAll(response.body().getData());
+                                    }else
+                                    {
+                                        first20MostProductList.clear();
+
+
                                         first20MostProductList.addAll(response.body().getData());
 
                                     }
+                                }
+
 
                                 productModelList.addAll(response.body().getData());
                                 if (productModelList.size() > 0) {
                                     ll_orderBy.setVisibility(View.VISIBLE);
                                     adapter.notifyDataSetChanged();
+                                    tv_no_product.setVisibility(View.GONE);
                                 } else {
                                     ll_orderBy.setVisibility(View.GONE);
+                                    tv_no_product.setVisibility(View.VISIBLE);
 
                                 }
                             }
@@ -237,24 +257,101 @@ public class Fragment_Transparent extends Fragment {
     }
 
 
-    public void UpdateFavorite(boolean isFavorite, int pos) {
-
-        ProductDataModel.ProductModel productModel = productModelList.get(pos);
-        if (isFavorite)
+    public void UpdateFavorite(final ProductDataModel.ProductModel productModel, final int pos)
+    {
+        if (productModel.getIs_favorite() == 1)
         {
-            productModel.setIs_favorite(1);
+            deleteFavorite(productModel,pos);
         }else
             {
-                productModel.setIs_favorite(0);
-
+                makeFavorite(pos,productModel);
             }
+    }
+    private void makeFavorite(final int pos, final ProductDataModel.ProductModel productModel)
+    {
+        final Dialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.show();
+        Api.getService()
+                .makeFavorite(user_token,productModel.getId())
+                .enqueue(new Callback<FavoriteIdModel>() {
+                    @Override
+                    public void onResponse(Call<FavoriteIdModel> call, Response<FavoriteIdModel> response) {
+                        if (response.isSuccessful() && response.body()!=null)
+                        {
+                            dialog.dismiss();
+                            productModel.setIs_favorite(1);
+                            productModel.setFavorite_id(response.body().getFavorite_id());
+                            productModelList.set(pos, productModel);
+                            adapter.notifyItemChanged(pos, productModel);
+                            activity.RefreshFragmentFavorite();
+                        }else
+                        {
+                            dialog.dismiss();
 
-        productModelList.set(pos,productModel);
-        adapter.notifyItemChanged(pos,productModel);
-        
+                            Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
+                            try {
+                                Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<FavoriteIdModel> call, Throwable t) {
+
+                        try {
+                            dialog.dismiss();
+                            Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
+
+    }
+    private void deleteFavorite(final ProductDataModel.ProductModel productModel , final int pos)
+    {
+        final Dialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.show();
+        Api.getService()
+                .deleteFavorite(productModel.getFavorite_id(),user_token,"delete")
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful() && response.body()!=null)
+                        {
+                            dialog.dismiss();
+                            productModel.setIs_favorite(0);
+                            productModelList.set(pos, productModel);
+                            adapter.notifyItemChanged(pos, productModel);
+                            activity.RefreshFragmentFavorite();
+                        }else
+                        {
+                            dialog.dismiss();
+                            Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                            try {
+                                Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        try {
+                            dialog.dismiss();
+                            Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
     }
 
     public void setItemData(ProductDataModel.ProductModel productModel) {
+        activity.DisplayFragmentDetails(productModel);
     }
 }

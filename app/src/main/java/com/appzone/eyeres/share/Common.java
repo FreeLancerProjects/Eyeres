@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.appzone.eyeres.R;
+import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 
 import java.io.File;
 
@@ -75,6 +77,7 @@ public class Common {
     }
     public static void CreateUserNotSignInAlertDialog(final Context context)
     {
+        final HomeActivity homeActivity = (HomeActivity) context;
 
         final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(true)
@@ -83,27 +86,20 @@ public class Common {
 
         View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog,null);
         Button btn_sign_in = view.findViewById(R.id.btn_sign_in);
-        Button btn_sign_up = view.findViewById(R.id.btn_sign_up);
         Button btn_cancel = view.findViewById(R.id.btn_cancel);
 
         TextView tv_msg = view.findViewById(R.id.tv_msg);
         btn_sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                homeActivity.finish();
                 dialog.dismiss();
 
 
             }
         });
 
-        btn_sign_up.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
 
-            }
-        });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -316,7 +312,7 @@ public class Common {
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.custom_progress_dialog);
-
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         ProgressBar progBar = dialog.findViewById(R.id.progBar);
         TextView tv_msg = dialog.findViewById(R.id.tv_msg);
 

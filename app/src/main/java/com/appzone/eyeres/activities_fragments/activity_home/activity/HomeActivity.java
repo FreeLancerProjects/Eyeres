@@ -1,25 +1,29 @@
 package com.appzone.eyeres.activities_fragments.activity_home.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_cart.Fragment_Cart;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details.Fragment_Details;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Favourite;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Home;
-import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_More;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Profile;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Offers;
-import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Orders;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_orders.Fragment_Orders;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Color;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Store;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Tools;
@@ -28,10 +32,20 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.activities_fragments.activity_sign_in.activity.SignInActivity;
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.models.UserModel;
+import com.appzone.eyeres.preferences.Preferences;
+import com.appzone.eyeres.remote.Api;
+import com.appzone.eyeres.share.Common;
 import com.appzone.eyeres.singletone.UserSingleTone;
+import com.appzone.eyeres.tags.Tags;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -50,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
     private Fragment_Orders fragment_orders;
     private Fragment_Offers fragment_offers;
     private Fragment_Favourite fragment_favourite;
-    private Fragment_More fragment_more;
+    private Fragment_Profile fragment_profile;
 
     //////////////////////////////////////////
     private ImageView image_search, image_back_photo;
@@ -58,6 +72,7 @@ public class HomeActivity extends AppCompatActivity {
     private LinearLayout ll_back;
     private FrameLayout fl_cart_container;
     private int lastSelectedFragmentStorePos = -1;
+    private Preferences preferences;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
 
@@ -72,9 +87,17 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private void initView() {
+    private void initView()
+    {
+        preferences = Preferences.getInstance();
+        String session = preferences.getSession(this);
         userSingleTone = UserSingleTone.getInstance();
+        if (session.equals(Tags.session_login))
+        {
+            userSingleTone.setUserModel(preferences.getUserData(this));
+        }
         userModel = userSingleTone.getUserModel();
+
         fl_cart_container = findViewById(R.id.fl_cart_container);
         image_search = findViewById(R.id.image_search);
         tv_cart_counter = findViewById(R.id.tv_cart_counter);
@@ -112,7 +135,13 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private void UpdateCartCounter(int counter) {
+    public void updateUserData(UserModel userModel)
+    {
+        this.userModel = userModel;
+    }
+
+    private void UpdateCartCounter(int counter)
+    {
         if (counter > 0) {
             tv_cart_counter.setText(String.valueOf(counter));
             tv_cart_counter.setVisibility(View.VISIBLE);
@@ -232,6 +261,7 @@ public class HomeActivity extends AppCompatActivity {
     }
     public void DisplayFragmentCart()
     {
+
         fragment_cart = Fragment_Cart.newInstance();
 
         if (!fragment_cart.isAdded()) {
@@ -253,8 +283,8 @@ public class HomeActivity extends AppCompatActivity {
         if (fragment_favourite != null && fragment_favourite.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_favourite).commit();
         }
-        if (fragment_more != null && fragment_more.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_more).commit();
+        if (fragment_profile != null && fragment_profile.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_profile).commit();
         }
 
         if (fragment_store == null) {
@@ -273,92 +303,110 @@ public class HomeActivity extends AppCompatActivity {
     }
     public void DisplayFragmentOrders()
     {
-        if (fragment_store != null && fragment_store.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_store).commit();
-        }
-        if (fragment_offers != null && fragment_offers.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_offers).commit();
-        }
-        if (fragment_favourite != null && fragment_favourite.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_favourite).commit();
-        }
-        if (fragment_more != null && fragment_more.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_more).commit();
-        }
+        if (userModel == null)
+        {
+            Common.CreateUserNotSignInAlertDialog(this);
+        }else
+            {
+                if (fragment_store != null && fragment_store.isAdded()) {
+                    fragmentManager.beginTransaction().hide(fragment_store).commit();
+                }
+                if (fragment_offers != null && fragment_offers.isAdded()) {
+                    fragmentManager.beginTransaction().hide(fragment_offers).commit();
+                }
+                if (fragment_favourite != null && fragment_favourite.isAdded()) {
+                    fragmentManager.beginTransaction().hide(fragment_favourite).commit();
+                }
+                if (fragment_profile != null && fragment_profile.isAdded()) {
+                    fragmentManager.beginTransaction().hide(fragment_profile).commit();
+                }
 
-        if (fragment_orders == null) {
-            fragment_orders = Fragment_Orders.newInstance();
-        }
+                if (fragment_orders == null) {
+                    fragment_orders = Fragment_Orders.newInstance();
+                }
 
-        if (fragment_orders.isAdded()) {
-            fragmentManager.beginTransaction().show(fragment_orders).commit();
-        } else {
-            fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_orders, "fragment_orders").addToBackStack("fragment_orders").commit();
+                if (fragment_orders.isAdded()) {
+                    fragmentManager.beginTransaction().show(fragment_orders).commit();
+                } else {
+                    fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_orders, "fragment_orders").addToBackStack("fragment_orders").commit();
 
-        }
-        UpdateBottomNavigationPosition(1);
+                }
+                UpdateBottomNavigationPosition(1);
+            }
+
 
 
     }
     public void DisplayFragmentOffers()
     {
-        if (fragment_store != null && fragment_store.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_store).commit();
-        }
-        if (fragment_orders != null && fragment_orders.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_orders).commit();
-        }
-        if (fragment_favourite != null && fragment_favourite.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_favourite).commit();
-        }
-        if (fragment_more != null && fragment_more.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_more).commit();
-        }
 
-        if (fragment_offers == null) {
-            fragment_offers = Fragment_Offers.newInstance();
-        }
+                if (fragment_store != null && fragment_store.isAdded()) {
+                    fragmentManager.beginTransaction().hide(fragment_store).commit();
+                }
+                if (fragment_orders != null && fragment_orders.isAdded()) {
+                    fragmentManager.beginTransaction().hide(fragment_orders).commit();
+                }
+                if (fragment_favourite != null && fragment_favourite.isAdded()) {
+                    fragmentManager.beginTransaction().hide(fragment_favourite).commit();
+                }
+                if (fragment_profile != null && fragment_profile.isAdded()) {
+                    fragmentManager.beginTransaction().hide(fragment_profile).commit();
+                }
 
-        if (fragment_offers.isAdded()) {
-            fragmentManager.beginTransaction().show(fragment_offers).commit();
-        } else {
-            fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_offers, "fragment_offers").addToBackStack("fragment_offers").commit();
+                if (fragment_offers == null) {
+                    fragment_offers = Fragment_Offers.newInstance();
+                }
 
-        }
-        UpdateBottomNavigationPosition(2);
+                if (fragment_offers.isAdded()) {
+                    fragmentManager.beginTransaction().show(fragment_offers).commit();
+                } else {
+                    fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_offers, "fragment_offers").addToBackStack("fragment_offers").commit();
+
+                }
+                UpdateBottomNavigationPosition(2);
+
+
 
 
     }
     public void DisplayFragmentFavourite()
     {
-        if (fragment_store != null && fragment_store.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_store).commit();
-        }
-        if (fragment_orders != null && fragment_orders.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_orders).commit();
-        }
-        if (fragment_offers != null && fragment_offers.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_offers).commit();
-        }
-        if (fragment_more != null && fragment_more.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_more).commit();
-        }
+        if (userModel == null)
+        {
+            Common.CreateUserNotSignInAlertDialog(this);
 
-        if (fragment_favourite == null) {
-            fragment_favourite = Fragment_Favourite.newInstance();
-        }
+        }else
+        {
+            if (fragment_store != null && fragment_store.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_store).commit();
+            }
+            if (fragment_orders != null && fragment_orders.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_orders).commit();
+            }
+            if (fragment_offers != null && fragment_offers.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_offers).commit();
+            }
+            if (fragment_profile != null && fragment_profile.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_profile).commit();
+            }
 
-        if (fragment_favourite.isAdded()) {
-            fragmentManager.beginTransaction().show(fragment_favourite).commit();
-        } else {
-            fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_favourite, "fragment_favourite").addToBackStack("fragment_favourite").commit();
+            if (fragment_favourite == null) {
+                fragment_favourite = Fragment_Favourite.newInstance();
+            }
+
+            if (fragment_favourite.isAdded()) {
+                fragmentManager.beginTransaction().show(fragment_favourite).commit();
+            } else {
+                fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_favourite, "fragment_favourite").addToBackStack("fragment_favourite").commit();
+
+            }
+            UpdateBottomNavigationPosition(3);
 
         }
-        UpdateBottomNavigationPosition(3);
 
 
     }
-    public void DisplayFragmentMore()
+    public void DisplayFragmentProfile()
     {
         if (fragment_store != null && fragment_store.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_store).commit();
@@ -373,31 +421,68 @@ public class HomeActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().hide(fragment_favourite).commit();
         }
 
-        if (fragment_more == null) {
-            fragment_more = Fragment_More.newInstance();
+        if (fragment_profile == null) {
+            fragment_profile = Fragment_Profile.newInstance();
         }
 
-        if (fragment_more.isAdded()) {
-            fragmentManager.beginTransaction().show(fragment_more).commit();
+        if (fragment_profile.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_profile).commit();
         } else {
-            fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_more, "fragment_more").addToBackStack("fragment_more").commit();
+            fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_profile, "fragment_profile").addToBackStack("fragment_profile").commit();
 
         }
         UpdateBottomNavigationPosition(4);
 
 
     }
-
-    private void UpdateBottomNavigationPosition(int pos) {
+    private void UpdateBottomNavigationPosition(int pos)
+    {
         if (fragment_home != null && fragment_home.isAdded()) {
             fragment_home.UpdateAHBottomNavigationPosition(pos);
         }
     }
 
-    private void NavigateToSignInActivity() {
+    private void NavigateToSignInActivity()
+    {
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void RefreshFragmentFavorite()
+    {
+        new Handler()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (fragment_favourite!=null && fragment_favourite.isAdded())
+                        {
+                            fragment_favourite.getFavorite();
+                        }
+                    }
+                },1);
+    }
+    public void RefreshFragmentStore()
+    {
+        new Handler()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (fragment_transparent!=null && fragment_transparent.isAdded())
+                        {
+                            fragment_transparent.getProducts();
+                        }
+
+                        if (fragment_color!=null && fragment_color.isAdded())
+                        {
+                            fragment_color.getProducts();
+                        }
+                        if (fragment_tools!=null && fragment_tools.isAdded())
+                        {
+                            fragment_tools.getProducts();
+                        }
+                    }
+                },1);
     }
 
     @Override
@@ -421,8 +506,45 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /////////////logout empty/////////
-    private void Logout() {
+    public void Logout()
+    {
+        final Dialog dialog = Common.createProgressDialog(this,getString(R.string.logging_out));
+        dialog.show();
+        Api.getService()
+                .logout(userModel.getToken())
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful())
+                        {
+                            userModel = null;
+                            userSingleTone.clear(HomeActivity.this);
+                            dialog.dismiss();
+                            NavigateToSignInActivity();
 
+                        }else
+                            {
+                                dialog.dismiss();
+
+                                Toast.makeText(HomeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                try {
+                                    Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            Toast.makeText(HomeActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
     }
 
     public void Back()
@@ -444,12 +566,8 @@ public class HomeActivity extends AppCompatActivity {
                 {
                     if (lastSelectedFragmentStorePos ==0)
                     {
-                        if (userModel == null) {
-                            finish();
+                        finish();
 
-                        } else {
-                            NavigateToSignInActivity();
-                        }
                     }else
                         {
                             DisplayFragmentTransparent();
@@ -463,7 +581,7 @@ public class HomeActivity extends AppCompatActivity {
                 } else if (fragment_favourite != null && fragment_favourite.isVisible()) {
                     DisplayFragmentStore();
 
-                } else if (fragment_more != null && fragment_more.isVisible()) {
+                } else if (fragment_profile != null && fragment_profile.isVisible()) {
                     DisplayFragmentStore();
 
                 }
@@ -478,4 +596,6 @@ public class HomeActivity extends AppCompatActivity {
         Back();
 
     }
+
+
 }
