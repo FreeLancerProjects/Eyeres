@@ -38,6 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Fragment_Offers extends Fragment{
+
     private LinearLayout ll_slider_container;
     private ViewPager pager_slider;
     private TabLayout tab_slider;
