@@ -90,6 +90,16 @@
     <string name="logging_out">Logging out...</string>
     <string name="update_name">Update name</string>
     <string name="update_email">Update email</string>
+    <string name="search">Search...</string>
+    <string name="search2">Search</string>
+    <string name="recently_search">Recently search</string>
+    <string name="no_search_result">No search result</string>
+    <string name="admin">Admin</string>
+    <string name="accepted">Order accepted</string>
+    <string name="refused">Order refused</string>
+    <string name="finished">Order finished</string>
+    <string name="welcome">Welcome</string>
+    <string name="welcome_thank">Welcome to Eyeres thank you for join us</string>
 
 
 </resources>

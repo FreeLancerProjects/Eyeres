@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ايرس</string>
+    <string name="app_name">آيرس</string>
     <string name="notifications">الإشعارات</string>
     <string name="si_su">قم بتسجيل الدخول أو إنشاء حساب جديد .</string>
     <string name="ok">حسنا</string>
@@ -92,5 +92,15 @@
     <string name="logging_out">جار تسجيل الخروج</string>
     <string name="update_name">تعديل الاسم</string>
     <string name="update_email">تعديل البريد الالكتروني</string>
+    <string name="search">إبحث...</string>
+    <string name="search2">إبحث</string>
+    <string name="recently_search">اخر ماقمت بالبحث عنة</string>
+    <string name="no_search_result">لا توجد نتائج البحث</string>
+    <string name="admin">الإدارة</string>
+    <string name="accepted">تم قبول الطلب</string>
+    <string name="refused">تم رفض الطلب</string>
+    <string name="finished">تم انهاء الطلب</string>
+    <string name="welcome">مرحبا</string>
+    <string name="welcome_thank">اهلا بك في آيرس شكرا لانظمامك معنا</string>
 
 </resources>

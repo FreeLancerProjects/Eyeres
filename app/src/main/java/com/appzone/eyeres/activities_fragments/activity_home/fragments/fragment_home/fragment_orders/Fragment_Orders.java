@@ -73,4 +73,18 @@ public class Fragment_Orders extends Fragment{
         Fragment_Previous_Orders fragment_previous_orders = (Fragment_Previous_Orders) adapter.getItem(2);
         fragment_previous_orders.getOrders();
     }
+
+    public void NavigateToFragmentNew()
+    {
+        pager.setCurrentItem(0);
+    }
+    public void NavigateToFragmentCurrent()
+    {
+        pager.setCurrentItem(1);
+    }
+
+    public void NavigateToFragmentPrevious()
+    {
+        pager.setCurrentItem(2);
+    }
 }

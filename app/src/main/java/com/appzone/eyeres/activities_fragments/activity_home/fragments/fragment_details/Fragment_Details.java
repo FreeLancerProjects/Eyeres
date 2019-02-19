@@ -116,10 +116,12 @@ public class Fragment_Details extends Fragment{
         tab_slider.setupWithViewPager(pager_slider);
 
         ///////////////////////spinners/////////////////////
+        List<String> degreeList = getDegreeList();
+        ArrayAdapter arrayAdapter = new ArrayAdapter<>(activity,R.layout.spinner_row,degreeList);
 
-        spinner_2_left.setAdapter(new ArrayAdapter<>(activity,R.layout.spinner_row,getDegreeList()));
-        spinner_2_right.setAdapter(new ArrayAdapter<>(activity,R.layout.spinner_row,getDegreeList()));
-        spinner_1_left_right.setAdapter(new ArrayAdapter<>(activity,R.layout.spinner_row,getDegreeList()));
+        spinner_2_left.setAdapter(arrayAdapter);
+        spinner_2_right.setAdapter(arrayAdapter);
+        spinner_1_left_right.setAdapter(arrayAdapter);
 
         spinner_2_left.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
+        android:layout_above="@id/fl"
 
 
         >
@@ -42,14 +43,22 @@
     </FrameLayout>
 
 
-    <ProgressBar
-        android:id="@+id/progBarLoadMore"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+
+    <FrameLayout
+        android:id="@+id/fl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:visibility="gone"
-        />
+        >
+        <ProgressBar
+            android:id="@+id/progBarLoadMore"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            />
+    </FrameLayout>
 
 </RelativeLayout>

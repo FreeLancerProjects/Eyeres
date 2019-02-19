@@ -1,12 +1,21 @@
 package com.appzone.eyeres.activities_fragments.activity_home.activity;
 
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,8 +30,8 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details.Fragment_Details;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Favourite;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Home;
-import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Profile;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Offers;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Profile;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_orders.Fragment_Orders;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Color;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Store;
@@ -30,6 +39,7 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Transparent;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_search.Fragment_Search;
 import com.appzone.eyeres.activities_fragments.activity_sign_in.activity.SignInActivity;
+import com.appzone.eyeres.models.OrderStatusModel;
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.models.UserModel;
 import com.appzone.eyeres.preferences.Preferences;
@@ -37,6 +47,10 @@ import com.appzone.eyeres.remote.Api;
 import com.appzone.eyeres.share.Common;
 import com.appzone.eyeres.singletone.UserSingleTone;
 import com.appzone.eyeres.tags.Tags;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.List;
@@ -84,8 +98,11 @@ public class HomeActivity extends AppCompatActivity {
 
         initView();
         DisplayFragmentHome();
+        getDataFromIntent();
 
     }
+
+
 
     private void initView()
     {
@@ -122,6 +139,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DisplayFragmentCart();
+
             }
         });
 
@@ -132,9 +150,78 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        if (userModel!=null)
+        {
+            if (!EventBus.getDefault().isRegistered(this))
+            {
+                EventBus.getDefault().register(this);
+            }
+        }
 
     }
+    private void getDataFromIntent()
+    {
 
+        Intent intent = getIntent();
+        if (intent!=null)
+        {
+            if (intent.hasExtra("status"))
+            {
+                int status = intent.getIntExtra("status",0);
+
+                if (status == Tags.accepted_order)
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    DisplayFragmentOrders();
+                                    fragment_orders.NavigateToFragmentCurrent();
+                                }
+                            },1);
+                }else if (status == Tags.refused_order)
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    DisplayFragmentOrders();
+                                    fragment_orders.NavigateToFragmentNew();
+
+                                }
+                            },1);
+                }else if (status == Tags.finished_order)
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    DisplayFragmentOrders();
+                                    fragment_orders.NavigateToFragmentPrevious();
+                                }
+                            },1);
+                }
+            }
+
+            if (intent.hasExtra("signup"))
+            {
+                new Handler()
+                        .postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                            CreateWelcomeNotification();
+
+                            }
+                        },3000);
+            }
+
+        }
+
+    }
+    
     public void updateUserData(UserModel userModel)
     {
         this.userModel = userModel;
@@ -150,6 +237,80 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private void CreateWelcomeNotification()
+    {
+        String sound_path = "android.resource://"+getPackageName()+"/"+R.raw.not;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            String CHANNEL_ID = "my_channel_01";
+            CharSequence CHANNEL_NAME = "channel_name";
+            int IMPORTANCE = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,CHANNEL_NAME,IMPORTANCE);
+            channel.setShowBadge(true);
+            channel.setSound(Uri.parse(sound_path),new AudioAttributes.Builder()
+                    .setLegacyStreamType(AudioManager.STREAM_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
+                    .build()
+            );
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+            builder.setChannelId(CHANNEL_ID);
+            builder.setSound(Uri.parse(sound_path));
+            builder.setContentTitle(getString(R.string.welcome));
+            builder.setContentText(getString(R.string.welcome_thank));
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+            builder.setLargeIcon(bitmap);
+
+
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            if (manager!=null)
+            {
+                manager.createNotificationChannel(channel);
+                manager.notify(1,builder.build());
+
+            }
+
+
+        }else
+
+        {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+            builder.setSound(Uri.parse(sound_path));
+            builder.setContentTitle(getString(R.string.welcome));
+            builder.setContentText(getString(R.string.welcome_thank));
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+            builder.setLargeIcon(bitmap);
+
+
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            if (manager!=null)
+            {
+                manager.notify(1,builder.build());
+
+            }
+        }
+    }
+    /////////////////////////////////////////////////////
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void ListenToNotification(OrderStatusModel orderStatusModel)
+    {
+        int status = orderStatusModel.getStatus();
+        new Handler()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (fragment_orders!=null && fragment_orders.isAdded())
+                        {
+                            fragment_orders.RefreshFragments();
+                        }
+                    }
+                },1);
+    }
     /////////////////////////////////////////////////////
     public void DisplayFragmentHome()
     {
@@ -505,7 +666,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    /////////////logout empty/////////
     public void Logout()
     {
         final Dialog dialog = Common.createProgressDialog(this,getString(R.string.logging_out));
@@ -517,6 +677,17 @@ public class HomeActivity extends AppCompatActivity {
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful())
                         {
+                            new Handler()
+                                    .postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                            if (manager!=null)
+                                            {
+                                                manager.cancelAll();
+                                            }
+                                        }
+                                    },1);
                             userModel = null;
                             userSingleTone.clear(HomeActivity.this);
                             dialog.dismiss();
@@ -594,8 +765,15 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Back();
-
     }
 
-
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this))
+        {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 }

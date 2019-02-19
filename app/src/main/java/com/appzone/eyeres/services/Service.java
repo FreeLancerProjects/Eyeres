@@ -1,5 +1,6 @@
 package com.appzone.eyeres.services;
 
+import com.appzone.eyeres.models.AdsModel;
 import com.appzone.eyeres.models.FavoriteIdModel;
 import com.appzone.eyeres.models.PackageSizeModel;
 import com.appzone.eyeres.models.ProductDataModel;
@@ -89,5 +90,11 @@ public interface Service {
                                @Field("email") String email
     );
 
+    @GET("/api/search-products")
+    Call<ProductDataModel> search(@Query("q") String query,
+                                  @Query("page") int page_index);
+
+    @GET("/api/ads")
+    Call<AdsModel> getAds();
 
 }

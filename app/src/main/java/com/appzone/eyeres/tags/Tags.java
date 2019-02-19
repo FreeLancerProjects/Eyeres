@@ -9,4 +9,8 @@ public class Tags {
     public static final int type_add_recent = 1;
     public static final int type_most_sell = 2;
 
+    public static final int accepted_order = 1;
+    public static final int refused_order = 2;
+    public static final int finished_order = 3;
+
 }

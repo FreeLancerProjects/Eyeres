@@ -1,55 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray1"
-    >
+    android:orientation="vertical">
 
-    <FrameLayout
-
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-
-
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        android:scrollbars="none"
         >
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
-
-        <ProgressBar
-            android:id="@+id/progBar"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center" />
-
-        <TextView
-            android:id="@+id/tv_no_product"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:gravity="center"
-            android:text="@string/there_are_no_products_to_display"
-            android:visibility="gone"
-            />
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:id="@+id/ll_slider_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                >
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/pager_slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        >
 
-    </FrameLayout>
+                    </android.support.v4.view.ViewPager>
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tab_slider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_horizontal|bottom"
+                        app:tabGravity="fill"
+                        app:tabMode="scrollable"
+                        app:tabMaxWidth="20dp"
+                        app:tabMinWidth="20dp"
+                        app:tabIndicatorHeight="0dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="8dp"
+                        app:tabBackground="@drawable/tab_indicator"
 
 
-    <ProgressBar
-        android:id="@+id/progBarLoadMore"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:visibility="gone"
-        />
+                        >
 
-</RelativeLayout>
+                    </android.support.design.widget.TabLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <FrameLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_above="@id/fl"
+
+                    >
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                    <ProgressBar
+                        android:id="@+id/progBar"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/tv_no_product"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        android:gravity="center"
+                        android:text="@string/there_are_no_products_to_display"
+                        android:visibility="gone"
+                        />
+
+                </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/fl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    >
+                    <ProgressBar
+                        android:id="@+id/progBarLoadMore"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        />
+                </FrameLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+
+</LinearLayout>

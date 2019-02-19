@@ -116,15 +116,21 @@ public class SignInActivity extends AppCompatActivity {
         }
 
     }
-    public void NavigateToHomeActivity(boolean isSkip)
+    public void NavigateToHomeActivity(boolean isSkip,boolean isSignUp)
     {
         Intent intent = new Intent(this, HomeActivity.class);
+        if (isSignUp)
+        {
+            intent.putExtra("signup",1);
+        }
         startActivity(intent);
+
         if (!isSkip)
         {
             finish();
 
         }
+
 
     }
 
@@ -157,7 +163,7 @@ public class SignInActivity extends AppCompatActivity {
 
                                 userSingleTone.setUserModel(userModel);
                                 preferences.create_update_userData(SignInActivity.this,userModel);
-                                NavigateToHomeActivity(false);
+                                NavigateToHomeActivity(false,false);
                             }
 
 
@@ -226,7 +232,7 @@ public class SignInActivity extends AppCompatActivity {
                                     userSingleTone.setUserModel(userModel);
                                     preferences.create_update_userData(SignInActivity.this,userModel);
 
-                                    NavigateToHomeActivity(false);
+                                    NavigateToHomeActivity(false,true);
 
 
 

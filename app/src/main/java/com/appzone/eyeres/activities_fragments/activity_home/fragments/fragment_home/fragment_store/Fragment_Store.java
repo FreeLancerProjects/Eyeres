@@ -17,10 +17,8 @@ import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 
 public class Fragment_Store extends Fragment{
-    private LinearLayout ll_slider_container,ll_transparent,ll_color,ll_accessories;
+    private LinearLayout ll_transparent,ll_color,ll_accessories;
     private TextView tv_transparent,tv_colored,tv_accessories;
-    private ViewPager pager_slider;
-    private TabLayout tab_slider;
     private HomeActivity activity;
 
     @Nullable
@@ -38,10 +36,6 @@ public class Fragment_Store extends Fragment{
     private void initView(View view) {
 
         activity = (HomeActivity) getActivity();
-        ll_slider_container = view.findViewById(R.id.ll_slider_container);
-
-        pager_slider = view.findViewById(R.id.pager_slider);
-        tab_slider = view.findViewById(R.id.tab_slider);
 
         ll_transparent = view.findViewById(R.id.ll_transparent);
         ll_color = view.findViewById(R.id.ll_color);

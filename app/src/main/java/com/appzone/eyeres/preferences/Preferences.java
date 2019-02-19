@@ -2,10 +2,15 @@ package com.appzone.eyeres.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.appzone.eyeres.models.UserModel;
 import com.appzone.eyeres.tags.Tags;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Preferences {
 
@@ -60,6 +65,60 @@ public class Preferences {
         return session;
     }
 
+    public List<String> getAllSearchQueries(Context context)
+    {
+        List<String> queriesList = new ArrayList<>();
+        SharedPreferences preferences = context.getSharedPreferences("query",Context.MODE_PRIVATE);
+
+        String gson_query = preferences.getString("query_gson","");
+        if (!TextUtils.isEmpty(gson_query))
+        {
+            queriesList = new Gson().fromJson(gson_query, new TypeToken<List<String>>(){}.getType());
+        }
+
+        return queriesList;
+    }
+
+    public void SaveQuery(Context context , String query)
+    {
+        List<String> queriesList = new ArrayList<>();
+        SharedPreferences preferences = context.getSharedPreferences("query",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        String gson_query = preferences.getString("query_gson","");
+
+        if (TextUtils.isEmpty(gson_query))
+        {
+            queriesList.add(query);
+            String queryList_Gson = new Gson().toJson(queriesList);
+            editor.putString("query_gson",queryList_Gson);
+            editor.apply();
+        }else
+            {
+                queriesList = new Gson().fromJson(gson_query,new TypeToken<List<String>>(){}.getType());
+                if (queriesList.size()<10)
+                {
+                    if (!queriesList.contains(query))
+                    {
+                        queriesList.add(0,query);
+                        String queryList_Gson = new Gson().toJson(queriesList);
+                        editor.putString("query_gson",queryList_Gson);
+                        editor.apply();
+                    }
+
+                }else
+                    {
+                        if (!queriesList.contains(query))
+                        {
+                            queriesList.set(0,query);
+                            String queryList_Gson = new Gson().toJson(queriesList);
+                            editor.putString("query_gson",queryList_Gson);
+                            editor.apply();
+                        }
+                    }
+            }
+
+    }
+
     public void Clear(Context context)
     {
         SharedPreferences preferences1 = context.getSharedPreferences("user",Context.MODE_PRIVATE);
@@ -70,5 +129,9 @@ public class Preferences {
         SharedPreferences.Editor editor2 = preferences2.edit();
         editor2.clear();
         editor2.apply();
+        SharedPreferences preferences3 = context.getSharedPreferences("query",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor3 = preferences3.edit();
+        editor3.clear();
+        editor3.apply();
     }
 }
