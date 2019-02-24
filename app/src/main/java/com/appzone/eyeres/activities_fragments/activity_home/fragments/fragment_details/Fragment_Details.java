@@ -58,6 +58,7 @@ public class Fragment_Details extends Fragment{
     private HomeActivity activity;
     private Timer timer;
     private TimerTask timerTask;
+    private LinearLayout ll_container;
 
     @Nullable
     @Override
@@ -89,6 +90,8 @@ public class Fragment_Details extends Fragment{
                 arrow.setImageResource(R.drawable.white_left_arrow);
 
             }
+        ll_container = view.findViewById(R.id.ll_container);
+
         ll_back = view.findViewById(R.id.ll_back);
         ll_slider_container = view.findViewById(R.id.ll_slider_container);
         ll_eye_left_right = view.findViewById(R.id.ll_eye_left_right);
@@ -280,17 +283,47 @@ public class Fragment_Details extends Fragment{
 
             }
 
+        if (productModel.getFeatured() == 0)
+        {
             if (current_lang.equals("ar"))
             {
                 tv_name.setText(productModel.getName_ar());
-                tv_details.setText(productModel.getDescription_ar()+"\n"+productModel.getBrand().getName_ar());
+
+
+
+                tv_details.setText(productModel.getDescription_ar()+"\n"+productModel.getBrand().getName_ar()+" "+productModel.getPrice()+" "+getString(R.string.rsa));
             }else
+            {
+                tv_name.setText(productModel.getName_en());
+                tv_details.setText(productModel.getDescription_en()+"\n"+productModel.getBrand().getName_en()+" "+productModel.getPrice()+" "+getString(R.string.rsa));
+
+            }
+
+        }else
+            {
+                if (current_lang.equals("ar"))
+                {
+                    tv_name.setText(productModel.getName_ar());
+
+
+
+                    tv_details.setText(productModel.getDescription_ar()+"\n"+productModel.getBrand().getName_ar()+" "+productModel.getPrice_after_discount()+" "+getString(R.string.rsa));
+                }else
                 {
                     tv_name.setText(productModel.getName_en());
-                    tv_details.setText(productModel.getDescription_en()+"\n"+productModel.getBrand().getName_en());
+                    tv_details.setText(productModel.getDescription_en()+"\n"+productModel.getBrand().getName_en()+" "+productModel.getPrice_after_discount()+" "+getString(R.string.rsa));
 
                 }
+            }
 
+            if (productModel.getHas_sizes() == 1)
+            {
+                ll_container.setVisibility(View.VISIBLE);
+            }else
+                {
+                    ll_container.setVisibility(View.GONE);
+
+                }
 
 
     }
@@ -333,19 +366,20 @@ public class Fragment_Details extends Fragment{
                     }
                 });
     }
-    private void UpdatePackageAdapter(List<String> sizesList)
+    private void UpdatePackageAdapter(List<Integer> sizesList)
     {
+        Log.e("sssss","ssssssssssssssssssss");
         this.sizesList.clear();
         this.sizesList.add(getString(R.string.choose2));
 
-        for (String size : sizesList)
+        for (int size : sizesList)
         {
             String s = getString(R.string.package_of)+" "+size+" "+getString(R.string.lenses);
             this.sizesList.add(s);
         }
 
 
-        spinner_package_size.setAdapter(new ArrayAdapter<>(activity,R.layout.spinner_row,sizesList));
+        spinner_package_size.setAdapter(new ArrayAdapter<>(activity,R.layout.spinner_row,this.sizesList));
 
     }
     private void increase_2_left_eye_counter()

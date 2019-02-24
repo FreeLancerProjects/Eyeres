@@ -4,19 +4,40 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
+import com.appzone.eyeres.adapters.CartAdapter;
+import com.appzone.eyeres.models.ItemCartModel;
+import com.appzone.eyeres.singletone.OrderCartSingleTone;
+
+import java.util.List;
+import java.util.Locale;
 
 public class Fragment_Cart extends Fragment{
+    private TextView tv_cost;
+    private LinearLayout ll_empty_cart,ll_cost_container;
+    private CardView card_continue,card_back;
+    private ImageView arrow1,arrow2;
     private RecyclerView recView;
     private RecyclerView.LayoutManager manager;
+    private CartAdapter adapter;
     private HomeActivity activity;
+    private String current_language;
+    private OrderCartSingleTone orderCartSingleTone;
+    private List<ItemCartModel> itemCartModelList;
+    private double total_cost=0.0;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,8 +51,34 @@ public class Fragment_Cart extends Fragment{
     {
         return new Fragment_Cart();
     }
-    private void initView(View view) {
+    private void initView(View view)
+    {
         activity = (HomeActivity) getActivity();
+        orderCartSingleTone = OrderCartSingleTone.newInstance();
+        current_language  = Locale.getDefault().getLanguage();
+        arrow1 = view.findViewById(R.id.arrow1);
+        arrow2 = view.findViewById(R.id.arrow2);
+
+        if (current_language.equals("ar"))
+        {
+            arrow1.setBackgroundResource(R.drawable.white_right_arrow);
+            arrow2.setBackgroundResource(R.drawable.white_left_arrow);
+
+        }else
+        {
+            arrow1.setBackgroundResource(R.drawable.white_left_arrow);
+            arrow2.setBackgroundResource(R.drawable.white_right_arrow);
+
+        }
+        ll_empty_cart = view.findViewById(R.id.ll_empty_cart);
+        ll_cost_container = view.findViewById(R.id.ll_cost_container);
+
+        card_continue = view.findViewById(R.id.card_continue);
+        card_back = view.findViewById(R.id.card_back);
+
+
+        tv_cost = view.findViewById(R.id.tv_cost);
+
         recView = view.findViewById(R.id.recView);
         manager = new LinearLayoutManager(getActivity());
         recView.setLayoutManager(manager);
@@ -39,5 +86,87 @@ public class Fragment_Cart extends Fragment{
         recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         recView.setDrawingCacheEnabled(true);
         recView.setItemViewCacheSize(25);
+
+        card_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.Back();
+            }
+        });
+        card_continue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.SaveItemsData(itemCartModelList,total_cost);
+                activity.DisplayFragmentClientData();
+            }
+        });
+
+        updateUI();
+
+    }
+    private void updateUI()
+    {
+        itemCartModelList = orderCartSingleTone.getItemCartModelList();
+
+        if (itemCartModelList.size()>0)
+        {
+            ll_empty_cart.setVisibility(View.GONE);
+            ll_cost_container.setVisibility(View.VISIBLE);
+            adapter = new CartAdapter(itemCartModelList,activity,this);
+            recView.setAdapter(adapter);
+
+        }else
+            {
+                ll_empty_cart.setVisibility(View.VISIBLE);
+                ll_cost_container.setVisibility(View.GONE);
+            }
+
+            UpdateCost(getOrderItemsCost(itemCartModelList));
+
+    }
+    private void UpdateCost(double cost)
+    {
+        this.total_cost = cost;
+        tv_cost.setText(getString(R.string.products_cost)+" "+cost+" "+getString(R.string.rsa));
+    }
+    private double getOrderItemsCost(List<ItemCartModel> itemCartModelList)
+    {
+        double cost = 0.0;
+        for (ItemCartModel itemCartModel : itemCartModelList)
+        {
+            cost += itemCartModel.getProduct_cost();
+        }
+
+        return cost;
+    }
+
+    public void Delete(int pos)
+    {
+        itemCartModelList.remove(pos);
+        orderCartSingleTone.Delete_Item(pos);
+        if (itemCartModelList.size()==0)
+        {
+            ll_empty_cart.setVisibility(View.VISIBLE);
+            ll_cost_container.setVisibility(View.GONE);
+        }
+        activity.UpdateCartCounter(itemCartModelList.size());
+
+    }
+
+    public void UpdateList_Increase_Decrease(int pos,ItemCartModel itemCartModel)
+    {
+
+        itemCartModelList.set(pos,itemCartModel);
+        orderCartSingleTone.Update_Item(pos,itemCartModel);
+        UpdateCost(getOrderItemsCost(itemCartModelList));
+    }
+
+    public void clearCart()
+    {
+        itemCartModelList.clear();
+        orderCartSingleTone.clear();
+        ll_empty_cart.setVisibility(View.VISIBLE);
+        ll_cost_container.setVisibility(View.GONE);
+
     }
 }

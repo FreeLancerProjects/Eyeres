@@ -5,9 +5,9 @@ import java.util.List;
 
 public class PackageSizeModel implements Serializable{
 
-    private List<String> sizes;
+    private List<Integer> sizes;
 
-    public List<String> getSizes() {
+    public List<Integer> getSizes() {
         return sizes;
     }
 }

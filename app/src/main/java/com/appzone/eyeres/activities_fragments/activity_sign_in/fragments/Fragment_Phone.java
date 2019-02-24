@@ -31,6 +31,7 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener{
     private FloatingActionButton fab;
     private SignInActivity activity;
     private CountryPicker picker;
+    private String code="";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,7 +88,8 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener{
         {
             edt_phone.setError(null);
             Common.CloseKeyBoard(activity,edt_phone);
-            activity.signIn(phone);
+            String m_phone = code+phone;
+            activity.signIn(m_phone);
         }else
             {
                 if (TextUtils.isEmpty(phone))
@@ -107,6 +109,7 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener{
                 .listener(this);
         picker = builder.build();
         updateUi(picker.getCountryFromSIM());
+
     }
 
 
@@ -118,5 +121,6 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener{
     private void updateUi(Country country) {
         tv_country.setText(country.getName());
         tv_code.setText(country.getDialCode());
+        code = country.getDialCode();
     }
 }

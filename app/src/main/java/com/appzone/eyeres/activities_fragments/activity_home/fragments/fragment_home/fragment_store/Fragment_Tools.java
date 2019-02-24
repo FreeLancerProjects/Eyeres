@@ -156,7 +156,9 @@ public class Fragment_Tools extends Fragment{
                 if (dy>0)
                 {
                     int lastVisibleItemPos = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                    if (lastVisibleItemPos ==(recyclerView.getLayoutManager().getChildCount()-10)&& !isLoading){
+                    if (lastVisibleItemPos >=(recyclerView.getLayoutManager().getItemCount()-19)&& !isLoading){
+                        progBarLoadMore.setVisibility(View.VISIBLE);
+
                         isLoading = true;
                         int nextPageIndex = current_page+1;
                         LoadMore(nextPageIndex,orderBy);
@@ -170,13 +172,15 @@ public class Fragment_Tools extends Fragment{
     public void getProducts()
     {
         Api.getService()
-                .getProducts(1, 1, orderBy,user_token)
+                .getProducts(3, 1, orderBy,user_token)
                 .enqueue(new Callback<ProductDataModel>() {
                     @Override
                     public void onResponse(Call<ProductDataModel> call, Response<ProductDataModel> response) {
                         if (response.isSuccessful()) {
                             progBar.setVisibility(View.GONE);
                             if (response.body() != null) {
+
+                                Log.e("size2",response.body().getData().size()+"_");
 
                                 productModelList.clear();
 
@@ -227,7 +231,7 @@ public class Fragment_Tools extends Fragment{
     private void LoadMore(int page_index, int orderBy)
     {
         Api.getService()
-                .getProducts(1, page_index, orderBy,user_token)
+                .getProducts(3, page_index, orderBy,user_token)
                 .enqueue(new Callback<ProductDataModel>() {
                     @Override
                     public void onResponse(Call<ProductDataModel> call, Response<ProductDataModel> response) {

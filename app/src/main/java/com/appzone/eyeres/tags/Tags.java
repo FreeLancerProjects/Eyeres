@@ -10,7 +10,11 @@ public class Tags {
     public static final int type_most_sell = 2;
 
     public static final int accepted_order = 1;
-    public static final int refused_order = 2;
-    public static final int finished_order = 3;
+    public static final int finished_order = 2;
+    public static final int refused_order = 3;
+
+    public static final String NEW_ORDER ="new";
+    public static final String CURRENT_ORDER ="current";
+    public static final String OLD_ORDER ="old";
 
 }

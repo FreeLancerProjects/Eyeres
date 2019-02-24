@@ -86,15 +86,17 @@ public class Fragment_Profile extends Fragment{
 
         if (current_language.equals("ar"))
         {
-            arrow1.setImageResource(R.drawable.black_right_arrow);
-            arrow2.setImageResource(R.drawable.black_right_arrow);
-            arrow3.setImageResource(R.drawable.black_right_arrow);
+            arrow1.setImageResource(R.drawable.black_left_arrow);
+            arrow2.setImageResource(R.drawable.black_left_arrow);
+            arrow3.setImageResource(R.drawable.black_left_arrow);
+
+
 
         }else
             {
-                arrow1.setImageResource(R.drawable.black_left_arrow);
-                arrow2.setImageResource(R.drawable.black_left_arrow);
-                arrow3.setImageResource(R.drawable.black_left_arrow);
+                arrow1.setImageResource(R.drawable.black_right_arrow);
+                arrow2.setImageResource(R.drawable.black_right_arrow);
+                arrow3.setImageResource(R.drawable.black_right_arrow);
             }
 
         activity = (HomeActivity) getActivity();
@@ -153,9 +155,13 @@ public class Fragment_Profile extends Fragment{
     private void updateUI(UserModel userModel)
     {
 
-        Picasso.with(activity).load(Tags.IMAGE_URL+userModel.getAvatar()).fit().into(image);
-        tv_name.setText(userModel.getName());
-        tv_email.setText(userModel.getEmail());
+        if (userModel!=null)
+        {
+            Picasso.with(activity).load(Tags.IMAGE_URL+userModel.getAvatar()).fit().into(image);
+            tv_name.setText(userModel.getName());
+            tv_email.setText(userModel.getEmail());
+        }
+
     }
     private void Check_ReadPermission(int img_req)
     {
@@ -277,6 +283,7 @@ public class Fragment_Profile extends Fragment{
                 String name = edt_name.getText().toString().trim();
                 if (!TextUtils.isEmpty(name))
                 {
+                    alertDialog.dismiss();
                     edt_name.setError(null);
                     Common.CloseKeyBoard(activity,edt_name);
                     updateName(name);
@@ -316,6 +323,7 @@ public class Fragment_Profile extends Fragment{
                 String email = edt_email.getText().toString().trim();
                 if (!TextUtils.isEmpty(email)&& Patterns.EMAIL_ADDRESS.matcher(email).matches())
                 {
+                    alertDialog.dismiss();
                     edt_email.setError(null);
                     Common.CloseKeyBoard(activity,edt_email);
                     updateEmail(email);

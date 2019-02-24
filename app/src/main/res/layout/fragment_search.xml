@@ -5,88 +5,46 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white">
+
+    >
 
     <LinearLayout
+        android:id="@+id/ll_search"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        android:weightSum="1"
         android:orientation="horizontal"
-        android:weightSum="3"
-        android:background="@color/colorPrimary"
 
         >
-        <FrameLayout
+        <ImageView
+            android:id="@+id/arrow"
             android:layout_width="0dp"
-            android:layout_weight=".6"
-            android:layout_height="match_parent"
-            >
-            <LinearLayout
-                android:id="@+id/ll_back"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:weightSum="1"
-                >
-                <ImageView
-                    android:id="@+id/arrow"
-                    android:layout_width="25dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/white_left_arrow"
-                    android:padding="5dp"
-                    android:layout_gravity="center_vertical"
-                    android:clickable="false"
-                    android:longClickable="false"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/white"
-                    android:text="@string/back"
-                    android:clickable="false"
-                    android:longClickable="false"
-                    />
-
-            </LinearLayout>
-
-        </FrameLayout>
-
-        <LinearLayout
+            android:layout_weight=".15"
+            android:layout_height="50dp"
+            android:padding="15dp"
+            android:src="@drawable/search_left_arrow"
+            />
+        <EditText
+            android:id="@+id/edt_search"
             android:layout_width="0dp"
-            android:layout_weight="1.8"
-            android:layout_height="35dp"
-            android:orientation="horizontal"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/ll_search_bg"
-            android:layoutDirection="ltr"
-            tools:ignore="UnusedAttribute">
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/white_search"
-                android:padding="11dp"
-                />
-            <EditText
-                android:id="@+id/edt_search"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/transparent"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textColorHint="@color/gray"
-                android:hint="@string/search"
-                android:gravity="center_vertical"
-                />
-        </LinearLayout>
+            android:layout_weight=".65"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColorHint="@color/gray"
+            android:hint="@string/search"
+            android:singleLine="true"
+            />
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".6"
+            android:layout_weight=".2"
             >
             <Button
                 android:id="@+id/btn_search"
@@ -94,103 +52,117 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:background="@color/transparent"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 android:text="@string/search2"
                 android:textAllCaps="false"
                 android:visibility="gone"
                 />
         </FrameLayout>
+
     </LinearLayout>
-    <net.cachapa.expandablelayout.ExpandableLayout
-        android:id="@+id/expand_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:el_expanded="false"
-        app:el_duration="1000"
-        app:el_parallax=".5"
-        android:background="@color/white"
-        android:layout_marginBottom="8dp"
 
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:orientation="vertical"
-
-            >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textColor="@color/black"
-                android:textSize="17sp"
-                android:text="@string/recently_search"
-                />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recViewSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-            </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
-    </net.cachapa.expandablelayout.ExpandableLayout>
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/ll_search_data_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/gray1"
+        android:visibility="gone"
+
         >
-        <FrameLayout
+        <net.cachapa.expandablelayout.ExpandableLayout
+            android:id="@+id/expand_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_above="@id/fl"
+            app:el_expanded="false"
+            app:el_duration="1000"
+            app:el_parallax=".5"
+            android:background="@color/white"
+            android:layout_marginBottom="8dp"
+
             >
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="250dp"
+                android:orientation="vertical"
 
                 >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:text="@string/recently_search"
+                    />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recViewSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
 
-            </android.support.v7.widget.RecyclerView>
-
-            <ProgressBar
-                android:id="@+id/progBar"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                />
-
-            <TextView
-                android:id="@+id/tv_no_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:textSize="17sp"
-                android:gravity="center"
-                android:text="@string/no_search_result"
-                />
-        </FrameLayout>
-        <FrameLayout
-            android:id="@+id/fl"
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </net.cachapa.expandablelayout.ExpandableLayout>
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            >
-            <ProgressBar
-                android:id="@+id/progBarLoadMore"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                />
-        </FrameLayout>
+            android:layout_height="match_parent"
 
-    </RelativeLayout>
+            >
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_above="@id/fl"
+                >
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    >
+
+                </android.support.v7.widget.RecyclerView>
+
+                <ProgressBar
+                    android:id="@+id/progBar"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_no_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:gravity="center"
+                    android:text="@string/no_search_result"
+                    />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/fl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                >
+                <ProgressBar
+                    android:id="@+id/progBarLoadMore"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+            </FrameLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
 
 </LinearLayout>

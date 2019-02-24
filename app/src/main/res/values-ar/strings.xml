@@ -102,5 +102,35 @@
     <string name="finished">تم انهاء الطلب</string>
     <string name="welcome">مرحبا</string>
     <string name="welcome_thank">اهلا بك في آيرس شكرا لانظمامك معنا</string>
+    <string name="order_number">رقم الطلب</string>
+    <string name="total">مجموع الطلب</string>
+    <string name="order_status">حالة الطلب</string>
+    <string name="completed">إكتمل</string>
+    <string name="show_order">عرض الطلب</string>
+    <string name="not_accepted">لم يتم قبولة</string>
+    <string name="ongoing">الطلب جاري</string>
+    <string name="no_orders_to_display">لا توجد طلبات لعرضها</string>
+    <string name="not_approved">لم يتم الموافقة على طلبك</string>
+    <string name="order_accepted">تم قبول طلبك</string>
+    <string name="order_ongoing">طلبك جاري</string>
+    <string name="collecting_order">جار تجميع طلبك</string>
+    <string name="order_completed">تم الانتهاء من طلبك</string>
+    <string name="we_are_pleased_to_serve_you">نحن سعداء لخدمتك</string>
+    <string name="cancel_order">إلغاء الطلب</string>
+    <string name="order_products">منتجات طلبك</string>
+    <string name="order_cost">تكلفة الطلب</string>
+    <string name="amount">الكمية</string>
+    <string name="empty_cart">السلة فارغة</string>
+    <string name="products_cost">اجمالي سعر المنتجات</string>
+    <string name="the_cart">السلة</string>
+    <string name="continue2">متابعة</string>
+    <string name="address">العنوان</string>
+    <string name="notes">ملحوظة (إختياري)</string>
+    <string name="confirm">تأكيد</string>
+    <string name="the_cart_contains">السلة تحتوي على</string>
+    <string name="item">عنصر</string>
+    <string name="delete_item">حذف العنصر ؟</string>
+    <string name="items">عناصر</string>
+    <string name="delete_items">حذف العناصر ؟</string>
 
 </resources>

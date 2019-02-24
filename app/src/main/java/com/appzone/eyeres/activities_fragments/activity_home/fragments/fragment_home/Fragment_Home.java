@@ -8,16 +8,28 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
+import java.util.Locale;
+
 public class Fragment_Home extends Fragment{
 
     private AHBottomNavigation ah_bottom;
     private HomeActivity activity;
+    private ImageView image_search, image_back_photo;
+    private TextView tv_cart_counter;
+    private String current_language;
+    private FrameLayout fl_cart_container;
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,7 +47,45 @@ public class Fragment_Home extends Fragment{
     private void initView(View view)
     {
         activity = (HomeActivity) getActivity();
+
+
+        image_back_photo = view.findViewById(R.id.image_back_photo);
+        current_language = Locale.getDefault().getLanguage();
+
+        if (current_language.equals("ar")) {
+            image_back_photo.setImageResource(R.drawable.white_right_arrow);
+
+        } else {
+            image_back_photo.setImageResource(R.drawable.white_left_arrow);
+
+
+
+        }
+
+
+        fl_cart_container = view.findViewById(R.id.fl_cart_container);
+
+
+
+        image_search = view.findViewById(R.id.image_search);
+        tv_cart_counter = view.findViewById(R.id.tv_cart_counter);
         ah_bottom = view.findViewById(R.id.ah_bottom);
+
+        fl_cart_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               activity.DisplayFragmentCart();
+
+            }
+        });
+
+        image_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               activity.DisplayFragmentSearch();
+            }
+        });
+
         setUpBottomTabUI();
         ah_bottom.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
@@ -65,10 +115,28 @@ public class Fragment_Home extends Fragment{
         });
 
         activity.DisplayFragmentStore();
+        image_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.DisplayFragmentSearch();
+            }
+        });
         UpdateAHBottomNavigationPosition(0);
 
     }
 
+
+    public void updateCartCounter(int counter)
+    {
+        if (counter >0)
+        {
+            tv_cart_counter.setText(String.valueOf(counter));
+            tv_cart_counter.setVisibility(View.VISIBLE);
+        }else
+            {
+                tv_cart_counter.setVisibility(View.GONE);
+            }
+    }
     private void setUpBottomTabUI()
     {
 

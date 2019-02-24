@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
+        android:layout_above="@id/fl"
 
 
         >
@@ -28,14 +29,14 @@
             android:layout_gravity="center" />
 
         <TextView
-            android:id="@+id/tv_no_product"
+            android:id="@+id/tv_no_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="17sp"
             android:gravity="center"
-            android:text="@string/there_are_no_products_to_display"
+            android:text="@string/no_orders_to_display"
             android:visibility="gone"
             />
 
@@ -43,5 +44,21 @@
 
 
 
+    <FrameLayout
+        android:id="@+id/fl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+        <ProgressBar
+            android:id="@+id/progBarLoadMore"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            />
+    </FrameLayout>
 
 </RelativeLayout>

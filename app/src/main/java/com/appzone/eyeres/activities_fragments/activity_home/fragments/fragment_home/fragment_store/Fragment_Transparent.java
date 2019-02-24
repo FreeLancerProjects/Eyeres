@@ -155,7 +155,9 @@ public class Fragment_Transparent extends Fragment {
                 if (dy>0)
                 {
                     int lastVisibleItemPos = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                    if (lastVisibleItemPos ==(recyclerView.getLayoutManager().getChildCount()-10)&& !isLoading){
+                    if (lastVisibleItemPos >= (recyclerView.getLayoutManager().getItemCount()-19)&& !isLoading){
+                        progBarLoadMore.setVisibility(View.VISIBLE);
+
                         isLoading = true;
                         int nextPageIndex = current_page+1;
                         LoadMore(nextPageIndex,orderBy);
@@ -179,6 +181,7 @@ public class Fragment_Transparent extends Fragment {
 
                                 productModelList.clear();
 
+                                Log.e("size",response.body().getData().size()+"_");
                                 if (current_page == 1)
                                 {
                                     if (orderBy == Tags.type_add_recent)
@@ -225,6 +228,7 @@ public class Fragment_Transparent extends Fragment {
     }
     private void LoadMore(int page_index, int orderBy)
     {
+        Log.e("11111111","11111111111");
         Api.getService()
                 .getProducts(1, page_index, orderBy,user_token)
                 .enqueue(new Callback<ProductDataModel>() {
@@ -233,6 +237,7 @@ public class Fragment_Transparent extends Fragment {
                         if (response.isSuccessful()) {
                             if (response.body() != null) {
 
+                                Log.e("siezz",response.body().getData().size()+"__");
                                 progBarLoadMore.setVisibility(View.GONE);
                                 isLoading = false;
                                 current_page = response.body().getMeta().getCurrent_page();

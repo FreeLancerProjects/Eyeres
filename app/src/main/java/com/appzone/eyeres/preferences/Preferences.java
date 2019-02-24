@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.appzone.eyeres.models.ItemCartModel;
 import com.appzone.eyeres.models.UserModel;
 import com.appzone.eyeres.tags.Tags;
 import com.google.gson.Gson;
@@ -133,5 +134,37 @@ public class Preferences {
         SharedPreferences.Editor editor3 = preferences3.edit();
         editor3.clear();
         editor3.apply();
+    }
+
+    public void SaveCartData(List<ItemCartModel> itemCartModelList,Context context)
+    {
+
+        SharedPreferences preferences = context.getSharedPreferences("cart",Context.MODE_PRIVATE);
+        String gson = new Gson().toJson(itemCartModelList);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("cart_list",gson);
+        editor.apply();
+    }
+
+    public List<ItemCartModel> getCartList(Context context)
+    {
+        List<ItemCartModel> itemCartModelList = new ArrayList<>();
+        SharedPreferences preferences = context.getSharedPreferences("cart",Context.MODE_PRIVATE);
+        String gson = preferences.getString("cart_list","");
+        if (!TextUtils.isEmpty(gson))
+        {
+            List<ItemCartModel> itemCartModelList1 = new Gson().fromJson(gson,new TypeToken<List<ItemCartModel>>(){}.getType());
+            itemCartModelList.addAll(itemCartModelList1);
+        }
+
+        return itemCartModelList;
+    }
+
+    public void clear_cart(Context context)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("cart",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
     }
 }

@@ -100,6 +100,36 @@
     <string name="finished">Order finished</string>
     <string name="welcome">Welcome</string>
     <string name="welcome_thank">Welcome to Eyeres thank you for join us</string>
+    <string name="order_number">Order number</string>
+    <string name="total">Total</string>
+    <string name="order_status">Order status</string>
+    <string name="completed">Completed</string>
+    <string name="show_order">Show order</string>
+    <string name="not_accepted">Not accepted</string>
+    <string name="ongoing">Ongoing</string>
+    <string name="no_orders_to_display">No orders to display</string>
+    <string name="not_approved">Not approved</string>
+    <string name="order_accepted">Order accepted</string>
+    <string name="order_ongoing">Order ongoing</string>
+    <string name="collecting_order">Collecting order</string>
+    <string name="order_completed">Order completed</string>
+    <string name="we_are_pleased_to_serve_you">We are pleased to serve you</string>
+    <string name="cancel_order">Cancel order</string>
+    <string name="order_products">Order products</string>
+    <string name="order_cost">Order total</string>
+    <string name="amount">Amount</string>
+    <string name="empty_cart">Empty cart</string>
+    <string name="products_cost">Products cost</string>
+    <string name="the_cart">The Cart</string>
+    <string name="continue2">Continue</string>
+    <string name="address">Address</string>
+    <string name="notes">Notes (optional)</string>
+    <string name="confirm">Confirm</string>
+    <string name="the_cart_contains">The cart contains</string>
+    <string name="item">Item</string>
+    <string name="delete_item">Delete item ?</string>
+    <string name="items">Items</string>
+    <string name="delete_items">Delete items ?</string>
 
 
 </resources>

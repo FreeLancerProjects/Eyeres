@@ -93,8 +93,10 @@ public class Fragment_Favourite extends Fragment{
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy>0)
                 {
+                    progBarLoadMore.setVisibility(View.VISIBLE);
+
                     int lastVisibleItemPos = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                    if (lastVisibleItemPos ==(recyclerView.getLayoutManager().getChildCount()-10)&& !isLoading){
+                    if (lastVisibleItemPos >= (recyclerView.getLayoutManager().getItemCount()-19)&& !isLoading){
                         isLoading = true;
                         int nextPageIndex = current_page+1;
                         loadMore(nextPageIndex);

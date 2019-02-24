@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +32,7 @@ import com.appzone.eyeres.adapters.SearchAdapter;
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.preferences.Preferences;
 import com.appzone.eyeres.remote.Api;
+import com.appzone.eyeres.share.Common;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -43,17 +46,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Fragment_Search extends Fragment{
-    private ImageView arrow;
-    private LinearLayout ll_back;
-    private Button btn_search;
-    private EditText edt_search;
     private ExpandableLayout expand_layout;
     private AutocompleteSearchAdapter searchAdapter;
     private List<String> queriesList;
     private ProgressBar progBar,progBarLoadMore;
-    private TextView tv_no_search;
+    public TextView tv_no_search;
     private RecyclerView recView,recViewSearch;
-    private RecyclerView.LayoutManager manager;
+    private RecyclerView.LayoutManager manager,manager2;
     private SearchAdapter adapter;
     private List<ProductDataModel.ProductModel> productModelList;
     private HomeActivity activity;
@@ -61,6 +60,12 @@ public class Fragment_Search extends Fragment{
     private Preferences preferences;
     private int current_page = 1;
     private boolean isLoading = false;
+    private String query="";
+    private ImageView arrow;
+    private LinearLayout ll_search,ll_search_data_container;
+    private EditText edt_search;
+    private Button btn_search;
+    private Animation animation,animation2;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,20 +85,7 @@ public class Fragment_Search extends Fragment{
         productModelList = new ArrayList<>();
         preferences = Preferences.getInstance();
         current_language = Locale.getDefault().getLanguage();
-        arrow = view.findViewById(R.id.arrow);
-        if (current_language.equals("ar"))
-        {
-            arrow.setImageResource(R.drawable.white_right_arrow);
-        }else
-            {
-                arrow.setImageResource(R.drawable.white_left_arrow);
-
-            }
-
         activity = (HomeActivity) getActivity();
-        ll_back = view.findViewById(R.id.ll_back);
-        btn_search = view.findViewById(R.id.btn_search);
-        edt_search = view.findViewById(R.id.edt_search);
         expand_layout = view.findViewById(R.id.expand_layout);
         tv_no_search = view.findViewById(R.id.tv_no_search);
 
@@ -102,42 +94,31 @@ public class Fragment_Search extends Fragment{
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(getActivity(),R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
         progBarLoadMore.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(getActivity(),R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
         manager = new LinearLayoutManager(getActivity());
+        manager2 = new LinearLayoutManager(getActivity());
         ///////////////////////////////////////////////
-        recViewSearch = view.findViewById(R.id.recViewSearch);
-        recViewSearch.setLayoutManager(manager);
-        searchAdapter = new AutocompleteSearchAdapter(activity,queriesList,this);
-        recViewSearch.setAdapter(searchAdapter);
-        ////////////////////////////////////////////////
-        recView = view.findViewById(R.id.recView);
-        recView.setLayoutManager(manager);
-        recView.setHasFixedSize(true);
-        recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-        recView.setDrawingCacheEnabled(true);
-        recView.setItemViewCacheSize(25);
+        arrow = view.findViewById(R.id.arrow);
 
-        recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy>0)
-                {
-                    int lastVisibleItemPos = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                    if (lastVisibleItemPos ==(recyclerView.getLayoutManager().getChildCount()-10)&& !isLoading){
-                        isLoading = true;
-                        int nextPageIndex = current_page+1;
-                        String query = edt_search.getText().toString().trim();
-                        loadMore(query,nextPageIndex);
-                    }
-                }
-            }
-        });
-        ll_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.Back();
-            }
-        });
+        if (current_language.equals("ar")) {
+            arrow.setImageResource(R.drawable.search_right_arrow);
 
+            animation = AnimationUtils.loadAnimation(activity, R.anim.search_enter_from_left);
+
+        } else {
+            arrow.setImageResource(R.drawable.search_left_arrow);
+
+            animation = AnimationUtils.loadAnimation(activity, R.anim.search_enter_from_right);
+
+
+        }
+        animation2 = AnimationUtils.loadAnimation(activity, R.anim.fragment_fade_in);
+
+        ll_search_data_container = view.findViewById(R.id.ll_search_data_container);
+        ll_search = view.findViewById(R.id.ll_search);
+        edt_search = view.findViewById(R.id.edt_search);
+        btn_search = view.findViewById(R.id.btn_search);
+        ll_search.setVisibility(View.VISIBLE);
+        ll_search.clearAnimation();
+        ll_search.startAnimation(animation);
         edt_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -146,24 +127,15 @@ public class Fragment_Search extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if (edt_search.getText().toString().trim().length()>0)
-                {
+                String query = edt_search.getText().toString().trim();
+                if (TextUtils.isEmpty(query)) {
+                    btn_search.setVisibility(View.GONE);
+                    updateSearch_state2();
+                } else {
                     btn_search.setVisibility(View.VISIBLE);
-                    if (preferences.getAllSearchQueries(activity).size()>0)
-                    {
-                        queriesList.addAll(preferences.getAllSearchQueries(activity));
-                        searchAdapter.notifyDataSetChanged();
-                        expand_layout.expand(true);
-                    }
-                }else
-                    {
-                        btn_search.setVisibility(View.GONE);
-                        productModelList.clear();
-                        adapter.notifyDataSetChanged();
-                        tv_no_search.setVisibility(View.VISIBLE);
+                    updateSearch_state1();
 
-                    }
+                }
             }
 
             @Override
@@ -175,29 +147,108 @@ public class Fragment_Search extends Fragment{
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (expand_layout.isExpanded())
-                {
-                    expand_layout.collapse(true);
-
-                }
-                tv_no_search.setVisibility(View.GONE);
-                String query = edt_search.getText().toString().trim();
+                final String query = edt_search.getText().toString().trim();
+                Common.CloseKeyBoard(activity, edt_search);
                 Search(query);
             }
+
         });
+        arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.Back();
+            }
+        });
+        ///////////////////////////////////////////////
+        recViewSearch = view.findViewById(R.id.recViewSearch);
+        recViewSearch.setLayoutManager(manager2);
+        searchAdapter = new AutocompleteSearchAdapter(activity,queriesList,this);
+        recViewSearch.setAdapter(searchAdapter);
+        ////////////////////////////////////////////////
+        recView = view.findViewById(R.id.recView);
+        recView.setLayoutManager(manager);
+        recView.setHasFixedSize(true);
+        recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        recView.setDrawingCacheEnabled(true);
+        recView.setItemViewCacheSize(25);
+        adapter = new SearchAdapter(productModelList,activity,this);
+        recView.setAdapter(adapter);
+        recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy>0)
+                {
+                    int lastVisibleItemPos = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                    if (lastVisibleItemPos ==(recyclerView.getLayoutManager().getItemCount()-10)&& !isLoading){
+                        isLoading = true;
+                        int nextPageIndex = current_page+1;
+                        loadMore(query,nextPageIndex);
+                    }
+                }
+            }
+        });
+
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ll_search_data_container.setVisibility(View.VISIBLE);
+                ll_search_data_container.clearAnimation();
+                ll_search_data_container.startAnimation(animation2);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
+    }
+
+    public void updateSearch_state1()
+    {
+        if (preferences.getAllSearchQueries(activity).size()>0)
+        {
+            if (!expand_layout.isExpanded())
+            {
+                queriesList.clear();
+                queriesList.addAll(preferences.getAllSearchQueries(activity));
+                searchAdapter.notifyDataSetChanged();
+                expand_layout.setVisibility(View.VISIBLE);
+                expand_layout.expand(true);
+            }
+
+        }
+    }
+    public void updateSearch_state2()
+    {
+        productModelList.clear();
+        adapter.notifyDataSetChanged();
+        tv_no_search.setVisibility(View.VISIBLE);
+        expand_layout.collapse(true);
+
     }
 
     public void setItemDataForSearch(String query)
     {
         edt_search.setText(query);
-        expand_layout.collapse(true);
         btn_search.setVisibility(View.VISIBLE);
-        tv_no_search.setVisibility(View.GONE);
         Search(query);
-    }
 
-    private void Search(String query)
+    }
+    public void Search(String query)
     {
+        Common.CloseKeyBoard(activity,edt_search);
+        expand_layout.setVisibility(View.GONE);
+        tv_no_search.setVisibility(View.GONE);
+
+        this.query = query;
         progBar.setVisibility(View.VISIBLE);
         Api.getService()
                 .search(query,1)
@@ -285,7 +336,6 @@ public class Fragment_Search extends Fragment{
     }
     public void setItemData(ProductDataModel.ProductModel productModel)
     {
-        String query = edt_search.getText().toString().trim();
         if (!TextUtils.isEmpty(query))
         {
             preferences.SaveQuery(activity,query);

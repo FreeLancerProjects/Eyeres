@@ -15,7 +15,7 @@
         app:tabGravity="fill"
         app:tabTextColor="@color/colorPrimary"
         app:tabSelectedTextColor="@color/white"
-        app:tabBackground="@id/tab"
+        app:tabBackground="@drawable/tab_bg"
 
         >
 

@@ -2,6 +2,7 @@ package com.appzone.eyeres.services;
 
 import com.appzone.eyeres.models.AdsModel;
 import com.appzone.eyeres.models.FavoriteIdModel;
+import com.appzone.eyeres.models.OrderDataModel;
 import com.appzone.eyeres.models.PackageSizeModel;
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.models.Terms_ConditionModel;
@@ -97,4 +98,15 @@ public interface Service {
     @GET("/api/ads")
     Call<AdsModel> getAds();
 
+    @FormUrlEncoded
+    @POST("/api/fire-base-token")
+    Call<ResponseBody> updateToken(@Field("token") String user_token,
+                                   @Field("fire_base_token") String fire_base_token);
+
+
+    @GET("/api/order-status")
+    Call<OrderDataModel> getMyOrders(@Query("type") String order_type,
+                                     @Query("token") String user_token,
+                                     @Query("page") int page_index
+                                     );
 }
