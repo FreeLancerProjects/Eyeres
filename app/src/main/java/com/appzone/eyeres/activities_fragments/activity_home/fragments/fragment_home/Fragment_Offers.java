@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,10 +38,7 @@ import retrofit2.Response;
 
 public class Fragment_Offers extends Fragment{
 
-    private LinearLayout ll_slider_container;
-    private ViewPager pager_slider;
-    private TabLayout tab_slider;
-    private AdsSliderAdapter adsSliderAdapter;
+
     private RecyclerView recView;
     private RecyclerView.LayoutManager manager;
     private List<ProductDataModel.ProductModel> productModelList;
@@ -52,8 +48,13 @@ public class Fragment_Offers extends Fragment{
     private TextView tv_no_product;
     private boolean isLoading = false;
     private int current_page = 1;
+    private ViewPager pager_slider;
+    private TabLayout tab_slider;
+    private AdsSliderAdapter adsSliderAdapter;
     private Timer timer;
     private TimerTask timerTask;
+
+
 
     @Nullable
     @Override
@@ -74,10 +75,13 @@ public class Fragment_Offers extends Fragment{
         productModelList = new ArrayList<>();
         activity = (HomeActivity) getActivity();
 
-        ll_slider_container = view.findViewById(R.id.ll_slider_container);
+
         pager_slider = view.findViewById(R.id.pager_slider);
         tab_slider = view.findViewById(R.id.tab_slider);
         tab_slider.setupWithViewPager(pager_slider);
+
+
+
 
         tv_no_product = view.findViewById(R.id.tv_no_product);
         progBarLoadMore = view.findViewById(R.id.progBarLoadMore);
@@ -100,6 +104,7 @@ public class Fragment_Offers extends Fragment{
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy>0)
                 {
+
                     int lastVisibleItemPos = ((LinearLayoutManager)recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
                     if (lastVisibleItemPos >= (recyclerView.getLayoutManager().getItemCount()-19)&& !isLoading){
@@ -112,63 +117,10 @@ public class Fragment_Offers extends Fragment{
                 }
             }
         });
-        getAds();
         getOffers();
+        getAds();
     }
-    private void getAds()
-    {
-        Api.getService()
-                .getAds()
-                .enqueue(new Callback<AdsModel>() {
-                    @Override
-                    public void onResponse(Call<AdsModel> call, Response<AdsModel> response) {
 
-                        if (response.isSuccessful()&& response.body()!=null)
-                        {
-
-                           updateSliderUI(response.body().getData());
-
-                        }else
-                        {
-
-                            try {
-                                Log.e("error_code",response.code()+"_"+response.errorBody().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<AdsModel> call, Throwable t) {
-                        try {
-
-                            Log.e("Error",t.getMessage());
-                        }catch (Exception e){}
-                    }
-                });
-
-    }
-    private void updateSliderUI(List<AdsModel.Ads> data)
-    {
-        if (data.size()>0)
-        {
-            adsSliderAdapter = new AdsSliderAdapter(data,activity);
-            pager_slider.setAdapter(adsSliderAdapter);
-            if (data.size()>1)
-            {
-                timer = new Timer();
-                timerTask = new MyTimerTask();
-                timer.scheduleAtFixedRate(timerTask,6000,6000);
-
-            }
-            ll_slider_container.setVisibility(View.VISIBLE);
-
-        }else
-            {
-                ll_slider_container.setVisibility(View.GONE);
-            }
-    }
     private void getOffers()
     {
 
@@ -258,8 +210,60 @@ public class Fragment_Offers extends Fragment{
                 });
     }
 
+    private void getAds()
+    {
+        Api.getService()
+                .getAds()
+                .enqueue(new Callback<AdsModel>() {
+                    @Override
+                    public void onResponse(Call<AdsModel> call, Response<AdsModel> response) {
+
+                        if (response.isSuccessful()&& response.body()!=null)
+                        {
+
+                            updateSliderUI(response.body().getData());
+
+                        }else
+                        {
+
+                            try {
+                                Log.e("error_code",response.code()+"_"+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AdsModel> call, Throwable t) {
+                        try {
+
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
+
+    }
+    private void updateSliderUI(List<AdsModel.Ads> data)
+    {
+        if (data.size()>0)
+        {
+            adsSliderAdapter = new AdsSliderAdapter(data,activity);
+            pager_slider.setAdapter(adsSliderAdapter);
+            if (data.size()>1)
+            {
+                timer = new Timer();
+                timerTask = new MyTimerTask();
+                timer.scheduleAtFixedRate(timerTask,6000,6000);
+
+            }
+
+        }else
+        {
+        }
+    }
     public void setItemData(ProductDataModel.ProductModel productModel) {
-     activity.DisplayFragmentDetails(productModel);
+     activity.DisplayFragmentLensesDetails(productModel);
     }
 
     private class MyTimerTask extends TimerTask
@@ -273,9 +277,9 @@ public class Fragment_Offers extends Fragment{
                     {
                         pager_slider.setCurrentItem(pager_slider.getCurrentItem()+1);
                     }else
-                        {
-                            pager_slider.setCurrentItem(0);
-                        }
+                    {
+                        pager_slider.setCurrentItem(0);
+                    }
                 }
             });
         }
@@ -293,5 +297,10 @@ public class Fragment_Offers extends Fragment{
             timerTask.cancel();
         }
         super.onDestroyView();
+
+        Log.e("fragment","onDestroyView()");
+
     }
+
+
 }

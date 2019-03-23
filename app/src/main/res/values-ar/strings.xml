@@ -63,7 +63,7 @@
     <string name="color">عدسات ملونة</string>
     <string name="tools">ملحقات</string>
     <string name="store">متجر</string>
-    <string name="orders">طلبات خاصة</string>
+    <string name="orders">طلباتي</string>
     <string name="favourite">مفضلة</string>
     <string name="more">المزيد</string>
     <string name="package_size">حجم العبوة</string>
@@ -132,5 +132,22 @@
     <string name="delete_item">حذف العنصر ؟</string>
     <string name="items">عناصر</string>
     <string name="delete_items">حذف العناصر ؟</string>
+    <string name="Choose_deg">إختر درجة طول او قصر النظر</string>
+    <string name="developers">المطور</string>
+    <string name="select">إختر</string>
+    <string name="cancel2">تراجع</string>
+    <string name="select_language">إختر اللغة</string>
+    <string name="language_settings">إعدادات اللغة</string>
+    <string name="about_tour">من نحن</string>
+    <string name="interesting_questions">الاسئلة الاكثر شيوعا</string>
+    <string name="delivery_policy">سياسة التوصيل والشحن</string>
+    <string name="no_questions_to_display">لا توجد اسئلة لعرضها</string>
+    <string name="accept">موافق</string>
+    <string name="accept3">الموافقة على</string>
+    <string name="acc_terms_cond">برجاء الموافقة على الشروط والاحكام</string>
+    <string name="payment_method">طريقة الدفع</string>
+    <string name="transfer">تحويل</string>
+    <string name="mada">مدى</string>
+    <string name="sel_pay_method">من فضلك اختر طريقة الدفع</string>
 
 </resources>

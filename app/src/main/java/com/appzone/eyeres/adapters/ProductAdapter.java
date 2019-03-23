@@ -1,14 +1,17 @@
 package com.appzone.eyeres.adapters;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.appzone.eyeres.R;
@@ -22,76 +25,101 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Locale;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder> {
+import io.paperdb.Paper;
 
+public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+
+    private final int ITEM_DATA = 1;
+    private final int ITEM_LOAD = 2;
     private List<ProductDataModel.ProductModel> productModelList;
     private Context context;
     private boolean isSignUp;
     private Fragment fragment;
+    private String current_language;
 
     public ProductAdapter(List<ProductDataModel.ProductModel> productModelList, Context context, boolean isSignUp,Fragment fragment) {
         this.productModelList = productModelList;
         this.context = context;
         this.isSignUp = isSignUp;
         this.fragment = fragment;
+        Paper.init(context);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
+
     }
 
     @NonNull
     @Override
-    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.eye_row, parent, false);
-        return new MyHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType==ITEM_DATA)
+        {
+            View view = LayoutInflater.from(context).inflate(R.layout.eye_row, parent, false);
+            return new MyHolder(view);
+        }else
+            {
+                View view = LayoutInflater.from(context).inflate(R.layout.progress_load_more, parent, false);
+                return new LoadMoreHolder(view);
+            }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyHolder holder, int position) {
-        ProductDataModel.ProductModel productModel = productModelList.get(position);
-        holder.BindData(productModel);
-        holder.image_fav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProductDataModel.ProductModel productModel = productModelList.get(holder.getAdapterPosition());
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
 
-                if (fragment instanceof Fragment_Transparent)
-                {
-                    Fragment_Transparent fragment_transparent = (Fragment_Transparent) fragment;
-                    fragment_transparent.UpdateFavorite(productModel,holder.getAdapterPosition());
-                }else if (fragment instanceof Fragment_Color)
-                {
-                    Fragment_Color fragment_color = (Fragment_Color) fragment;
-                    fragment_color.UpdateFavorite(productModel,holder.getAdapterPosition());
+        if (holder instanceof MyHolder)
+        {
+            MyHolder myHolder = (MyHolder) holder;
+            ProductDataModel.ProductModel productModel = productModelList.get(position);
+            myHolder.BindData(productModel);
+            myHolder.image_fav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ProductDataModel.ProductModel productModel = productModelList.get(holder.getAdapterPosition());
 
-                }else if (fragment instanceof Fragment_Tools)
-                {
-                    Fragment_Tools fragment_tools = (Fragment_Tools) fragment;
-                    fragment_tools.UpdateFavorite(productModel,holder.getAdapterPosition());
+                    if (fragment instanceof Fragment_Transparent)
+                    {
+                        Fragment_Transparent fragment_transparent = (Fragment_Transparent) fragment;
+                        fragment_transparent.UpdateFavorite(productModel,holder.getAdapterPosition());
+                    }else if (fragment instanceof Fragment_Color)
+                    {
+                        Fragment_Color fragment_color = (Fragment_Color) fragment;
+                        fragment_color.UpdateFavorite(productModel,holder.getAdapterPosition());
+
+                    }else if (fragment instanceof Fragment_Tools)
+                    {
+                        Fragment_Tools fragment_tools = (Fragment_Tools) fragment;
+                        fragment_tools.UpdateFavorite(productModel,holder.getAdapterPosition());
+
+                    }
+                }
+            });
+            myHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ProductDataModel.ProductModel productModel = productModelList.get(holder.getAdapterPosition());
+
+                    if (fragment instanceof Fragment_Transparent)
+                    {
+                        Fragment_Transparent fragment_transparent = (Fragment_Transparent) fragment;
+                        fragment_transparent.setItemData(productModel);
+                    }else if (fragment instanceof Fragment_Color)
+                    {
+                        Fragment_Color fragment_color = (Fragment_Color) fragment;
+                        fragment_color.setItemData(productModel);
+
+                    }else if (fragment instanceof Fragment_Tools)
+                    {
+                        Fragment_Tools fragment_tools = (Fragment_Tools) fragment;
+                        fragment_tools.setItemData(productModel);
+
+                    }
 
                 }
+            });
+        }else
+            {
+                LoadMoreHolder loadMoreHolder = (LoadMoreHolder) holder;
+                loadMoreHolder.progressBar.setIndeterminate(true);
             }
-        });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProductDataModel.ProductModel productModel = productModelList.get(holder.getAdapterPosition());
-
-                if (fragment instanceof Fragment_Transparent)
-                {
-                    Fragment_Transparent fragment_transparent = (Fragment_Transparent) fragment;
-                    fragment_transparent.setItemData(productModel);
-                }else if (fragment instanceof Fragment_Color)
-                {
-                    Fragment_Color fragment_color = (Fragment_Color) fragment;
-                    fragment_color.setItemData(productModel);
-
-                }else if (fragment instanceof Fragment_Tools)
-                {
-                    Fragment_Tools fragment_tools = (Fragment_Tools) fragment;
-                    fragment_tools.setItemData(productModel);
-
-                }
-
-            }
-        });
 
     }
 
@@ -135,7 +163,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder
             }
 
 
-            if (Locale.getDefault().getLanguage().equals("ar")) {
+            if (current_language.equals("ar")) {
                 tv_name.setText(productModel.getName_ar());
             } else {
                 tv_name.setText(productModel.getName_en());
@@ -158,5 +186,32 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder
                 }
 
         }
+    }
+
+    public class LoadMoreHolder extends RecyclerView.ViewHolder {
+        private ProgressBar progressBar;
+        public LoadMoreHolder(View itemView) {
+            super(itemView);
+            progressBar = itemView.findViewById(R.id.progBar);
+            progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        ProductDataModel.ProductModel productModel = productModelList.get(position);
+
+
+        if (productModel==null)
+        {
+            return ITEM_LOAD;
+
+        }else
+            {
+                return ITEM_DATA;
+
+
+            }
     }
 }

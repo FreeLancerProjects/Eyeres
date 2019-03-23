@@ -1,107 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:clickable="false"
+    android:longClickable="false"
     >
-    <android.support.v7.widget.Toolbar
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/colorPrimary"
-        app:contentInsetEnd="0dp"
-        app:contentInsetStart="0dp"
+        android:layout_height="wrap_content"
         >
-        <LinearLayout
-            android:id="@+id/ll_back"
-            android:layout_width="wrap_content"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-
+            app:titleEnabled="false"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             >
-            <ImageView
-                android:id="@+id/arrow"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/white_left_arrow"
-                android:padding="7dp"
-                android:clickable="false"
-                android:longClickable="false"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/white"
-                android:textSize="17sp"
-                android:text="@string/details"
-                android:clickable="false"
-                android:longClickable="false"
-                />
-        </LinearLayout>
 
-    </android.support.v7.widget.Toolbar>
-    <ScrollView
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_marginTop="56dp"
+                >
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                </android.support.v4.view.ViewPager>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_slider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    app:tabBackground="@drawable/tab_indicator"
+                    app:tabGravity="fill"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabMaxWidth="8dp"
+                    app:tabMinWidth="8dp"
+                    app:tabMode="scrollable"
+                    android:layout_marginBottom="5dp"
+
+
+                    >
+
+                </android.support.design.widget.TabLayout>
+
+
+            </FrameLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/colorPrimary"
+                app:contentInsetEnd="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_collapseMode="pin"
+
+                >
+                <LinearLayout
+                    android:id="@+id/ll_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+                    >
+                    <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/white_left_arrow"
+                        android:padding="7dp"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:text="@string/details"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        />
+                </LinearLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray1"
         android:fillViewport="true"
-        android:fitsSystemWindows="true">
-
+        android:fitsSystemWindows="true"
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_slider_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:visibility="gone">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/pager_slider"
-                        android:layout_width="match_parent"
-                        android:layout_height="160dp">
-
-                    </android.support.v4.view.ViewPager>
-
-                    <android.support.design.widget.TabLayout
-                        android:id="@+id/tab_slider"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginTop="5dp"
-                        app:tabBackground="@drawable/tab_indicator"
-                        app:tabGravity="fill"
-                        app:tabIndicatorHeight="0dp"
-                        app:tabMaxWidth="20dp"
-                        app:tabMinWidth="20dp"
-                        app:tabMode="scrollable"
-
-
-                        >
-
-                    </android.support.design.widget.TabLayout>
-                </FrameLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
@@ -119,7 +130,7 @@
                     android:id="@+id/tv_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -130,9 +141,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="invisible"
+                    android:visibility="gone"
+                    android:clickable="false"
+                    android:longClickable="false"
                     >
-                    <TextView
+                    <!--<TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
@@ -140,8 +153,8 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="16sp"
 
-                        />
-                    <FrameLayout
+                        />-->
+                    <!--<FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -158,7 +171,7 @@
 
                         </Spinner>
 
-                    </FrameLayout>
+                    </FrameLayout>-->
 
                     <CheckBox
                         android:id="@+id/checkbox"
@@ -178,6 +191,8 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone"
+                        android:clickable="false"
+                        android:longClickable="false"
 
                         >
 
@@ -187,6 +202,8 @@
                             android:layout_marginTop="10dp"
                             android:orientation="horizontal"
                             android:weightSum="2"
+                            android:clickable="false"
+                            android:longClickable="false"
 
                             >
 
@@ -194,9 +211,12 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="3dp"
-                                android:layout_weight=".7"
+                                android:layout_weight=".8"
                                 android:orientation="vertical"
-                                tools:ignore="RtlCompat">
+                                tools:ignore="RtlCompat"
+                                android:clickable="false"
+                                android:longClickable="false"
+                                >
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -230,7 +250,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="3dp"
-                                android:layout_weight=".7"
+                                android:layout_weight=".8"
                                 android:orientation="vertical"
                                 tools:ignore="RtlCompat">
 
@@ -267,7 +287,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_weight=".6"
+                                android:layout_weight=".4"
                                 android:gravity="center"
                                 android:text="@string/degree_of_length_or_shortness_of_victory"
                                 android:textColor="@color/black"
@@ -287,7 +307,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="3dp"
-                                android:layout_weight=".7"
+                                android:layout_weight=".8"
                                 android:background="@drawable/spinner_bg"
                                 android:weightSum="3"
                                 tools:ignore="RtlCompat">
@@ -327,7 +347,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="3dp"
-                                android:layout_weight=".7"
+                                android:layout_weight=".8"
                                 android:background="@drawable/spinner_bg"
                                 android:weightSum="3"
                                 tools:ignore="RtlCompat">
@@ -367,7 +387,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_weight=".6"
+                                android:layout_weight=".4"
                                 android:gravity="center"
                                 android:text="@string/number_of_boxes"
                                 android:textColor="@color/black"
@@ -382,7 +402,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="visible"
+                        >
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -541,5 +563,6 @@
                     />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

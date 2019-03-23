@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import io.paperdb.Paper;
+
 public class Fragment_Order_Details extends Fragment {
     private static final String TAG = "ORDER_DATA";
     private OrderDataModel.OrderModel orderModel;
@@ -67,8 +69,9 @@ public class Fragment_Order_Details extends Fragment {
     private void initView(View view) {
 
         activity = (HomeActivity) getActivity();
-        productModelList = new ArrayList<>();
-        current_language  = Locale.getDefault().getLanguage();
+        Paper.init(activity);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
+
 
         image_back = view.findViewById(R.id.image_back);
         if (current_language.equals("ar"))
@@ -79,6 +82,8 @@ public class Fragment_Order_Details extends Fragment {
             image_back.setImageResource(R.drawable.white_left_arrow);
 
         }
+        productModelList = new ArrayList<>();
+
         ll_back = view.findViewById(R.id.ll_back);
         ll_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +153,7 @@ public class Fragment_Order_Details extends Fragment {
 
             updateStepView(orderModel.getStatus());
             tv_order_id.setText(getString(R.string.order_number)+" #"+orderModel.getId());
-            tv_order_cost.setText(getString(R.string.order_cost)+" "+getString(R.string.rsa));
+            tv_order_cost.setText(getString(R.string.order_cost)+" "+orderModel.getTotal()+getString(R.string.rsa));
             productModelList.clear();
             productModelList.addAll(orderModel.getItemsList());
             adapter.notifyDataSetChanged();
@@ -177,6 +182,25 @@ public class Fragment_Order_Details extends Fragment {
                 btn_cancel.setVisibility(View.GONE);
                 tv_not_approved.setText(getString(R.string.order_ongoing));
 
+                break;
+            case Tags.finished_order:
+                image1.setBackgroundResource(R.drawable.step_green_circle);
+                image1.setImageResource(R.drawable.step_green_true);
+                view1.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.green_color));
+                tv1.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+
+                image2.setBackgroundResource(R.drawable.step_green_circle);
+                image2.setImageResource(R.drawable.step_green_list);
+                view2.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.green_color));
+                tv2.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+
+                image3.setBackgroundResource(R.drawable.step_green_circle);
+                image3.setImageResource(R.drawable.step_green_heart);
+                tv3.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+
+
+                btn_cancel.setVisibility(View.GONE);
+                tv_not_approved.setText(getString(R.string.order_completed));
                 break;
 
 

@@ -1,12 +1,13 @@
 package com.appzone.eyeres.share;
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -15,10 +16,9 @@ import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -26,8 +26,12 @@ import android.widget.TextView;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
+import com.appzone.eyeres.models.ItemCartModel;
+import com.appzone.eyeres.preferences.Preferences;
+import com.appzone.eyeres.singletone.OrderCartSingleTone;
 
 import java.io.File;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -75,7 +79,7 @@ public class Common {
         return snackbar;
 
     }
-    public static void CreateUserNotSignInAlertDialog(final Context context)
+    public static void CreateUserNotSignInAlertDialog(final Context context, List<ItemCartModel> itemCartModelList)
     {
         final HomeActivity homeActivity = (HomeActivity) context;
 
@@ -83,6 +87,15 @@ public class Common {
                 .setCancelable(true)
                 .create();
 
+        if (itemCartModelList.size()>0)
+        {
+
+            Preferences preferences = Preferences.getInstance();
+            preferences.SaveCartData(itemCartModelList,context);
+            OrderCartSingleTone orderCartSingleTone = OrderCartSingleTone.newInstance();
+            orderCartSingleTone.clear();
+            Log.e("emad",itemCartModelList.size()+"_");
+        }
 
         View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog,null);
         Button btn_sign_in = view.findViewById(R.id.btn_sign_in);
@@ -307,21 +320,16 @@ public class Common {
         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"),data);
         return requestBody;
     }
-    public static Dialog createProgressDialog(Context context , String msg)
+    public static ProgressDialog createProgressDialog(Context context , String msg)
     {
-        Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.custom_progress_dialog);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        ProgressBar progBar = dialog.findViewById(R.id.progBar);
-        TextView tv_msg = dialog.findViewById(R.id.tv_msg);
-
-        progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
-        tv_msg.setText(msg);
-
-        dialog.setCancelable(false);
+        ProgressDialog  dialog = new ProgressDialog(context);
+        dialog.setMessage(msg);
+        dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(false);
-
+        ProgressBar bar = new ProgressBar(context);
+        Drawable drawable = bar.getIndeterminateDrawable().mutate();
+        drawable.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        dialog.setIndeterminateDrawable(drawable);
         return dialog;
 
     }

@@ -175,6 +175,7 @@
         android:layout_marginRight="60dp"
         android:background="@drawable/edt_sign_up_bg"
         android:textSize="15sp"
+        android:gravity="center"
         android:textColor="@color/colorPrimary"
         />
 </LinearLayout>

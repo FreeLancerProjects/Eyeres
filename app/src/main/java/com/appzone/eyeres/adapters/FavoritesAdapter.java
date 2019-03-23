@@ -20,16 +20,22 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Locale;
 
+import io.paperdb.Paper;
+
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.MyHolder> {
 
     private List<ProductDataModel.ProductModel> productModelList;
     private Context context;
     private Fragment_Favourite fragment;
+    private String current_language;
 
     public FavoritesAdapter(List<ProductDataModel.ProductModel> productModelList, Context context, Fragment_Favourite fragment) {
         this.productModelList = productModelList;
         this.context = context;
         this.fragment = fragment;
+        Paper.init(context);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
+
     }
 
     @NonNull
@@ -87,7 +93,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.MyHo
 
         public void BindData(ProductDataModel.ProductModel productModel) {
 
-            if (Locale.getDefault().getLanguage().equals("ar")) {
+
+            if (current_language.equals("ar")) {
                 tv_name.setText(productModel.getName_ar());
             } else {
                 tv_name.setText(productModel.getName_en());

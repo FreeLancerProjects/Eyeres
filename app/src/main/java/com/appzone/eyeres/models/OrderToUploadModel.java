@@ -12,7 +12,9 @@ public class OrderToUploadModel implements Serializable {
     private String address;
     private String notes;
     private double total;
-    private List<ItemCartModel> itemCartModelList;
+    private int payment_method;
+
+    private List<ItemCartModel> itemsList;
 
     public OrderToUploadModel() {
     }
@@ -74,11 +76,19 @@ public class OrderToUploadModel implements Serializable {
         this.total = total;
     }
 
-    public List<ItemCartModel> getItemCartModelList() {
-        return itemCartModelList;
+    public List<ItemCartModel> getItemsList() {
+        return itemsList;
     }
 
-    public void setItemCartModelList(List<ItemCartModel> itemCartModelList) {
-        this.itemCartModelList = itemCartModelList;
+    public void setItemsList(List<ItemCartModel> itemsList) {
+        this.itemsList = itemsList;
+    }
+
+    public int getPayment_method() {
+        return payment_method;
+    }
+
+    public void setPayment_method(int payment_method) {
+        this.payment_method = payment_method;
     }
 }

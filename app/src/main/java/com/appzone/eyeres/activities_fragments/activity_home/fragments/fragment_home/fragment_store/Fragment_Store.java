@@ -3,10 +3,8 @@ package com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +27,8 @@ public class Fragment_Store extends Fragment{
         return view;
     }
 
+
+
     public static Fragment_Store newInstance()
     {
         return new Fragment_Store();
@@ -46,7 +46,6 @@ public class Fragment_Store extends Fragment{
         tv_accessories = view.findViewById(R.id.tv_accessories);
 
 
-
         ll_transparent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,9 +60,9 @@ public class Fragment_Store extends Fragment{
             public void onClick(View v) {
 
                 activity.DisplayFragmentColor();
-                tv_transparent.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
+                tv_transparent.setTextColor(ContextCompat.getColor(activity,R.color.gray6));
                 tv_colored.setTextColor(ContextCompat.getColor(activity,R.color.white));
-                tv_accessories.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
+                tv_accessories.setTextColor(ContextCompat.getColor(activity,R.color.gray6));
 
             }
         });
@@ -72,23 +71,23 @@ public class Fragment_Store extends Fragment{
             public void onClick(View v) {
 
                 activity.DisplayFragmentTools();
-                tv_transparent.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
-                tv_colored.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
+                tv_transparent.setTextColor(ContextCompat.getColor(activity,R.color.gray6));
+                tv_colored.setTextColor(ContextCompat.getColor(activity,R.color.gray6));
                 tv_accessories.setTextColor(ContextCompat.getColor(activity,R.color.white));
 
             }
         });
 
-        activity.DisplayFragmentTransparent();
-
 
     }
+
+
 
     public void UpdateUITextColor()
     {
         tv_transparent.setTextColor(ContextCompat.getColor(activity,R.color.white));
-        tv_colored.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
-        tv_accessories.setTextColor(ContextCompat.getColor(activity,R.color.gray3));
+        tv_colored.setTextColor(ContextCompat.getColor(activity,R.color.gray6));
+        tv_accessories.setTextColor(ContextCompat.getColor(activity,R.color.gray6));
 
     }
 

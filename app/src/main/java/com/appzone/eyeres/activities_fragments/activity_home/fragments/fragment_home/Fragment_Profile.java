@@ -2,7 +2,7 @@ package com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.paperdb.Paper;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -52,14 +53,16 @@ public class Fragment_Profile extends Fragment{
     private AppBarLayout appBar;
     private CircleImageView image;
     private TextView tv_name,tv_email;
-    private ImageView arrow1,arrow2,arrow3;
+    private ImageView arrow,arrow1,arrow2,arrow3;
     private LinearLayout ll_name,ll_email,ll_logout;
     private String current_language;
+    private LinearLayout ll_back;
     private HomeActivity activity;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private final int IMG1=1;
     private Uri uri=null;
+
     private final String read_permission = Manifest.permission.READ_EXTERNAL_STORAGE;
     @Nullable
     @Override
@@ -76,16 +79,23 @@ public class Fragment_Profile extends Fragment{
 
     private void initView(View view)
     {
+        activity = (HomeActivity) getActivity();
+        Paper.init(activity);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
 
         userSingleTone = UserSingleTone.getInstance();
         userModel = userSingleTone.getUserModel();
-        current_language = Locale.getDefault().getLanguage();
+        ll_back = view.findViewById(R.id.ll_back);
+
+        arrow = view.findViewById(R.id.arrow);
         arrow1 = view.findViewById(R.id.arrow1);
         arrow2 = view.findViewById(R.id.arrow2);
         arrow3 = view.findViewById(R.id.arrow3);
 
         if (current_language.equals("ar"))
         {
+            arrow.setImageResource(R.drawable.white_right_arrow);
+
             arrow1.setImageResource(R.drawable.black_left_arrow);
             arrow2.setImageResource(R.drawable.black_left_arrow);
             arrow3.setImageResource(R.drawable.black_left_arrow);
@@ -94,12 +104,13 @@ public class Fragment_Profile extends Fragment{
 
         }else
             {
+                arrow.setImageResource(R.drawable.white_left_arrow);
+
                 arrow1.setImageResource(R.drawable.black_right_arrow);
                 arrow2.setImageResource(R.drawable.black_right_arrow);
                 arrow3.setImageResource(R.drawable.black_right_arrow);
             }
 
-        activity = (HomeActivity) getActivity();
         appBar = view.findViewById(R.id.appBar);
         image = view.findViewById(R.id.image);
         tv_name = view.findViewById(R.id.tv_name);
@@ -124,6 +135,12 @@ public class Fragment_Profile extends Fragment{
             }
         });
 
+        ll_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.Back();
+            }
+        });
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,7 +209,7 @@ public class Fragment_Profile extends Fragment{
     private void UpdateImage(Uri uri)
     {
 
-        final Dialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.show();
 
         RequestBody token_part = Common.getRequestBodyText(userModel.getToken());
@@ -345,7 +362,7 @@ public class Fragment_Profile extends Fragment{
     private void updateName(String name)
     {
 
-        final Dialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.show();
 
             Api.getService()
@@ -405,7 +422,7 @@ public class Fragment_Profile extends Fragment{
     }
     private void updateEmail(String email)
     {
-        final Dialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.show();
 
         Api.getService()

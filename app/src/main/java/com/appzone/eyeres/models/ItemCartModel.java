@@ -1,7 +1,5 @@
 package com.appzone.eyeres.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class ItemCartModel implements Serializable{
@@ -15,15 +13,14 @@ public class ItemCartModel implements Serializable{
     ///quantity*product_cost
     private double total;
     private int similar;
-    @SerializedName("package")
-    private String packageSize;
     private String left_degree;
     private String right_degree;
     private int left_amount;
     private int right_amount;
+    private int type;
 
 
-    public ItemCartModel(int product_id, String product_image, String product_name_ar, String product_name_en, double product_cost, int quantity, double total, int similar, String packageSize, String left_degree, String right_degree, int left_amount, int right_amount) {
+    public ItemCartModel(int product_id, String product_image, String product_name_ar, String product_name_en, double product_cost, int quantity, double total, int similar, String left_degree, String right_degree, int left_amount, int right_amount, int product_type) {
         this.product_id = product_id;
         this.product_image = product_image;
         this.product_name_ar = product_name_ar;
@@ -32,11 +29,11 @@ public class ItemCartModel implements Serializable{
         this.quantity = quantity;
         this.total = total;
         this.similar = similar;
-        this.packageSize = packageSize;
         this.left_degree = left_degree;
         this.right_degree = right_degree;
         this.left_amount = left_amount;
         this.right_amount = right_amount;
+        this.type = product_type;
     }
 
     public int getProduct_id() {
@@ -103,13 +100,6 @@ public class ItemCartModel implements Serializable{
         this.similar = similar;
     }
 
-    public String getPackageSize() {
-        return packageSize;
-    }
-
-    public void setPackageSize(String packageSize) {
-        this.packageSize = packageSize;
-    }
 
     public String getLeft_degree() {
         return left_degree;
@@ -141,5 +131,13 @@ public class ItemCartModel implements Serializable{
 
     public void setRight_amount(int right_amount) {
         this.right_amount = right_amount;
+    }
+
+    public int getProduct_type() {
+        return type;
+    }
+
+    public void setProduct_type(int product_type) {
+        this.type = product_type;
     }
 }

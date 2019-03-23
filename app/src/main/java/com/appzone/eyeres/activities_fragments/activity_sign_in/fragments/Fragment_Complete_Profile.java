@@ -18,29 +18,35 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_sign_in.activity.SignInActivity;
 import com.appzone.eyeres.share.Common;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.Locale;
+
+import io.paperdb.Paper;
 
 public class Fragment_Complete_Profile extends Fragment {
 
     private FloatingActionButton fab;
     private SignInActivity activity;
     private EditText edt_name,edt_email;
-    private ImageView image_personal,image_icon1,image_back_photo;
+    private ImageView image_back_photo;
     private LinearLayout ll_back;
     private final int IMG1=1;
     private Uri uri=null;
     private final String read_permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private String current_language;
+    private CheckBox checkbox;
+    private TextView tv_terms;
+    private boolean isAccept = false;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,18 +61,22 @@ public class Fragment_Complete_Profile extends Fragment {
     private void initView(View view) {
 
         activity = (SignInActivity) getActivity();
+        Paper.init(activity);
+        current_language = Paper.book().read("lang",Locale.getDefault().getLanguage());
 
         ll_back  = view.findViewById(R.id.ll_back);
         edt_name = view.findViewById(R.id.edt_name);
 
         edt_email =view.findViewById(R.id.edt_email);
-        image_personal = view.findViewById(R.id.image_personal);
-        image_icon1 = view.findViewById(R.id.image_icon1);
+
+        checkbox =view.findViewById(R.id.checkbox);
+        tv_terms =view.findViewById(R.id.tv_terms);
+
         image_back_photo = view.findViewById(R.id.image_back_photo);
         fab = view.findViewById(R.id.fab);
 
 
-        if (Locale.getDefault().getLanguage().equals("ar"))
+        if (current_language.equals("ar"))
         {
             image_back_photo.setImageResource(R.drawable.green_right_arrow);
 
@@ -76,12 +86,7 @@ public class Fragment_Complete_Profile extends Fragment {
 
         }
 
-        image_personal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Check_ReadPermission(IMG1);
-            }
-        });
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +100,25 @@ public class Fragment_Complete_Profile extends Fragment {
                 activity.Back();
             }
         });
+        tv_terms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.NavigateToTermsActivity();
+            }
+        });
 
+        checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkbox.isChecked())
+                {
+                    isAccept = true;
+                }else
+                    {
+                        isAccept = false;
+                    }
+            }
+        });
 
 
     }
@@ -109,8 +132,7 @@ public class Fragment_Complete_Profile extends Fragment {
         if (!TextUtils.isEmpty(m_name)&&
                 !TextUtils.isEmpty(m_email)&&
                 Patterns.EMAIL_ADDRESS.matcher(m_email).matches()&&
-                uri!=null
-
+                isAccept
 
                 )
         {
@@ -118,7 +140,7 @@ public class Fragment_Complete_Profile extends Fragment {
             edt_name.setError(null);
             edt_email.setError(null);
 
-            activity.signUp(m_name,m_email,uri);
+            activity.signUp(m_name,m_email);
 
         }else
         {
@@ -144,10 +166,12 @@ public class Fragment_Complete_Profile extends Fragment {
 
             }
 
-            if (uri == null)
+            if (!isAccept)
             {
-                Toast.makeText(activity,getString(R.string.pers_photo_req), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.acc_terms_cond, Toast.LENGTH_LONG).show();
             }
+
+
         }
     }
 
@@ -184,19 +208,7 @@ public class Fragment_Complete_Profile extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMG1 && resultCode == Activity.RESULT_OK && data!=null)
         {
-            image_icon1.setVisibility(View.GONE);
-            uri = data.getData();
 
-            String path = Common.getImagePath(activity,uri);
-            if (path!=null)
-            {
-                Picasso.with(activity).load(new File(path)).fit().into(image_personal);
-
-            }else
-            {
-                Picasso.with(activity).load(uri).fit().into(image_personal);
-
-            }
         }
     }
     @Override
@@ -218,5 +230,8 @@ public class Fragment_Complete_Profile extends Fragment {
     }
 
 
+    public void acceptRule() {
 
+
+    }
 }

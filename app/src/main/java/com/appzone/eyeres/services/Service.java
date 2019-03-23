@@ -3,8 +3,10 @@ package com.appzone.eyeres.services;
 import com.appzone.eyeres.models.AdsModel;
 import com.appzone.eyeres.models.FavoriteIdModel;
 import com.appzone.eyeres.models.OrderDataModel;
+import com.appzone.eyeres.models.OrderToUploadModel;
 import com.appzone.eyeres.models.PackageSizeModel;
 import com.appzone.eyeres.models.ProductDataModel;
+import com.appzone.eyeres.models.QuestionsDataModel;
 import com.appzone.eyeres.models.Terms_ConditionModel;
 import com.appzone.eyeres.models.UserModel;
 
@@ -12,6 +14,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -32,8 +35,7 @@ public interface Service {
     @POST("api/sign-up")
     Call<UserModel> SignUp(@Part("name") RequestBody name,
                                     @Part("phone") RequestBody phone,
-                                    @Part("email") RequestBody email,
-                                    @Part MultipartBody.Part avatar
+                                    @Part("email") RequestBody email
 
     );
 
@@ -65,7 +67,7 @@ public interface Service {
     Call<ProductDataModel> getOffers(@Query("page") int page_index);
 
     @GET("/api/get-terms-condition")
-    Call<Terms_ConditionModel> getTerms();
+    Call<Terms_ConditionModel> getTerms(@Query("type") int type);
 
     @GET("/api/packages")
     Call<PackageSizeModel> getPackageSize();
@@ -109,4 +111,11 @@ public interface Service {
                                      @Query("token") String user_token,
                                      @Query("page") int page_index
                                      );
+
+    @GET("/api/q&a")
+    Call<QuestionsDataModel> getQuestions(@Query("page") int page_index
+    );
+
+    @POST("/api/orders")
+    Call<ResponseBody> sendOrder(@Body OrderToUploadModel orderToUploadModel);
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,8 +11,8 @@
        android:id="@+id/appBar"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-
        >
+
        <android.support.design.widget.CollapsingToolbarLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
@@ -29,10 +30,57 @@
                    android:layout_height="100dp"
                    app:civ_border_color="@color/white"
                    app:civ_border_width="2dp"
-                   android:layout_gravity="center"
+                   android:layout_gravity="bottom|center_horizontal"
+                   android:layout_marginBottom="25dp"
                    />
 
            </FrameLayout>
+
+           <android.support.v7.widget.Toolbar
+               android:layout_width="match_parent"
+               android:layout_height="45dp"
+               app:contentInsetLeft="0dp"
+               app:contentInsetRight="0dp"
+               app:contentInsetEnd="0dp"
+               app:contentInsetStart="0dp"
+               app:layout_collapseMode="pin"
+
+               >
+               <LinearLayout
+                   android:id="@+id/ll_back"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:layout_marginStart="5dp"
+                   tools:ignore="RtlCompat">
+
+                   <ImageView
+                       android:id="@+id/arrow"
+                       android:layout_width="25dp"
+                       android:layout_height="25dp"
+                       android:layout_gravity="center_vertical"
+                       android:padding="3dp"
+                       android:src="@drawable/white_left_arrow"
+                       android:clickable="false"
+                       android:longClickable="false"
+                       />
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="center_vertical"
+                       android:paddingStart="5dp"
+                       android:text="@string/back"
+                       android:textColor="@color/white"
+                       android:textSize="16sp"
+                       tools:ignore="RtlCompat"
+                       android:clickable="false"
+                       android:longClickable="false"
+                       />
+
+               </LinearLayout>
+
+           </android.support.v7.widget.Toolbar>
        </android.support.design.widget.CollapsingToolbarLayout>
    </android.support.design.widget.AppBarLayout>
     <android.support.v4.widget.NestedScrollView

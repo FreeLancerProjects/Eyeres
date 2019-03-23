@@ -19,6 +19,8 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 import java.util.Locale;
 
+import io.paperdb.Paper;
+
 public class Fragment_Home extends Fragment{
 
     private AHBottomNavigation ah_bottom;
@@ -48,9 +50,10 @@ public class Fragment_Home extends Fragment{
     {
         activity = (HomeActivity) getActivity();
 
+        Paper.init(activity);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
 
         image_back_photo = view.findViewById(R.id.image_back_photo);
-        current_language = Locale.getDefault().getLanguage();
 
         if (current_language.equals("ar")) {
             image_back_photo.setImageResource(R.drawable.white_right_arrow);
@@ -65,11 +68,10 @@ public class Fragment_Home extends Fragment{
 
         fl_cart_container = view.findViewById(R.id.fl_cart_container);
 
-
-
         image_search = view.findViewById(R.id.image_search);
         tv_cart_counter = view.findViewById(R.id.tv_cart_counter);
         ah_bottom = view.findViewById(R.id.ah_bottom);
+
 
         fl_cart_container.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +99,7 @@ public class Fragment_Home extends Fragment{
                         activity.DisplayFragmentStore();
                         break;
                     case 1:
-                        activity.DisplayFragmentOrders();
+                        activity.DisplayFragmentOrders(0);
                         break;
                     case 2:
                         activity.DisplayFragmentOffers();
@@ -106,7 +108,7 @@ public class Fragment_Home extends Fragment{
                         activity.DisplayFragmentFavourite();
                         break;
                     case 4:
-                        activity.DisplayFragmentProfile();
+                        activity.DisplayFragmentMore();
                         break;
 
                 }
@@ -114,7 +116,6 @@ public class Fragment_Home extends Fragment{
             }
         });
 
-        activity.DisplayFragmentStore();
         image_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +125,7 @@ public class Fragment_Home extends Fragment{
         UpdateAHBottomNavigationPosition(0);
 
     }
+
 
 
     public void updateCartCounter(int counter)
@@ -152,7 +154,7 @@ public class Fragment_Home extends Fragment{
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(getString(R.string.orders), ContextCompat.getDrawable(getActivity(),R.drawable.nav_cart),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(getString(R.string.offers), ContextCompat.getDrawable(getActivity(),R.drawable.nav_offer),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
         AHBottomNavigationItem item4 = new AHBottomNavigationItem(getString(R.string.favourite), ContextCompat.getDrawable(getActivity(),R.drawable.star),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
-        AHBottomNavigationItem item5 = new AHBottomNavigationItem(getString(R.string.profile), ContextCompat.getDrawable(getActivity(),R.drawable.nav_profile),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+        AHBottomNavigationItem item5 = new AHBottomNavigationItem(getString(R.string.more), ContextCompat.getDrawable(getActivity(),R.drawable.more),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
 
         ah_bottom.addItem(item1);
         ah_bottom.addItem(item2);
@@ -166,4 +168,7 @@ public class Fragment_Home extends Fragment{
     {
         ah_bottom.setCurrentItem(pos,false);
     }
+
+
+
 }

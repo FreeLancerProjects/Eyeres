@@ -19,15 +19,23 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Locale;
 
+import io.paperdb.Paper;
+
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyHolder> {
 
     private List<ItemCartModel> itemCartModelList;
     private Context context;
     private Fragment_Cart fragment;
+    private String current_language;
+
     public CartAdapter(List<ItemCartModel> itemCartModelList, Context context,Fragment_Cart fragment) {
         this.itemCartModelList = itemCartModelList;
         this.context = context;
         this.fragment = fragment;
+        Paper.init(context);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
+
+
     }
 
     @NonNull
@@ -112,7 +120,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyHolder> {
 
         public void BindData(ItemCartModel itemCartModel) {
 
-            if (Locale.getDefault().getLanguage().equals("ar"))
+
+            if (current_language.equals("ar"))
             {
                 tv_name.setText(itemCartModel.getProduct_name_ar());
             }else

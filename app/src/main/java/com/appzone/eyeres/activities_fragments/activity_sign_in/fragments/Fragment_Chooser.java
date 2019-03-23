@@ -44,7 +44,7 @@ public class Fragment_Chooser extends Fragment {
         btn_skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.NavigateToHomeActivity(true,false);
+                activity.NavigateToHomeActivity(false);
             }
         });
 

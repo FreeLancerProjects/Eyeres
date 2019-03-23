@@ -31,6 +31,7 @@ public class ProductDataModel implements Serializable {
         private int favorite_id;
         private int sales;
         private int has_sizes;
+        private int type;
         private Brand brand;
 
         public int getId() {
@@ -100,10 +101,15 @@ public class ProductDataModel implements Serializable {
         public void setFavorite_id(int favorite_id) {
             this.favorite_id = favorite_id;
         }
+
+        public int getType() {
+            return type;
+        }
     }
 
     public class Brand implements Serializable
     {
+        int id;
         private String name_ar;
         private String name_en;
 
@@ -113,6 +119,10 @@ public class ProductDataModel implements Serializable {
 
         public String getName_en() {
             return name_en;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 

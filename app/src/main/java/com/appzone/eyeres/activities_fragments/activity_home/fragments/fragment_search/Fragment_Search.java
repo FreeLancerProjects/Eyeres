@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,6 +67,8 @@ public class Fragment_Search extends Fragment{
     private EditText edt_search;
     private Button btn_search;
     private Animation animation,animation2;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,11 +84,13 @@ public class Fragment_Search extends Fragment{
     }
     private void initView(View view)
     {
+        activity = (HomeActivity) getActivity();
+        Paper.init(activity);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
+
         queriesList = new ArrayList<>();
         productModelList = new ArrayList<>();
         preferences = Preferences.getInstance();
-        current_language = Locale.getDefault().getLanguage();
-        activity = (HomeActivity) getActivity();
         expand_layout = view.findViewById(R.id.expand_layout);
         tv_no_search = view.findViewById(R.id.tv_no_search);
 
@@ -197,6 +202,7 @@ public class Fragment_Search extends Fragment{
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                activity.HideFragmentHome();
                 ll_search_data_container.setVisibility(View.VISIBLE);
                 ll_search_data_container.clearAnimation();
                 ll_search_data_container.startAnimation(animation2);
@@ -341,6 +347,6 @@ public class Fragment_Search extends Fragment{
             preferences.SaveQuery(activity,query);
 
         }
-        activity.DisplayFragmentDetails(productModel);
+        activity.DisplayFragmentLensesDetails(productModel);
     }
 }

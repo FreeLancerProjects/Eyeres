@@ -1,6 +1,6 @@
 package com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home;
 
-import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -197,7 +197,7 @@ public class Fragment_Favourite extends Fragment{
 
     public void deleteFavorite(ProductDataModel.ProductModel productModel, final int pos)
     {
-        final Dialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.show();
         Api.getService()
                 .deleteFavorite(productModel.getFavorite_id(),userModel.getToken(),"delete")
@@ -243,7 +243,7 @@ public class Fragment_Favourite extends Fragment{
     }
 
     public void setItemData(ProductDataModel.ProductModel productModel) {
-        activity.DisplayFragmentDetails(productModel);
+        activity.DisplayFragmentLensesDetails(productModel);
 
     }
 }

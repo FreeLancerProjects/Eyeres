@@ -1,5 +1,7 @@
 package com.appzone.eyeres.singletone;
 
+import android.util.Log;
+
 import com.appzone.eyeres.models.ItemCartModel;
 
 import java.util.ArrayList;
@@ -29,10 +31,21 @@ public class OrderCartSingleTone {
             if (getItemPosition(itemCartModel) == -1)
             {
                 itemCartModelList.add(itemCartModel);
+
             }else
             {
                 int pos = getItemPosition(itemCartModel);
+                double oldTotal = itemCartModelList.get(pos).getTotal();
+                int oldQuantity = itemCartModelList.get(pos).getQuantity();
+
+                int totalQuantity = oldQuantity+itemCartModel.getQuantity();
+                double totalCost = oldTotal+itemCartModel.getTotal();
+
+                itemCartModel.setQuantity(totalQuantity);
+                itemCartModel.setTotal(totalCost);
+
                 itemCartModelList.set(pos,itemCartModel);
+                Log.e("2","2");
 
 
             }
@@ -45,9 +58,10 @@ public class OrderCartSingleTone {
         int pos = -1;
         if (itemCartModelList.size() > 0) {
 
-            for (int index = 0 ; index<itemCartModelList.size()-1;index++)
+            for (int index = 0 ; index<itemCartModelList.size();index++)
             {
                 ItemCartModel item = itemCartModelList.get(index);
+
 
                 if (item.getProduct_id() == itemCartModel.getProduct_id())
                 {
@@ -59,6 +73,7 @@ public class OrderCartSingleTone {
         }
         return pos;
     }
+
     public void Update_Item(int pos,ItemCartModel itemCartModel)
     {
         if (itemCartModelList.size()>0)
@@ -66,15 +81,16 @@ public class OrderCartSingleTone {
             if (itemCartModel!=null)
             {
                 itemCartModelList.set(pos,itemCartModel);
+                Log.e("3","3");
             }
         }
 
 
     }
+
     public void Delete_Item(int pos)
     {
-        itemCartModelList.remove(pos);
-
+        getItemCartModelList().remove(pos);
     }
     public List<ItemCartModel> getItemCartModelList() {
         return itemCartModelList;
@@ -87,5 +103,11 @@ public class OrderCartSingleTone {
     public void clear() {
         itemCartModelList.clear();
 
+
+    }
+
+    public void setItemCartModelList(List<ItemCartModel> itemCartModelList)
+    {
+        this.itemCartModelList.addAll(itemCartModelList);
     }
 }

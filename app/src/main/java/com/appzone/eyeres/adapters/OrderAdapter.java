@@ -21,16 +21,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.paperdb.Paper;
+
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyHolder> {
 
     private List<OrderDataModel.OrderModel> orderModelList;
     private Context context;
     private Fragment fragment;
+    private String current_language;
 
     public OrderAdapter(List<OrderDataModel.OrderModel> orderModelList, Context context, Fragment fragment) {
         this.orderModelList = orderModelList;
         this.context = context;
         this.fragment = fragment;
+        Paper.init(context);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
+
     }
 
     @NonNull
@@ -114,9 +120,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyHolder> {
                 image_state.setImageResource(R.drawable.correct2);
             }
 
+
             tv_order_number.setText("#" + orderModel.getId());
             tv_order_total.setText(orderModel.getTotal() + " " + context.getString(R.string.rsa));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd/MM/yyyy",Locale.getDefault());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd/MM/yyyy",new Locale(current_language));
             String date = dateFormat.format(new Date((orderModel.getUpdated_at()*1000)));
             tv_date.setText(date);
 

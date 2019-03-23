@@ -139,7 +139,7 @@ public class Preferences {
     public void SaveCartData(List<ItemCartModel> itemCartModelList,Context context)
     {
 
-        SharedPreferences preferences = context.getSharedPreferences("cart",Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences("cart_data",Context.MODE_PRIVATE);
         String gson = new Gson().toJson(itemCartModelList);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("cart_list",gson);
@@ -149,7 +149,7 @@ public class Preferences {
     public List<ItemCartModel> getCartList(Context context)
     {
         List<ItemCartModel> itemCartModelList = new ArrayList<>();
-        SharedPreferences preferences = context.getSharedPreferences("cart",Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences("cart_data",Context.MODE_PRIVATE);
         String gson = preferences.getString("cart_list","");
         if (!TextUtils.isEmpty(gson))
         {
@@ -160,11 +160,25 @@ public class Preferences {
         return itemCartModelList;
     }
 
+    public void saveLoginFragmentState(Context context,int state)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("fragment_state",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("state",state);
+        editor.apply();
+    }
+
+    public int getFragmentState(Context context)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("fragment_state",Context.MODE_PRIVATE);
+        return preferences.getInt("state",0);
+    }
+
     public void clear_cart(Context context)
     {
-        SharedPreferences preferences = context.getSharedPreferences("cart",Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences("cart_data",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
+        editor.putString("cart_list","");
         editor.apply();
     }
 }

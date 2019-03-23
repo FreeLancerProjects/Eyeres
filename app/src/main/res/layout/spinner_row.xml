@@ -9,4 +9,5 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:id="@+id/tv_content"
+    android:textSize="14sp"
     />

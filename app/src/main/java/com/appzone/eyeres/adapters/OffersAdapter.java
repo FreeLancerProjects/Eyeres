@@ -19,16 +19,22 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Locale;
 
+import io.paperdb.Paper;
+
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.MyHolder> {
 
     private List<ProductDataModel.ProductModel> productModelList;
     private Context context;
     private Fragment_Offers fragment;
+    private String current_language;
 
     public OffersAdapter(List<ProductDataModel.ProductModel> productModelList, Context context, Fragment_Offers fragment) {
         this.productModelList = productModelList;
         this.context = context;
         this.fragment = fragment;
+        Paper.init(context);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
+
     }
 
     @NonNull
@@ -78,7 +84,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.MyHolder> 
 
         public void BindData(ProductDataModel.ProductModel productModel) {
 
-            if (Locale.getDefault().getLanguage().equals("ar")) {
+            if (current_language.equals("ar")) {
                 tv_name.setText(productModel.getName_ar());
             } else {
                 tv_name.setText(productModel.getName_en());

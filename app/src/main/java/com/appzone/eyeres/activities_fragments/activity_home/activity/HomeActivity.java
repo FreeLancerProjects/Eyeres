@@ -1,8 +1,9 @@
 package com.appzone.eyeres.activities_fragments.activity_home.activity;
 
-import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,11 +29,14 @@ import android.widget.Toast;
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_cart.Fragment_Cart;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_cart.Fragment_Client_Data;
-import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details.Fragment_Details;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details.Fragment_Accessories_Details;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details.Fragment_Lenses_Details;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Favourite;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Home;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Offers;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Profile;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_more.Fragment_More;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_more.Fragment_Question;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_orders.Fragment_Orders;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Color;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Store;
@@ -41,6 +45,8 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_order_details.Fragment_Order_Details;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_search.Fragment_Search;
 import com.appzone.eyeres.activities_fragments.activity_sign_in.activity.SignInActivity;
+import com.appzone.eyeres.activities_fragments.activity_terms_conditions.TermsConditionsActivity;
+import com.appzone.eyeres.local_manager.LocalManager;
 import com.appzone.eyeres.models.ItemCartModel;
 import com.appzone.eyeres.models.OrderDataModel;
 import com.appzone.eyeres.models.OrderStatusModel;
@@ -66,6 +72,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import io.paperdb.Paper;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,7 +83,8 @@ public class HomeActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     //////////////////////////////////////////
     private Fragment_Home fragment_home;
-    private Fragment_Details fragment_details;
+    private Fragment_Lenses_Details fragment_Lenses_details;
+    private Fragment_Accessories_Details fragment_accessories_details;
     private Fragment_Search fragment_search;
     private Fragment_Cart fragment_cart;
     private Fragment_Client_Data fragment_client_data;
@@ -91,19 +99,24 @@ public class HomeActivity extends AppCompatActivity {
     private Fragment_Favourite fragment_favourite;
     private Fragment_Profile fragment_profile;
     private Fragment_Order_Details fragment_order_details;
-    //////////////////////////////////////////
+    private Fragment_More fragment_more;
+    private Fragment_Question fragment_question;
 
-    private int lastSelectedFragmentStorePos = -1;
+    //////////////////////////////////////////
     private Preferences preferences;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private OrderToUploadModel orderToUploadModel;
     private OrderCartSingleTone orderCartSingleTone;
+    private String current_language;
     //////////////////////////////////////////////
 
 
-    private String current_language;
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocalManager.updateResources(newBase,LocalManager.getLanguage(newBase)));
 
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +133,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initView() {
 
-        current_language = Locale.getDefault().getLanguage();
+        Paper.init(this);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
         orderCartSingleTone = OrderCartSingleTone.newInstance();
         preferences = Preferences.getInstance();
         String session = preferences.getSession(this);
@@ -131,17 +145,18 @@ public class HomeActivity extends AppCompatActivity {
         userModel = userSingleTone.getUserModel();
 
 
-
-
-
-
-
         if (userModel != null) {
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this);
             }
 
             updateUserToken(userModel.getToken());
+        }
+
+        if (preferences.getCartList(this).size()>0)
+        {
+            orderCartSingleTone.setItemCartModelList(preferences.getCartList(this));
+            UpdateCartCounter(orderCartSingleTone.getItemsCount());
         }
 
     }
@@ -151,37 +166,38 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra("status")) {
-                int status = intent.getIntExtra("status", 0);
+                final int status = intent.getIntExtra("status", 0);
 
                 if (status == Tags.accepted_order) {
+
+
                     new Handler()
                             .postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
+                                    DisplayFragmentOrders(status);
 
-                                    DisplayFragmentOrders();
-                                    fragment_orders.NavigateToFragmentCurrent();
                                 }
                             }, 1);
                 } else if (status == Tags.refused_order) {
+
                     new Handler()
                             .postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
 
-                                    DisplayFragmentOrders();
-                                    fragment_orders.NavigateToFragmentNew();
+                                    DisplayFragmentOrders(status);
 
                                 }
                             }, 1);
                 } else if (status == Tags.finished_order) {
+
                     new Handler()
                             .postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
+                                    DisplayFragmentOrders(status);
 
-                                    DisplayFragmentOrders();
-                                    fragment_orders.NavigateToFragmentPrevious();
                                 }
                             }, 1);
                 }
@@ -195,7 +211,7 @@ public class HomeActivity extends AppCompatActivity {
                                 CreateWelcomeNotification();
 
                             }
-                        }, 3000);
+                        }, 2000);
             }
 
         }
@@ -207,21 +223,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    public void UpdateCartCounter(final int counter)
-    {
+    public void UpdateCartCounter(final int counter) {
         new Handler()
                 .postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (fragment_home!=null && fragment_home.isVisible())
-                        {
+                        if (fragment_home != null && fragment_home.isAdded()) {
                             fragment_home.updateCartCounter(counter);
                         }
                     }
-                },1);
+                }, 1);
     }
 
-    private void CreateWelcomeNotification() {
+    private void CreateWelcomeNotification()
+    {
         String sound_path = "android.resource://" + getPackageName() + "/" + R.raw.not;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String CHANNEL_ID = "my_channel_01";
@@ -255,9 +270,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
 
-        } else
-
-        {
+        } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
             builder.setSound(Uri.parse(sound_path));
             builder.setContentTitle(getString(R.string.welcome));
@@ -274,12 +287,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
-
     /////////////////////////////////////////////////////
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void ListenToNotification(OrderStatusModel orderStatusModel) {
+    public void ListenToNotification(OrderStatusModel orderStatusModel)
+    {
         final int status = orderStatusModel.getStatus();
-        RefreshFragmentOrders();
+        RefreshFragmentOrders(status);
         new Handler()
                 .postDelayed(new Runnable() {
                     @Override
@@ -292,7 +305,7 @@ public class HomeActivity extends AppCompatActivity {
                 }, 1);
     }
 
-    public void RefreshFragmentOrders() {
+    public void RefreshFragmentOrders(final int status) {
         new Handler()
                 .postDelayed(new Runnable() {
                     @Override
@@ -300,7 +313,24 @@ public class HomeActivity extends AppCompatActivity {
 
                         if (fragment_orders != null && fragment_orders.isAdded()) {
                             fragment_orders.RefreshFragments();
-                            fragment_orders.NavigateToFragmentNew();
+                            if (status == Tags.accepted_order)
+                            {
+                                fragment_orders.NavigateToFragmentCurrent();
+
+                            }else if (status == Tags.finished_order)
+                            {
+                                fragment_orders.NavigateToFragmentPrevious();
+
+                            }else if (status == Tags.refused_order)
+                            {
+                                fragment_orders.NavigateToFragmentNew();
+
+                            }
+                            else if (status == Tags.new_order)
+                            {
+                                fragment_orders.NavigateToFragmentNew();
+
+                            }
                         }
                     }
                 }, 1);
@@ -347,32 +377,95 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentHome() {
 
-        if (fragment_details != null && fragment_details.isAdded() && fragment_details.isVisible()) {
-            fragment_details = null;
-            fragmentManager.popBackStack("fragment_details", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        if (fragment_question != null && fragment_question.isAdded()) {
+            super.onBackPressed();
+
+        }
+        if (fragment_profile != null && fragment_profile.isAdded()) {
+            super.onBackPressed();
+        }
+        if (fragment_client_data != null && fragment_client_data.isAdded()) {
+            super.onBackPressed();
+
+        }
+        if (fragment_order_details != null && fragment_order_details.isAdded()) {
+            super.onBackPressed();
+
+        }
+
+
+        if (fragment_search != null && fragment_search.isAdded()) {
+            super.onBackPressed();
+
+        }
+
+
+        if (fragment_accessories_details != null && fragment_accessories_details.isAdded()) {
+            super.onBackPressed();
+
+        }
+        if (fragment_Lenses_details != null && fragment_Lenses_details.isAdded()) {
+            super.onBackPressed();
+        }
+        if (fragment_cart != null && fragment_cart.isAdded()) {
+            super.onBackPressed();
+        }
+
+
+        if (fragment_home == null) {
+            fragment_home = Fragment_Home.newInstance();
+        }
+
+        if (!fragment_home.isAdded()) {
+
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_home, "fragment_home").addToBackStack("fragment_home").commit();
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            DisplayFragmentStore();
+
+                        }
+                    },1);
+
         } else {
-            if (fragment_home == null) {
-                fragment_home = Fragment_Home.newInstance();
-            }
 
-            if (!fragment_home.isAdded()) {
-                fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_home, "fragment_home").addToBackStack("fragment_home").commit();
-            }
+            fragmentManager.beginTransaction().show(fragment_home).commit();
+
+
+        }
+
+    }
+
+    public void DisplayFragmentLensesDetails(ProductDataModel.ProductModel productModel) {
+
+        if (fragment_home != null && fragment_home.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_home).commit();
+
+        }
+        fragment_Lenses_details = Fragment_Lenses_Details.newInstance(productModel);
+
+        if (!fragment_Lenses_details.isAdded()) {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_Lenses_details, "fragment_Lenses_details").addToBackStack("fragment_Lenses_details").commit();
         }
     }
 
-    public void DisplayFragmentDetails(ProductDataModel.ProductModel productModel) {
-        fragment_details = Fragment_Details.newInstance(productModel);
+    public void DisplayFragmentAccessoriesDetails(ProductDataModel.ProductModel productModel) {
+        if (fragment_home != null && fragment_home.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_home).commit();
 
-        if (!fragment_details.isAdded()) {
-            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_details, "fragment_details").addToBackStack("fragment_details").commit();
+        }
+        fragment_accessories_details = Fragment_Accessories_Details.newInstance(productModel);
+
+        if (!fragment_accessories_details.isAdded()) {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_accessories_details, "fragment_accessories_details").addToBackStack("fragment_accessories_details").commit();
         }
     }
+
 
     /////////////////////////////////////////////////////////////////
 
     public void DisplayFragmentTransparent() {
-        lastSelectedFragmentStorePos = 0;
         if (fragment_color != null && fragment_color.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_color).commit();
         }
@@ -386,8 +479,16 @@ public class HomeActivity extends AppCompatActivity {
 
         if (!fragment_transparent.isAdded()) {
             fragmentManager.beginTransaction().add(R.id.store_fragment_container, fragment_transparent, "fragment_transparent").addToBackStack("fragment_transparent").commit();
+
         } else {
             fragmentManager.beginTransaction().show(fragment_transparent).commit();
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragment_transparent.getProducts();
+                        }
+                    }, 1);
         }
 
         if (fragment_store != null && fragment_store.isAdded()) {
@@ -397,7 +498,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void DisplayFragmentColor() {
-        lastSelectedFragmentStorePos = 1;
 
         if (fragment_transparent != null && fragment_transparent.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_transparent).commit();
@@ -414,12 +514,18 @@ public class HomeActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().add(R.id.store_fragment_container, fragment_color, "fragment_color").addToBackStack("fragment_color").commit();
         } else {
             fragmentManager.beginTransaction().show(fragment_color).commit();
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragment_color.getProducts();
+                        }
+                    }, 1);
         }
 
     }
 
     public void DisplayFragmentTools() {
-        lastSelectedFragmentStorePos = 2;
 
         if (fragment_transparent != null && fragment_transparent.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_transparent).commit();
@@ -436,6 +542,13 @@ public class HomeActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().add(R.id.store_fragment_container, fragment_tools, "fragment_tools").addToBackStack("fragment_tools").commit();
         } else {
             fragmentManager.beginTransaction().show(fragment_tools).commit();
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragment_color.getProducts();
+                        }
+                    }, 1);
         }
 
     }
@@ -443,18 +556,21 @@ public class HomeActivity extends AppCompatActivity {
     //////////////////////////////////////////////////////////////////
     public void DisplayFragmentSearch() {
 
+
         fragment_search = Fragment_Search.newInstance();
 
         if (!fragment_search.isAdded()) {
             fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_search, "fragment_search").addToBackStack("fragment_search").commit();
-        } else {
-            fragmentManager.beginTransaction().show(fragment_search).commit();
         }
 
     }
 
     public void DisplayFragmentCart() {
 
+        if (fragment_home != null && fragment_home.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_home).commit();
+
+        }
         fragment_cart = Fragment_Cart.newInstance();
 
         if (!fragment_cart.isAdded()) {
@@ -466,18 +582,26 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void DisplayFragmentClientData() {
-        fragment_client_data = Fragment_Client_Data.newInstance();
+        if (userModel==null)
+        {
+            Common.CreateUserNotSignInAlertDialog(this,orderCartSingleTone.getItemCartModelList());
+        }else
+            {
+                fragment_client_data = Fragment_Client_Data.newInstance();
 
-        if (!fragment_client_data.isAdded()) {
-            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_client_data, "fragment_client_data").addToBackStack("fragment_client_data").commit();
-        } else {
-            fragmentManager.beginTransaction().show(fragment_client_data).commit();
-        }
+                if (!fragment_client_data.isAdded()) {
+                    fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_client_data, "fragment_client_data").addToBackStack("fragment_client_data").commit();
+                } else {
+                    fragmentManager.beginTransaction().show(fragment_client_data).commit();
+                }
+            }
+
 
     }
 
     public void DisplayFragmentOrderDetails(OrderDataModel.OrderModel orderModel) {
 
+        HideFragmentHome();
         fragment_order_details = Fragment_Order_Details.newInstance(orderModel);
 
         if (!fragment_order_details.isAdded()) {
@@ -486,42 +610,6 @@ public class HomeActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().show(fragment_order_details).commit();
         }
 
-    }
-
-    public void SaveItemsData(List<ItemCartModel> itemCartModelList, double total_product_cost) {
-        if (orderToUploadModel == null) {
-            orderToUploadModel = new OrderToUploadModel();
-        }
-
-        orderToUploadModel.setItemCartModelList(itemCartModelList);
-        orderToUploadModel.setTotal(total_product_cost);
-
-
-    }
-
-    public void UploadOrder(String name, String phone, String address, String note) {
-        if (orderToUploadModel != null) {
-            orderToUploadModel.setToken(userModel.getToken());
-            orderToUploadModel.setName(name);
-            orderToUploadModel.setEmail(userModel.getEmail());
-            orderToUploadModel.setPhone(phone);
-            orderToUploadModel.setAddress(address);
-            orderToUploadModel.setNotes(note);
-
-            Dialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
-            dialog.show();
-
-            fragmentManager.popBackStack("fragment_client_data", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            new Handler()
-                    .postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (fragment_cart != null && fragment_cart.isAdded()) {
-                                fragment_cart.clearCart();
-                            }
-                        }
-                    }, 1);
-        }
     }
 
     //////////////////////////////////////////////////////////////////
@@ -535,18 +623,24 @@ public class HomeActivity extends AppCompatActivity {
         if (fragment_favourite != null && fragment_favourite.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_favourite).commit();
         }
-        if (fragment_profile != null && fragment_profile.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_profile).commit();
+        if (fragment_more != null && fragment_more.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_more).commit();
         }
 
         if (fragment_store == null) {
+
             fragment_store = Fragment_Store.newInstance();
         }
 
-        if (fragment_store.isAdded()) {
-            fragmentManager.beginTransaction().show(fragment_store).commit();
-        } else {
+        if (!fragment_store.isAdded()) {
+
             fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_store, "fragment_store").addToBackStack("fragment_store").commit();
+            DisplayFragmentTransparent();
+
+
+        } else {
+            fragmentManager.beginTransaction().show(fragment_store).commit();
+
 
         }
         UpdateBottomNavigationPosition(0);
@@ -554,9 +648,9 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void DisplayFragmentOrders() {
+    public void DisplayFragmentOrders(final int status) {
         if (userModel == null) {
-            Common.CreateUserNotSignInAlertDialog(this);
+            Common.CreateUserNotSignInAlertDialog(this,orderCartSingleTone.getItemCartModelList());
         } else {
 
             if (fragment_store != null && fragment_store.isAdded()) {
@@ -568,8 +662,8 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_favourite != null && fragment_favourite.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_favourite).commit();
             }
-            if (fragment_profile != null && fragment_profile.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_profile).commit();
+            if (fragment_more != null && fragment_more.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_more).commit();
             }
 
             if (fragment_orders == null) {
@@ -582,6 +676,28 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_orders, "fragment_orders").addToBackStack("fragment_orders").commit();
 
             }
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (status==Tags.new_order)
+                            {
+                                fragment_orders.NavigateToFragmentNew();
+                            }else if (status == Tags.accepted_order)
+                            {
+                                fragment_orders.NavigateToFragmentCurrent();
+                            }
+                            else if (status == Tags.refused_order)
+                            {
+                                fragment_orders.NavigateToFragmentNew();
+
+                            }
+                            else if (status == Tags.finished_order)
+                            {
+                                fragment_orders.NavigateToFragmentPrevious();
+                            }
+                        }
+                    },1);
             UpdateBottomNavigationPosition(1);
         }
 
@@ -600,8 +716,8 @@ public class HomeActivity extends AppCompatActivity {
         if (fragment_favourite != null && fragment_favourite.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_favourite).commit();
         }
-        if (fragment_profile != null && fragment_profile.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_profile).commit();
+        if (fragment_more != null && fragment_more.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_more).commit();
         }
 
         if (fragment_offers == null) {
@@ -621,7 +737,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentFavourite() {
         if (userModel == null) {
-            Common.CreateUserNotSignInAlertDialog(this);
+            Common.CreateUserNotSignInAlertDialog(this,orderCartSingleTone.getItemCartModelList());
 
         } else {
 
@@ -634,8 +750,8 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_offers != null && fragment_offers.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_offers).commit();
             }
-            if (fragment_profile != null && fragment_profile.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_profile).commit();
+            if (fragment_more != null && fragment_more.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_more).commit();
             }
 
             if (fragment_favourite == null) {
@@ -655,25 +771,58 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    public void DisplayFragmentMore()
+    {
+        if (fragment_store != null && fragment_store.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_store).commit();
+        }
+        if (fragment_orders != null && fragment_orders.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_orders).commit();
+        }
+        if (fragment_offers != null && fragment_offers.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_offers).commit();
+        }
+        if (fragment_favourite != null && fragment_favourite.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_favourite).commit();
+        }
+
+        if (fragment_more == null) {
+            fragment_more = Fragment_More.newInstance();
+        }
+
+        if (fragment_more.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_more).commit();
+        } else {
+            fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_more, "fragment_more").addToBackStack("fragment_more").commit();
+
+        }
+
+        UpdateBottomNavigationPosition(4);
+
+    }
+
+    public void DisplayFragmentQuestions()
+    {
+
+
+        if (fragment_home != null && fragment_home.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_home).commit();
+
+        }
+        fragment_question = Fragment_Question.newInstance();
+
+        if (!fragment_question.isAdded()) {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_question, "fragment_question").addToBackStack("fragment_question").commit();
+        }
+    }
+
     public void DisplayFragmentProfile() {
         if (userModel == null) {
-            Common.CreateUserNotSignInAlertDialog(this);
+            Common.CreateUserNotSignInAlertDialog(this,orderCartSingleTone.getItemCartModelList());
 
         } else {
 
-            if (fragment_store != null && fragment_store.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_store).commit();
-            }
-            if (fragment_orders != null && fragment_orders.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_orders).commit();
-            }
-            if (fragment_offers != null && fragment_offers.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_offers).commit();
-            }
-            if (fragment_favourite != null && fragment_favourite.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_favourite).commit();
-            }
-
+            HideFragmentHome();
             if (fragment_profile == null) {
                 fragment_profile = Fragment_Profile.newInstance();
             }
@@ -681,10 +830,9 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_profile.isAdded()) {
                 fragmentManager.beginTransaction().show(fragment_profile).commit();
             } else {
-                fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_profile, "fragment_profile").addToBackStack("fragment_profile").commit();
+                fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_profile, "fragment_profile").addToBackStack("fragment_profile").commit();
 
             }
-            UpdateBottomNavigationPosition(4);
 
         }
 
@@ -739,6 +887,110 @@ public class HomeActivity extends AppCompatActivity {
                 }, 1);
     }
 
+    public void HideFragmentHome()
+    {
+        if (fragment_home!=null&&fragment_home.isAdded())
+        {
+            fragmentManager.beginTransaction().hide(fragment_home).commit();
+        }
+    }
+    //////////////////////////////////////////////
+    public void SaveItemsData(List<ItemCartModel> itemCartModelList, double total_product_cost) {
+        if (orderToUploadModel == null) {
+            orderToUploadModel = new OrderToUploadModel();
+        }
+
+        orderToUploadModel.setItemsList(itemCartModelList);
+        orderToUploadModel.setTotal(total_product_cost);
+
+
+    }
+
+    public void UploadOrder(String name, String phone, String address, String note, int payment_method) {
+
+
+        if (orderToUploadModel != null) {
+            orderToUploadModel.setToken(userModel.getToken());
+            orderToUploadModel.setName(name);
+            orderToUploadModel.setEmail(userModel.getEmail());
+            orderToUploadModel.setPhone(phone);
+            orderToUploadModel.setAddress(address);
+            orderToUploadModel.setNotes(note);
+            orderToUploadModel.setPayment_method(payment_method);
+
+            final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+            dialog.show();
+            Api.getService()
+                    .sendOrder(orderToUploadModel)
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful())
+                            {
+                                fragmentManager.popBackStack("fragment_client_data", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                new Handler()
+                                        .postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (fragment_cart != null && fragment_cart.isAdded()) {
+                                                    clearOrderData();
+                                                    fragment_cart.clearCart();
+                                                }
+
+                                                if (fragment_orders!=null&&fragment_orders.isAdded())
+                                                {
+                                                    RefreshFragmentOrders(Tags.new_order);
+                                                }
+
+                                                dialog.dismiss();
+                                                Toast.makeText(HomeActivity.this, getString(R.string.succ), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }, 1);
+                            }else
+                            {
+                                dialog.dismiss();
+                                Toast.makeText(HomeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                try {
+                                    Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                Toast.makeText(HomeActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                                Log.e("Error",t.getMessage());
+                            }catch (Exception e){}
+                        }
+                    });
+
+
+        }
+
+
+
+
+
+    }
+    public void NavigateToTermsCondition(int type) {
+        Intent intent = new Intent(this, TermsConditionsActivity.class);
+        intent.putExtra("type",type);
+        startActivity(intent);
+        if (current_language.equals("ar"))
+        {
+            overridePendingTransition(R.anim.from_right,R.anim.to_left);
+        }else
+            {
+                overridePendingTransition(R.anim.from_left,R.anim.to_right);
+
+            }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -758,7 +1010,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void Logout() {
-        final Dialog dialog = Common.createProgressDialog(this, getString(R.string.logging_out));
+        final ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.logging_out));
         dialog.show();
         Api.getService()
                 .logout(userModel.getToken())
@@ -826,9 +1078,12 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
-        fl_delete.setOnClickListener(new View.OnClickListener() {
+        fl_delete.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
+
                 clearOrderData();
             }
         });
@@ -853,52 +1108,61 @@ public class HomeActivity extends AppCompatActivity {
         UpdateCartCounter(0);
     }
 
+
     public void Back() {
 
-        if (fragment_details != null && fragment_details.isVisible()) {
+        if (fragment_home != null && fragment_home.isVisible()) {
 
-            super.onBackPressed();
+            if (fragment_store!=null&&!fragment_store.isVisible())
+            {
+                DisplayFragmentStore();
+            }else
+                {
+                    if (fragment_transparent != null && !fragment_transparent.isVisible()) {
+                        DisplayFragmentTransparent();
 
-        }else if (fragment_search != null && fragment_search.isVisible()) {
-            super.onBackPressed();
-
-        } else if (fragment_cart != null && fragment_cart.isVisible()) {
-            super.onBackPressed();
-
-
-        }
-        else {
-
-            if (fragment_store != null && fragment_store.isVisible()) {
-                if (lastSelectedFragmentStorePos == 0) {
-
-                    if (orderCartSingleTone.getItemsCount() > 0) {
-                        CreateCartAlertDialog();
                     } else {
-                        finish();
 
+                        Log.e("nn","nn");
+                        if (orderCartSingleTone.getItemsCount() > 0) {
+                            CreateCartAlertDialog();
+                        } else {
+                            if (userModel!=null)
+                            {
+                                finish();
+
+                            }else
+                                {
+                                   Intent intent = new Intent(this,SignInActivity.class);
+                                   startActivity(intent);
+                                   finish();
+                                    if (current_language.equals("ar"))
+                                    {
+                                        overridePendingTransition(R.anim.from_left,R.anim.to_right);
+
+
+
+                                    }else
+                                    {
+                                        overridePendingTransition(R.anim.from_right,R.anim.to_left);
+
+
+                                    }
+                                }
+
+                        }
                     }
-
-                } else {
-                    DisplayFragmentTransparent();
                 }
 
-            } else if (fragment_orders != null && fragment_orders.isVisible()) {
-                DisplayFragmentStore();
-            } else if (fragment_offers != null && fragment_offers.isVisible()) {
-                DisplayFragmentStore();
 
-            } else if (fragment_favourite != null && fragment_favourite.isVisible()) {
-                DisplayFragmentStore();
 
-            } else if (fragment_profile != null && fragment_profile.isVisible()) {
-                DisplayFragmentStore();
-
-            }
+        } else {
+            DisplayFragmentHome();
         }
 
 
     }
+
 
 
 
@@ -913,5 +1177,22 @@ public class HomeActivity extends AppCompatActivity {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+    }
+
+
+    public void RefreshActivity(String lang) {
+        Paper.book().write("lang",lang);
+        LocalManager.setNewLocale(this,lang);
+        new Handler()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent intent =  getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                },1050);
+
     }
 }

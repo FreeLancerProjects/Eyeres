@@ -189,6 +189,159 @@
             />
 
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_payment"
+                android:padding="5dp"
+                android:tint="@color/colorPrimary"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+                android:text="@string/payment_method"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:weightSum="3"
+            >
+
+            <LinearLayout
+                android:id="@+id/ll_cash"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:background="@drawable/payment_unchecked"
+                android:descendantFocusability="blocksDescendants"
+                >
+                <ImageView
+                    android:id="@+id/image_cash"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/ic_cash"
+                    android:tint="@color/gray"
+                    android:clickable="false"
+                    android:longClickable="false"
+
+
+                    />
+                <TextView
+                    android:id="@+id/tv_cash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    android:text="Cash نقدي"
+                    android:textColor="@color/gray"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_transfer"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:background="@drawable/payment_unchecked"
+                android:descendantFocusability="blocksDescendants"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="13dp"
+                >
+                <ImageView
+                    android:id="@+id/image_transfer"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/ic_card"
+                    android:tint="@color/gray"
+                    android:clickable="false"
+                    android:longClickable="false"
+
+
+                    />
+                <TextView
+                    android:id="@+id/tv_transfer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    android:text="@string/transfer"
+                    android:textColor="@color/gray"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_mada"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:background="@drawable/payment_unchecked"
+                android:descendantFocusability="blocksDescendants"
+                >
+                <ImageView
+                    android:id="@+id/image_mada"
+                    android:layout_width="45dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/mada_gay"
+                    android:tint="@color/gray"
+                    android:clickable="false"
+                    android:longClickable="false"
+
+
+                    />
+                <TextView
+                    android:id="@+id/tv_mada"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    android:text="@string/mada"
+                    android:textColor="@color/gray"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -287,6 +440,7 @@
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>

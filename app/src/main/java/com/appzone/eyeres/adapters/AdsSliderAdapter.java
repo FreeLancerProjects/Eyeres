@@ -26,6 +26,7 @@ public class AdsSliderAdapter extends PagerAdapter {
         this.context = context;
     }
 
+
     @Override
     public int getCount() {
         return adsList.size();

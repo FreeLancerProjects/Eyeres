@@ -18,10 +18,14 @@ import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 import com.appzone.eyeres.adapters.CartAdapter;
 import com.appzone.eyeres.models.ItemCartModel;
+import com.appzone.eyeres.preferences.Preferences;
 import com.appzone.eyeres.singletone.OrderCartSingleTone;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import io.paperdb.Paper;
 
 public class Fragment_Cart extends Fragment{
     private TextView tv_cost;
@@ -54,20 +58,22 @@ public class Fragment_Cart extends Fragment{
     private void initView(View view)
     {
         activity = (HomeActivity) getActivity();
+        Paper.init(activity);
+        current_language = Paper.book().read("lang",Locale.getDefault().getLanguage());
+
         orderCartSingleTone = OrderCartSingleTone.newInstance();
-        current_language  = Locale.getDefault().getLanguage();
         arrow1 = view.findViewById(R.id.arrow1);
         arrow2 = view.findViewById(R.id.arrow2);
 
         if (current_language.equals("ar"))
         {
-            arrow1.setBackgroundResource(R.drawable.white_right_arrow);
-            arrow2.setBackgroundResource(R.drawable.white_left_arrow);
+            arrow1.setImageResource(R.drawable.white_right_arrow);
+            arrow2.setImageResource(R.drawable.white_left_arrow);
 
         }else
         {
-            arrow1.setBackgroundResource(R.drawable.white_left_arrow);
-            arrow2.setBackgroundResource(R.drawable.white_right_arrow);
+            arrow1.setImageResource(R.drawable.white_left_arrow);
+            arrow2.setImageResource(R.drawable.white_right_arrow);
 
         }
         ll_empty_cart = view.findViewById(R.id.ll_empty_cart);
@@ -86,6 +92,8 @@ public class Fragment_Cart extends Fragment{
         recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         recView.setDrawingCacheEnabled(true);
         recView.setItemViewCacheSize(25);
+
+
 
         card_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +114,10 @@ public class Fragment_Cart extends Fragment{
     }
     private void updateUI()
     {
-        itemCartModelList = orderCartSingleTone.getItemCartModelList();
+        itemCartModelList = new ArrayList<>();
+        itemCartModelList.addAll(orderCartSingleTone.getItemCartModelList());
+
+
 
         if (itemCartModelList.size()>0)
         {
@@ -134,7 +145,7 @@ public class Fragment_Cart extends Fragment{
         double cost = 0.0;
         for (ItemCartModel itemCartModel : itemCartModelList)
         {
-            cost += itemCartModel.getProduct_cost();
+            cost += itemCartModel.getTotal();
         }
 
         return cost;
@@ -148,6 +159,7 @@ public class Fragment_Cart extends Fragment{
         {
             ll_empty_cart.setVisibility(View.VISIBLE);
             ll_cost_container.setVisibility(View.GONE);
+            clearCart();
         }
         activity.UpdateCartCounter(itemCartModelList.size());
 
@@ -165,6 +177,7 @@ public class Fragment_Cart extends Fragment{
     {
         itemCartModelList.clear();
         orderCartSingleTone.clear();
+        Preferences.getInstance().clear_cart(activity);
         ll_empty_cart.setVisibility(View.VISIBLE);
         ll_cost_container.setVisibility(View.GONE);
 

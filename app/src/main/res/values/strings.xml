@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Eyeres</string>
+    <string name="app_name">iris</string>
     <string name="notifications">Notifications</string>
     <string name="si_su">Please Sign in or sign up .</string>
     <string name="ok">Ok</string>
@@ -79,7 +79,7 @@
     <string name="by_using_this_app_you_agree_to">By using this app you agree to</string>
     <string name="terms_and_conditions">Terms and conditions</string>
     <string name="details">Details</string>
-    <string name="choose2">-Choose-</string>
+    <string name="choose2">Choose</string>
     <string name="there_are_no_products_to_display">There are no products to display</string>
     <string name="new_order">New</string>
     <string name="current_order">Current</string>
@@ -130,6 +130,23 @@
     <string name="delete_item">Delete item ?</string>
     <string name="items">Items</string>
     <string name="delete_items">Delete items ?</string>
+    <string name="Choose_deg">Choose degree</string>
+    <string name="developers">Developer</string>
+    <string name="select">Select</string>
+    <string name="cancel2">Cancel</string>
+    <string name="select_language">Select Language</string>
+    <string name="language_settings">Language Settings</string>
+    <string name="about_tour">About us</string>
+    <string name="interesting_questions">Interesting questions</string>
+    <string name="delivery_policy">Delivery Policy</string>
+    <string name="no_questions_to_display">No questions to display</string>
+    <string name="accept">Accept</string>
+    <string name="accept3">Accept</string>
+    <string name="acc_terms_cond">Please accept terms and conditions</string>
+    <string name="payment_method">Payment method</string>
+    <string name="transfer">Transfer</string>
+    <string name="mada">Mada</string>
+    <string name="sel_pay_method">Please Select payment method</string>
 
 
 </resources>
