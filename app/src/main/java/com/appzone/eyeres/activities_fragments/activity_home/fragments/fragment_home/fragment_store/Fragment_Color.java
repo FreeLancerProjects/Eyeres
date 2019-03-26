@@ -7,20 +7,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
-import com.appzone.eyeres.adapters.ProductAdapter;
+import com.appzone.eyeres.adapters.ProductColorAdapter;
 import com.appzone.eyeres.models.FavoriteIdModel;
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.models.UserModel;
@@ -39,26 +38,25 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Fragment_Color extends Fragment{
-    private RecyclerView recView;
-    private RecyclerView.LayoutManager manager;
-    private ProgressBar progBar;
-    private LinearLayout ll_add_recent, ll_most_seller, ll_orderBy;
+    private RecyclerView recView,recViewBrands;
+    private RecyclerView.LayoutManager manager,managerBrand;
+    private ProgressBar progBar,progBarBrands;
     private HomeActivity activity;
-    private int orderBy = Tags.type_add_recent;
+    private int orderBy = Tags.type_most_sell;
     private int current_page = 1;
-    private List<ProductDataModel.ProductModel> productModelList,first20RecentProductList,first20MostProductList;
-    private ProductAdapter adapter;
+    private List<ProductDataModel.ProductModel> productModelList,first20MostProductList;
+    private ProductColorAdapter adapter;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private boolean isLoading = false;
     private String user_token = "";
-    private TextView tv_no_product;
+    private TextView tv_no_product,tv_no_brand;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_transparent_color_tools,container,false);
+        View view = inflater.inflate(R.layout.fragment_color,container,false);
         initView(view);
         return view;
     }
@@ -73,18 +71,19 @@ public class Fragment_Color extends Fragment{
 
         activity = (HomeActivity) getActivity();
         productModelList = new ArrayList<>();
-        first20RecentProductList = new ArrayList<>();
         first20MostProductList = new ArrayList<>();
         tv_no_product = view.findViewById(R.id.tv_no_product);
 
         progBar = view.findViewById(R.id.progBar);
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
-        ll_add_recent = view.findViewById(R.id.ll_add_recent);
-        ll_most_seller = view.findViewById(R.id.ll_most_seller);
-        ll_orderBy = view.findViewById(R.id.ll_orderBy);
+        progBarBrands = view.findViewById(R.id.progBarBrands);
+        progBarBrands.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+
+        recViewBrands = view.findViewById(R.id.recViewBrands);
+        tv_no_brand = view.findViewById(R.id.tv_no_brand);
 
         recView = view.findViewById(R.id.recView);
-        manager = new GridLayoutManager(getActivity(), 2);
+        manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
         recView.setLayoutManager(manager);
         recView.setHasFixedSize(true);
         recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
@@ -92,57 +91,24 @@ public class Fragment_Color extends Fragment{
         recView.setItemViewCacheSize(25);
         recView.setNestedScrollingEnabled(true);
 
+        managerBrand = new LinearLayoutManager(activity);
+        recViewBrands.setLayoutManager(managerBrand);
+        recViewBrands.setHasFixedSize(true);
+        recViewBrands.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        recViewBrands.setDrawingCacheEnabled(true);
+        recViewBrands.setItemViewCacheSize(25);
+        recViewBrands.setNestedScrollingEnabled(true);
+
         if (userModel == null) {
 
-            adapter = new ProductAdapter(productModelList, activity, false,this);
+            adapter = new ProductColorAdapter(productModelList, activity, false,this);
         } else {
             user_token = userModel.getToken();
-            adapter = new ProductAdapter(productModelList, activity, true,this);
+            adapter = new ProductColorAdapter(productModelList, activity, true,this);
 
         }
         recView.setAdapter(adapter);
 
-        ll_add_recent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                current_page =1;
-                isLoading = false;
-                orderBy = Tags.type_add_recent;
-                ll_add_recent.setBackgroundResource(R.drawable.ll_add_recent_bg);
-                ll_most_seller.setBackgroundResource(R.drawable.ll_add_most_bg);
-
-                if (first20RecentProductList.size()>0)
-                {
-                    productModelList.clear();
-                    productModelList.addAll(first20RecentProductList);
-                    adapter.notifyDataSetChanged();
-                }
-
-            }
-        });
-
-        ll_most_seller.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                current_page = 1;
-                isLoading = false;
-                orderBy = Tags.type_most_sell;
-                ll_add_recent.setBackgroundResource(R.drawable.ll_add_most_bg);
-                ll_most_seller.setBackgroundResource(R.drawable.ll_add_recent_bg);
-
-                if (first20MostProductList.size()>0)
-                {
-                    productModelList.clear();
-                    productModelList.addAll(first20MostProductList);
-                    adapter.notifyDataSetChanged();
-                }else
-                {
-                    getProducts();
-                }
-
-
-            }
-        });
 
         recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -150,21 +116,18 @@ public class Fragment_Color extends Fragment{
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                int lastVisibleItemPos = ((GridLayoutManager)recView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                int lastVisibleItemPos = ((LinearLayoutManager)recView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
                 int totalItems = recView.getLayoutManager().getItemCount();
                 Log.e("lastVisibleItemPos",lastVisibleItemPos+"_");
                 Log.e("totalItems",totalItems+"_");
 
-                if (dy>0)
-                {
-                    if (lastVisibleItemPos >= (totalItems-4)&& !isLoading){
-                        Log.e("load","load");
-                        productModelList.add(null);
-                        adapter.notifyItemInserted(productModelList.size()-1);
-                        isLoading = true;
-                        int nextPageIndex = current_page+1;
-                        LoadMore(nextPageIndex,orderBy);
-                    }
+                if (lastVisibleItemPos >= (totalItems-4)&& !isLoading){
+                    Log.e("load","load");
+                    productModelList.add(null);
+                    adapter.notifyItemInserted(productModelList.size()-1);
+                    isLoading = true;
+                    int nextPageIndex = current_page+1;
+                    LoadMore(nextPageIndex,orderBy);
                 }
 
             }
@@ -191,30 +154,21 @@ public class Fragment_Color extends Fragment{
 
                                     if (current_page == 1)
                                     {
-                                        if (orderBy == Tags.type_add_recent)
-                                        {
-                                            first20RecentProductList.clear();
 
-                                            first20RecentProductList.addAll(response.body().getData());
-                                        }else
-                                        {
                                             first20MostProductList.clear();
 
 
                                             first20MostProductList.addAll(response.body().getData());
 
-                                        }
                                     }
 
 
                                     productModelList.addAll(response.body().getData());
                                     if (productModelList.size() > 0) {
-                                        ll_orderBy.setVisibility(View.VISIBLE);
                                         adapter.notifyDataSetChanged();
                                         tv_no_product.setVisibility(View.GONE);
 
                                     } else {
-                                        ll_orderBy.setVisibility(View.GONE);
                                         tv_no_product.setVisibility(View.VISIBLE);
 
 
@@ -275,7 +229,58 @@ public class Fragment_Color extends Fragment{
                 });
     }
 
+    public void Refresh()
+    {
+        Api.getService()
+                .getProducts(2, 1, orderBy,user_token)
+                .enqueue(new Callback<ProductDataModel>() {
+                    @Override
+                    public void onResponse(Call<ProductDataModel> call, Response<ProductDataModel> response) {
+                        if (response.isSuccessful()) {
+                            progBar.setVisibility(View.GONE);
+                            if (response.body() != null) {
 
+                                Log.e("size3",response.body().getData().size()+"_");
+
+                                productModelList.clear();
+
+                                if (current_page == 1)
+                                {
+
+                                    first20MostProductList.clear();
+
+
+                                    first20MostProductList.addAll(response.body().getData());
+
+                                }
+
+
+                                productModelList.addAll(response.body().getData());
+                                if (productModelList.size() > 0) {
+                                    adapter.notifyDataSetChanged();
+                                    tv_no_product.setVisibility(View.GONE);
+
+                                } else {
+                                    tv_no_product.setVisibility(View.VISIBLE);
+
+
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProductDataModel> call, Throwable t) {
+                        try {
+                            progBar.setVisibility(View.GONE);
+                            Log.e("Error", t.getMessage());
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                });
+    }
     public void UpdateFavorite(final ProductDataModel.ProductModel productModel, final int pos)
     {
         if (productModel.getIs_favorite() == 1)

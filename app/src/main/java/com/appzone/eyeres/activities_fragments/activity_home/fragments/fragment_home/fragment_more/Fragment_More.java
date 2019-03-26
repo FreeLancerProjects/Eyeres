@@ -25,8 +25,8 @@ import io.paperdb.Paper;
 
 public class Fragment_More extends Fragment {
 
-    private LinearLayout ll_terms,ll_developer,ll_profile,ll_language,ll_about,ll_question,ll_policy;
-    private ImageView arrow1,arrow2,arrow3,arrow4,arrow5,arrow6;
+    private LinearLayout ll_terms,ll_developer,ll_profile,ll_language,ll_about,ll_question,ll_policy,ll_favorite;
+    private ImageView arrow1,arrow2,arrow3,arrow4,arrow5,arrow6,arrow7;
     private TextView tv_developer;
     private String current_language;
     private HomeActivity activity;
@@ -55,6 +55,7 @@ public class Fragment_More extends Fragment {
         arrow4 = view.findViewById(R.id.arrow4);
         arrow5 = view.findViewById(R.id.arrow5);
         arrow6 = view.findViewById(R.id.arrow6);
+        arrow7 = view.findViewById(R.id.arrow7);
 
         language_array = new String[]{"English","العربية"};
 
@@ -68,6 +69,7 @@ public class Fragment_More extends Fragment {
             arrow4.setImageResource(R.drawable.black_left_arrow);
             arrow5.setImageResource(R.drawable.black_left_arrow);
             arrow6.setImageResource(R.drawable.black_left_arrow);
+            arrow7.setImageResource(R.drawable.black_left_arrow);
 
 
         }else
@@ -79,6 +81,7 @@ public class Fragment_More extends Fragment {
             arrow4.setImageResource(R.drawable.black_right_arrow);
             arrow5.setImageResource(R.drawable.black_right_arrow);
             arrow6.setImageResource(R.drawable.black_right_arrow);
+            arrow7.setImageResource(R.drawable.black_right_arrow);
 
         }
 
@@ -91,6 +94,7 @@ public class Fragment_More extends Fragment {
         ll_about = view.findViewById(R.id.ll_about);
         ll_question = view.findViewById(R.id.ll_question);
         ll_policy = view.findViewById(R.id.ll_policy);
+        ll_favorite = view.findViewById(R.id.ll_favorite);
 
         tv_developer.setText(getString(R.string.developers)+"   "+"009660539044145");
         ll_terms.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +148,14 @@ public class Fragment_More extends Fragment {
             @Override
             public void onClick(View v) {
                 CreateLanguageDialog();
+            }
+        });
+        ll_favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                activity.DisplayFragmentFavourite();
+
             }
         });
 

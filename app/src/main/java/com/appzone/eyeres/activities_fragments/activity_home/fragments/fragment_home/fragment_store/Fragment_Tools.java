@@ -59,7 +59,7 @@ public class Fragment_Tools extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_transparent_color_tools,container,false);
+        View view = inflater.inflate(R.layout.fragment_transparent_tools,container,false);
         initView(view);
         return view;
     }
@@ -273,6 +273,65 @@ public class Fragment_Tools extends Fragment{
                 });
     }
 
+    public void Refresh()
+    {
+        Api.getService()
+                .getProducts(3, 1, orderBy,user_token)
+                .enqueue(new Callback<ProductDataModel>() {
+                    @Override
+                    public void onResponse(Call<ProductDataModel> call, Response<ProductDataModel> response) {
+                        if (response.isSuccessful()) {
+                            progBar.setVisibility(View.GONE);
+                            if (response.body() != null) {
+
+                                Log.e("size2",response.body().getData().size()+"_");
+
+                                productModelList.clear();
+
+                                if (current_page == 1)
+                                {
+                                    if (orderBy == Tags.type_add_recent)
+                                    {
+                                        first20RecentProductList.clear();
+
+                                        first20RecentProductList.addAll(response.body().getData());
+                                    }else
+                                    {
+                                        first20MostProductList.clear();
+
+
+                                        first20MostProductList.addAll(response.body().getData());
+
+                                    }
+                                }
+
+
+                                productModelList.addAll(response.body().getData());
+                                if (productModelList.size() > 0) {
+                                    ll_orderBy.setVisibility(View.VISIBLE);
+                                    adapter.notifyDataSetChanged();
+                                    tv_no_product.setVisibility(View.GONE);
+                                } else {
+                                    ll_orderBy.setVisibility(View.GONE);
+                                    tv_no_product.setVisibility(View.VISIBLE);
+
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProductDataModel> call, Throwable t) {
+                        try {
+                            progBar.setVisibility(View.GONE);
+                            Log.e("Error", t.getMessage());
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                });
+    }
 
     public void UpdateFavorite(final ProductDataModel.ProductModel productModel, final int pos)
     {

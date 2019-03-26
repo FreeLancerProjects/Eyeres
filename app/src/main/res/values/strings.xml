@@ -147,6 +147,10 @@
     <string name="transfer">Transfer</string>
     <string name="mada">Mada</string>
     <string name="sel_pay_method">Please Select payment method</string>
+    <string name="most_seller2">Most Seller</string>
+    <string name="the_finest_brands">The finest brands</string>
+    <string name="there_are_no_brands_to_display">There are no brands to display</string>
+    <string name="sp_order">Special order</string>
 
 
 </resources>

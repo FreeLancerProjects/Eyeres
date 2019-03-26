@@ -149,5 +149,9 @@
     <string name="transfer">تحويل</string>
     <string name="mada">مدى</string>
     <string name="sel_pay_method">من فضلك اختر طريقة الدفع</string>
+    <string name="most_seller2">الاكثر طلبا</string>
+    <string name="the_finest_brands">أرقى المركات</string>
+    <string name="there_are_no_brands_to_display">لا توجد مركات لعرضها</string>
+    <string name="sp_order">طلبات خاصة</string>
 
 </resources>

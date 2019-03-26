@@ -4,10 +4,8 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,17 +18,13 @@ import android.widget.Toast;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
-import com.appzone.eyeres.adapters.AdsSliderAdapter;
 import com.appzone.eyeres.adapters.OffersAdapter;
-import com.appzone.eyeres.models.AdsModel;
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.remote.Api;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,11 +42,7 @@ public class Fragment_Offers extends Fragment{
     private TextView tv_no_product;
     private boolean isLoading = false;
     private int current_page = 1;
-    private ViewPager pager_slider;
-    private TabLayout tab_slider;
-    private AdsSliderAdapter adsSliderAdapter;
-    private Timer timer;
-    private TimerTask timerTask;
+
 
 
 
@@ -74,14 +64,6 @@ public class Fragment_Offers extends Fragment{
     {
         productModelList = new ArrayList<>();
         activity = (HomeActivity) getActivity();
-
-
-        pager_slider = view.findViewById(R.id.pager_slider);
-        tab_slider = view.findViewById(R.id.tab_slider);
-        tab_slider.setupWithViewPager(pager_slider);
-
-
-
 
         tv_no_product = view.findViewById(R.id.tv_no_product);
         progBarLoadMore = view.findViewById(R.id.progBarLoadMore);
@@ -118,7 +100,6 @@ public class Fragment_Offers extends Fragment{
             }
         });
         getOffers();
-        getAds();
     }
 
     private void getOffers()
@@ -210,97 +191,12 @@ public class Fragment_Offers extends Fragment{
                 });
     }
 
-    private void getAds()
-    {
-        Api.getService()
-                .getAds()
-                .enqueue(new Callback<AdsModel>() {
-                    @Override
-                    public void onResponse(Call<AdsModel> call, Response<AdsModel> response) {
 
-                        if (response.isSuccessful()&& response.body()!=null)
-                        {
-
-                            updateSliderUI(response.body().getData());
-
-                        }else
-                        {
-
-                            try {
-                                Log.e("error_code",response.code()+"_"+response.errorBody().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<AdsModel> call, Throwable t) {
-                        try {
-
-                            Log.e("Error",t.getMessage());
-                        }catch (Exception e){}
-                    }
-                });
-
-    }
-    private void updateSliderUI(List<AdsModel.Ads> data)
-    {
-        if (data.size()>0)
-        {
-            adsSliderAdapter = new AdsSliderAdapter(data,activity);
-            pager_slider.setAdapter(adsSliderAdapter);
-            if (data.size()>1)
-            {
-                timer = new Timer();
-                timerTask = new MyTimerTask();
-                timer.scheduleAtFixedRate(timerTask,6000,6000);
-
-            }
-
-        }else
-        {
-        }
-    }
     public void setItemData(ProductDataModel.ProductModel productModel) {
      activity.DisplayFragmentLensesDetails(productModel);
     }
 
-    private class MyTimerTask extends TimerTask
-    {
-        @Override
-        public void run() {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (pager_slider.getCurrentItem()<pager_slider.getAdapter().getCount()-1)
-                    {
-                        pager_slider.setCurrentItem(pager_slider.getCurrentItem()+1);
-                    }else
-                    {
-                        pager_slider.setCurrentItem(0);
-                    }
-                }
-            });
-        }
-    }
 
-    @Override
-    public void onDestroyView() {
-        if (timer!=null)
-        {
-            timer.purge();
-            timer.cancel();
-        }
-        if (timerTask!=null)
-        {
-            timerTask.cancel();
-        }
-        super.onDestroyView();
-
-        Log.e("fragment","onDestroyView()");
-
-    }
 
 
 }

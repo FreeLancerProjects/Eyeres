@@ -105,7 +105,8 @@ public class Common {
         btn_sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeActivity.finish();
+
+                homeActivity.NavigateToSignInActivity();
                 dialog.dismiss();
 
 

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appzone.eyeres.R;
-import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Favourite;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_more.Fragment_Favourite;
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.tags.Tags;
 import com.github.siyamed.shapeimageview.RoundedImageView;

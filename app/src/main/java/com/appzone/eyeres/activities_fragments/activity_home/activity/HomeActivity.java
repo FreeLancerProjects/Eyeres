@@ -31,7 +31,7 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_cart.Fragment_Client_Data;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details.Fragment_Accessories_Details;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details.Fragment_Lenses_Details;
-import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Favourite;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_more.Fragment_Favourite;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Home;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Offers;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Profile;
@@ -39,6 +39,7 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_more.Fragment_Question;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_orders.Fragment_Orders;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Color;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Special_order;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Store;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Tools;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Transparent;
@@ -101,6 +102,7 @@ public class HomeActivity extends AppCompatActivity {
     private Fragment_Order_Details fragment_order_details;
     private Fragment_More fragment_more;
     private Fragment_Question fragment_question;
+    private Fragment_Special_order fragment_special_order;
 
     //////////////////////////////////////////
     private Preferences preferences;
@@ -377,7 +379,12 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentHome() {
 
+        Log.e("ss","gg");
         if (fragment_question != null && fragment_question.isAdded()) {
+            super.onBackPressed();
+
+        }
+        if (fragment_favourite != null && fragment_favourite.isAdded()) {
             super.onBackPressed();
 
         }
@@ -439,10 +446,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentLensesDetails(ProductDataModel.ProductModel productModel) {
 
-        if (fragment_home != null && fragment_home.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_home).commit();
-
-        }
+        HideFragmentHome();
         fragment_Lenses_details = Fragment_Lenses_Details.newInstance(productModel);
 
         if (!fragment_Lenses_details.isAdded()) {
@@ -451,10 +455,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void DisplayFragmentAccessoriesDetails(ProductDataModel.ProductModel productModel) {
-        if (fragment_home != null && fragment_home.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_home).commit();
-
-        }
+        HideFragmentHome();
         fragment_accessories_details = Fragment_Accessories_Details.newInstance(productModel);
 
         if (!fragment_accessories_details.isAdded()) {
@@ -486,14 +487,13 @@ public class HomeActivity extends AppCompatActivity {
                     .postDelayed(new Runnable() {
                         @Override
                         public void run() {
+
                             fragment_transparent.getProducts();
                         }
                     }, 1);
         }
 
-        if (fragment_store != null && fragment_store.isAdded()) {
-            fragment_store.UpdateUITextColor();
-        }
+
 
     }
 
@@ -519,8 +519,10 @@ public class HomeActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             fragment_color.getProducts();
+                            fragment_store.setSelectedDefault();
                         }
                     }, 1);
+
         }
 
     }
@@ -567,10 +569,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentCart() {
 
-        if (fragment_home != null && fragment_home.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_home).commit();
-
-        }
+        HideFragmentHome();
         fragment_cart = Fragment_Cart.newInstance();
 
         if (!fragment_cart.isAdded()) {
@@ -620,8 +619,8 @@ public class HomeActivity extends AppCompatActivity {
         if (fragment_offers != null && fragment_offers.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_offers).commit();
         }
-        if (fragment_favourite != null && fragment_favourite.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_favourite).commit();
+        if (fragment_special_order != null && fragment_special_order.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_special_order).commit();
         }
         if (fragment_more != null && fragment_more.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_more).commit();
@@ -635,8 +634,14 @@ public class HomeActivity extends AppCompatActivity {
         if (!fragment_store.isAdded()) {
 
             fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_store, "fragment_store").addToBackStack("fragment_store").commit();
-            DisplayFragmentTransparent();
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            DisplayFragmentColor();
 
+                        }
+                    },1);
 
         } else {
             fragmentManager.beginTransaction().show(fragment_store).commit();
@@ -659,8 +664,8 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_offers != null && fragment_offers.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_offers).commit();
             }
-            if (fragment_favourite != null && fragment_favourite.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_favourite).commit();
+            if (fragment_special_order != null && fragment_special_order.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_special_order).commit();
             }
             if (fragment_more != null && fragment_more.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_more).commit();
@@ -713,8 +718,8 @@ public class HomeActivity extends AppCompatActivity {
         if (fragment_orders != null && fragment_orders.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_orders).commit();
         }
-        if (fragment_favourite != null && fragment_favourite.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_favourite).commit();
+        if (fragment_special_order != null && fragment_special_order.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_special_order).commit();
         }
         if (fragment_more != null && fragment_more.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_more).commit();
@@ -741,19 +746,8 @@ public class HomeActivity extends AppCompatActivity {
 
         } else {
 
-            if (fragment_store != null && fragment_store.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_store).commit();
-            }
-            if (fragment_orders != null && fragment_orders.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_orders).commit();
-            }
-            if (fragment_offers != null && fragment_offers.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_offers).commit();
-            }
-            if (fragment_more != null && fragment_more.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_more).commit();
-            }
 
+            HideFragmentHome();
             if (fragment_favourite == null) {
                 fragment_favourite = Fragment_Favourite.newInstance();
             }
@@ -761,12 +755,40 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_favourite.isAdded()) {
                 fragmentManager.beginTransaction().show(fragment_favourite).commit();
             } else {
-                fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_favourite, "fragment_favourite").addToBackStack("fragment_favourite").commit();
+                fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_favourite, "fragment_favourite").addToBackStack("fragment_favourite").commit();
 
             }
-            UpdateBottomNavigationPosition(3);
 
         }
+
+
+    }
+
+    public void DisplayFragmentSpecialOrder() {
+        if (fragment_store != null && fragment_store.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_store).commit();
+        }
+        if (fragment_orders != null && fragment_orders.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_orders).commit();
+        }
+        if (fragment_offers != null && fragment_offers.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_offers).commit();
+        }
+        if (fragment_more != null && fragment_more.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_more).commit();
+        }
+
+        if (fragment_special_order == null) {
+            fragment_special_order = Fragment_Special_order.newInstance();
+        }
+
+        if (fragment_special_order.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_special_order).commit();
+        } else {
+            fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_special_order, "fragment_special_order").addToBackStack("fragment_special_order").commit();
+
+        }
+        UpdateBottomNavigationPosition(3);
 
 
     }
@@ -805,10 +827,7 @@ public class HomeActivity extends AppCompatActivity {
     {
 
 
-        if (fragment_home != null && fragment_home.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_home).commit();
-
-        }
+        HideFragmentHome();
         fragment_question = Fragment_Question.newInstance();
 
         if (!fragment_question.isAdded()) {
@@ -845,13 +864,23 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void NavigateToSignInActivity() {
+    public void NavigateToSignInActivity() {
+
         if (orderCartSingleTone.getItemsCount() > 0) {
             CreateCartAlertDialog();
         } else {
-            Intent intent = new Intent(this, SignInActivity.class);
-            startActivity(intent);
-            finish();
+
+            if (userModel!=null)
+            {
+                finish();
+            }else
+                {
+                    Intent intent = new Intent(this, SignInActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+
         }
 
     }
@@ -874,14 +903,14 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (fragment_transparent != null && fragment_transparent.isAdded()) {
-                            fragment_transparent.getProducts();
+                            fragment_transparent.Refresh();
                         }
 
                         if (fragment_color != null && fragment_color.isAdded()) {
-                            fragment_color.getProducts();
+                            fragment_color.Refresh();
                         }
                         if (fragment_tools != null && fragment_tools.isAdded()) {
-                            fragment_tools.getProducts();
+                            fragment_tools.Refresh();
                         }
                     }
                 }, 1);
@@ -1118,39 +1147,12 @@ public class HomeActivity extends AppCompatActivity {
                 DisplayFragmentStore();
             }else
                 {
-                    if (fragment_transparent != null && !fragment_transparent.isVisible()) {
-                        DisplayFragmentTransparent();
-
+                    if (fragment_color != null && !fragment_color.isVisible()) {
+                        DisplayFragmentColor();
                     } else {
 
-                        Log.e("nn","nn");
-                        if (orderCartSingleTone.getItemsCount() > 0) {
-                            CreateCartAlertDialog();
-                        } else {
-                            if (userModel!=null)
-                            {
-                                finish();
+                        NavigateToSignInActivity();
 
-                            }else
-                                {
-                                   Intent intent = new Intent(this,SignInActivity.class);
-                                   startActivity(intent);
-                                   finish();
-                                    if (current_language.equals("ar"))
-                                    {
-                                        overridePendingTransition(R.anim.from_left,R.anim.to_right);
-
-
-
-                                    }else
-                                    {
-                                        overridePendingTransition(R.anim.from_right,R.anim.to_left);
-
-
-                                    }
-                                }
-
-                        }
                     }
                 }
 

@@ -32,6 +32,8 @@ public class Fragment_Home extends Fragment{
 
 
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class Fragment_Home extends Fragment{
 
 
         }
+
 
 
         fl_cart_container = view.findViewById(R.id.fl_cart_container);
@@ -105,7 +108,7 @@ public class Fragment_Home extends Fragment{
                         activity.DisplayFragmentOffers();
                         break;
                     case 3:
-                        activity.DisplayFragmentFavourite();
+                        activity.DisplayFragmentSpecialOrder();
                         break;
                     case 4:
                         activity.DisplayFragmentMore();
@@ -125,7 +128,6 @@ public class Fragment_Home extends Fragment{
         UpdateAHBottomNavigationPosition(0);
 
     }
-
 
 
     public void updateCartCounter(int counter)
@@ -153,7 +155,7 @@ public class Fragment_Home extends Fragment{
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(getString(R.string.store), ContextCompat.getDrawable(getActivity(),R.drawable.bag),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(getString(R.string.orders), ContextCompat.getDrawable(getActivity(),R.drawable.nav_cart),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(getString(R.string.offers), ContextCompat.getDrawable(getActivity(),R.drawable.nav_offer),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
-        AHBottomNavigationItem item4 = new AHBottomNavigationItem(getString(R.string.favourite), ContextCompat.getDrawable(getActivity(),R.drawable.star),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem(getString(R.string.sp_order), ContextCompat.getDrawable(getActivity(),R.drawable.ic_box),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
         AHBottomNavigationItem item5 = new AHBottomNavigationItem(getString(R.string.more), ContextCompat.getDrawable(getActivity(),R.drawable.more),ContextCompat.getColor(getActivity(),R.color.colorPrimary));
 
         ah_bottom.addItem(item1);
@@ -168,6 +170,7 @@ public class Fragment_Home extends Fragment{
     {
         ah_bottom.setCurrentItem(pos,false);
     }
+
 
 
 

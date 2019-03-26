@@ -1,4 +1,4 @@
-package com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home;
+package com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_more;
 
 import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +31,9 @@ import com.appzone.eyeres.singletone.UserSingleTone;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import io.paperdb.Paper;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,6 +51,10 @@ public class Fragment_Favourite extends Fragment{
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private TextView tv_no_product;
+    private LinearLayout ll_back;
+    private ImageView image_back;
+    private String current_language;
+
 
 
 
@@ -70,6 +78,24 @@ public class Fragment_Favourite extends Fragment{
         userSingleTone = UserSingleTone.getInstance();
         userModel = userSingleTone.getUserModel();
         activity = (HomeActivity) getActivity();
+        Paper.init(activity);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        image_back = view.findViewById(R.id.image_back);
+
+        if (current_language.equals("ar"))
+        {
+            image_back.setImageResource(R.drawable.white_right_arrow);
+
+        }else
+        {
+            image_back.setImageResource(R.drawable.white_left_arrow);
+
+        }
+
+
+
+        ll_back = view.findViewById(R.id.ll_back);
+
         progBar = view.findViewById(R.id.progBar);
         progBarLoadMore = view.findViewById(R.id.progBarLoadMore);
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(getActivity(),R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
@@ -86,6 +112,10 @@ public class Fragment_Favourite extends Fragment{
         recView.setItemViewCacheSize(25);
         adapter = new FavoritesAdapter(productList,activity,this);
         recView.setAdapter(adapter);
+
+
+
+
 
         recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -104,6 +134,14 @@ public class Fragment_Favourite extends Fragment{
                 }
             }
         });
+
+        ll_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.Back();
+            }
+        });
+
         getFavorite();
     }
 
