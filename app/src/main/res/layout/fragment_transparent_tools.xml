@@ -1,141 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_alignParentTop="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/ll_orderBy_container"
-        >
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:background="@color/gray0"
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recView"
+    >
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="0dp"
+            android:layout_alignParentTop="true"
+            app:layout_constraintBottom_toTopOf="@id/ll_orderBy_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/progBar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            />
+            </android.support.v7.widget.RecyclerView>
 
-        <TextView
-            android:id="@+id/tv_no_product"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:gravity="center"
-            android:text="@string/there_are_no_products_to_display"
-            android:visibility="gone"
-            />
-    </FrameLayout>
+            <ProgressBar
+                android:id="@+id/progBar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp" />
 
-    <LinearLayout
-
-        android:id="@+id/ll_orderBy_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
+            <TextView
+                android:id="@+id/tv_no_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/there_are_no_products_to_display"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:visibility="gone" />
+        </FrameLayout>
 
         <LinearLayout
-            android:id="@+id/ll_orderBy"
+
+            android:id="@+id/ll_orderBy_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:visibility="gone"
-            android:layout_marginBottom="15dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-
-            >
             <LinearLayout
-                android:id="@+id/ll_add_recent"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="50dp"
-                android:orientation="vertical"
-                android:background="@drawable/ll_add_recent_bg"
-                android:layout_marginEnd="5dp"
-                tools:ignore="RtlCompat"
-                android:descendantFocusability="blocksDescendants"
+                android:id="@+id/ll_orderBy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:visibility="gone"
+                android:weightSum="2"
+
 
                 >
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="3dp"
-                    android:src="@drawable/add_to_cart"
-                    android:clickable="false"
-                    android:longClickable="false"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:text="@string/add_recently"
-                    android:clickable="false"
-                    android:longClickable="false"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_most_seller"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="50dp"
-                android:orientation="vertical"
-                android:background="@drawable/ll_add_most_bg"
-                android:layout_marginStart="5dp"
-                android:descendantFocusability="blocksDescendants"
-                tools:ignore="RtlCompat">
+                <LinearLayout
+                    android:id="@+id/ll_add_recent"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ll_add_recent_bg"
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical"
+                    tools:ignore="RtlCompat"
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="3dp"
-                    android:src="@drawable/stats"
-                    android:clickable="false"
-                    android:longClickable="false"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:text="@string/most_seller"
-                    android:clickable="false"
-                    android:longClickable="false"
-                    />
+                    >
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        android:src="@drawable/add_to_cart" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        android:text="@string/add_recently"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_most_seller"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ll_add_most_bg"
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical"
+                    tools:ignore="RtlCompat">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        android:src="@drawable/stats" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        android:text="@string/most_seller"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

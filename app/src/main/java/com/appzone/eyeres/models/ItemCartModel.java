@@ -15,12 +15,16 @@ public class ItemCartModel implements Serializable{
     private int similar;
     private String left_degree;
     private String right_degree;
+    private String left_deviation;
+    private String right_deviation;
+    private String left_axis;
+    private String right_axis;
     private int left_amount;
     private int right_amount;
     private int type;
 
 
-    public ItemCartModel(int product_id, String product_image, String product_name_ar, String product_name_en, double product_cost, int quantity, double total, int similar, String left_degree, String right_degree, int left_amount, int right_amount, int product_type) {
+    public ItemCartModel(int product_id, String product_image, String product_name_ar, String product_name_en, double product_cost, int quantity, double total, int similar, String left_degree, String right_degree, String left_deviation, String right_deviation, String left_axis, String right_axis, int left_amount, int right_amount, int type) {
         this.product_id = product_id;
         this.product_image = product_image;
         this.product_name_ar = product_name_ar;
@@ -31,9 +35,13 @@ public class ItemCartModel implements Serializable{
         this.similar = similar;
         this.left_degree = left_degree;
         this.right_degree = right_degree;
+        this.left_deviation = left_deviation;
+        this.right_deviation = right_deviation;
+        this.left_axis = left_axis;
+        this.right_axis = right_axis;
         this.left_amount = left_amount;
         this.right_amount = right_amount;
-        this.type = product_type;
+        this.type = type;
     }
 
     public int getProduct_id() {
@@ -139,5 +147,45 @@ public class ItemCartModel implements Serializable{
 
     public void setProduct_type(int product_type) {
         this.type = product_type;
+    }
+
+    public String getLeft_deviation() {
+        return left_deviation;
+    }
+
+    public void setLeft_deviation(String left_deviation) {
+        this.left_deviation = left_deviation;
+    }
+
+    public String getRight_deviation() {
+        return right_deviation;
+    }
+
+    public void setRight_deviation(String right_deviation) {
+        this.right_deviation = right_deviation;
+    }
+
+    public String getLeft_axis() {
+        return left_axis;
+    }
+
+    public void setLeft_axis(String left_axis) {
+        this.left_axis = left_axis;
+    }
+
+    public String getRight_axis() {
+        return right_axis;
+    }
+
+    public void setRight_axis(String right_axis) {
+        this.right_axis = right_axis;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

@@ -105,7 +105,7 @@ public class Fragment_Cart extends Fragment{
             @Override
             public void onClick(View v) {
                 activity.SaveItemsData(itemCartModelList,total_cost);
-                activity.DisplayFragmentClientData();
+                activity.DisplayFragmentClientData(total_cost);
             }
         });
 

@@ -55,6 +55,8 @@ public class Fragment_Tools extends Fragment{
     private String user_token = "";
     private TextView tv_no_product;
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,6 +85,10 @@ public class Fragment_Tools extends Fragment{
         ll_add_recent = view.findViewById(R.id.ll_add_recent);
         ll_most_seller = view.findViewById(R.id.ll_most_seller);
         ll_orderBy = view.findViewById(R.id.ll_orderBy);
+
+
+
+
 
         recView = view.findViewById(R.id.recView);
         manager = new GridLayoutManager(getActivity(),2);
@@ -429,4 +435,7 @@ public class Fragment_Tools extends Fragment{
     public void setItemData(ProductDataModel.ProductModel productModel) {
         activity.DisplayFragmentAccessoriesDetails(productModel);
     }
+
+
+
 }

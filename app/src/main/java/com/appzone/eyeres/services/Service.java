@@ -1,12 +1,15 @@
 package com.appzone.eyeres.services;
 
 import com.appzone.eyeres.models.AdsModel;
+import com.appzone.eyeres.models.BrandsDataModel;
+import com.appzone.eyeres.models.CouponModel;
 import com.appzone.eyeres.models.FavoriteIdModel;
 import com.appzone.eyeres.models.OrderDataModel;
 import com.appzone.eyeres.models.OrderToUploadModel;
 import com.appzone.eyeres.models.PackageSizeModel;
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.models.QuestionsDataModel;
+import com.appzone.eyeres.models.Special_Lenses_Model;
 import com.appzone.eyeres.models.Terms_ConditionModel;
 import com.appzone.eyeres.models.UserModel;
 
@@ -118,4 +121,16 @@ public interface Service {
 
     @POST("/api/orders")
     Call<ResponseBody> sendOrder(@Body OrderToUploadModel orderToUploadModel);
+
+    @GET("api/brands")
+    Call<BrandsDataModel> getBrands(@Query("page") int page_index);
+
+    @GET("api/trends/{trend_id}")
+    Call<ProductDataModel> getProductOfTrends(@Path("trend_id") int trend_id,@Query("page") int page);
+
+    @GET("api/get-special-lenses")
+    Call<Special_Lenses_Model> getSpecialLenses();
+
+    @GET("api/get-coupon-value/{code}")
+    Call<CouponModel> getCouponValue(@Path("code") String code);
 }

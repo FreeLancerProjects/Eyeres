@@ -54,6 +54,8 @@ public class Fragment_Transparent extends Fragment {
     private String user_token = "";
     private TextView tv_no_product;
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,6 +77,8 @@ public class Fragment_Transparent extends Fragment {
         productModelList = new ArrayList<>();
         first20RecentProductList = new ArrayList<>();
         first20MostProductList = new ArrayList<>();
+
+
 
         tv_no_product = view.findViewById(R.id.tv_no_product);
         progBar = view.findViewById(R.id.progBar);
@@ -170,6 +174,7 @@ public class Fragment_Transparent extends Fragment {
             }
         });
         getProducts();
+
     }
 
     public void getProducts()
@@ -427,4 +432,6 @@ public class Fragment_Transparent extends Fragment {
     public void setItemData(ProductDataModel.ProductModel productModel) {
         activity.DisplayFragmentLensesDetails(productModel);
     }
+
+
 }

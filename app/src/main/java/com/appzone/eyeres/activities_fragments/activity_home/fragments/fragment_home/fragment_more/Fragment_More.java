@@ -26,7 +26,7 @@ import io.paperdb.Paper;
 public class Fragment_More extends Fragment {
 
     private LinearLayout ll_terms,ll_developer,ll_profile,ll_language,ll_about,ll_question,ll_policy,ll_favorite;
-    private ImageView arrow1,arrow2,arrow3,arrow4,arrow5,arrow6,arrow7;
+    private ImageView arrow1,arrow2,arrow3,arrow4,arrow5,arrow6,arrow7,image_instagram,image_twitter,image_snapchat;
     private TextView tv_developer;
     private String current_language;
     private HomeActivity activity;
@@ -96,6 +96,11 @@ public class Fragment_More extends Fragment {
         ll_policy = view.findViewById(R.id.ll_policy);
         ll_favorite = view.findViewById(R.id.ll_favorite);
 
+        image_twitter = view.findViewById(R.id.image_twitter);
+        image_instagram = view.findViewById(R.id.image_instagram);
+        image_snapchat = view.findViewById(R.id.image_snapchat);
+
+
         tv_developer.setText(getString(R.string.developers)+"   "+"009660539044145");
         ll_terms.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +164,21 @@ public class Fragment_More extends Fragment {
             }
         });
 
+        image_instagram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createSocialIntent("https://www.instagram.com/iristoresa");
+            }
+        });
+
+        image_twitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createSocialIntent("https://twitter.com/iristore");
+
+            }
+        });
+
     }
 
 
@@ -217,5 +237,11 @@ public class Fragment_More extends Fragment {
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_congratulation_animation;
         dialog.setView(view);
         dialog.show();
+    }
+
+    private void createSocialIntent(String url)
+    {
+        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(url));
+        startActivity(intent);
     }
 }

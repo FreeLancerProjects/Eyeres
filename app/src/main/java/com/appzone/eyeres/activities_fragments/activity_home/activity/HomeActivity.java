@@ -31,6 +31,7 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_cart.Fragment_Client_Data;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details.Fragment_Accessories_Details;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details.Fragment_Lenses_Details;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Brand_Details;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_more.Fragment_Favourite;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Home;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Offers;
@@ -39,7 +40,7 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_more.Fragment_Question;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_orders.Fragment_Orders;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Color;
-import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Special_order;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Special_Lenses;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Store;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Tools;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Transparent;
@@ -48,6 +49,7 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.activities_fragments.activity_sign_in.activity.SignInActivity;
 import com.appzone.eyeres.activities_fragments.activity_terms_conditions.TermsConditionsActivity;
 import com.appzone.eyeres.local_manager.LocalManager;
+import com.appzone.eyeres.models.BrandsDataModel;
 import com.appzone.eyeres.models.ItemCartModel;
 import com.appzone.eyeres.models.OrderDataModel;
 import com.appzone.eyeres.models.OrderStatusModel;
@@ -89,6 +91,7 @@ public class HomeActivity extends AppCompatActivity {
     private Fragment_Search fragment_search;
     private Fragment_Cart fragment_cart;
     private Fragment_Client_Data fragment_client_data;
+    private Fragment_Brand_Details fragment_brand_details;
     /////////////////////////////////////////
     private Fragment_Store fragment_store;
     private Fragment_Transparent fragment_transparent;
@@ -102,7 +105,7 @@ public class HomeActivity extends AppCompatActivity {
     private Fragment_Order_Details fragment_order_details;
     private Fragment_More fragment_more;
     private Fragment_Question fragment_question;
-    private Fragment_Special_order fragment_special_order;
+    private Fragment_Special_Lenses fragment_special_lenses;
 
     //////////////////////////////////////////
     private Preferences preferences;
@@ -111,12 +114,13 @@ public class HomeActivity extends AppCompatActivity {
     private OrderToUploadModel orderToUploadModel;
     private OrderCartSingleTone orderCartSingleTone;
     private String current_language;
+    private int fragment_count = 0;
     //////////////////////////////////////////////
 
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocalManager.updateResources(newBase,LocalManager.getLanguage(newBase)));
+        super.attachBaseContext(LocalManager.updateResources(newBase, LocalManager.getLanguage(newBase)));
 
     }
 
@@ -155,8 +159,7 @@ public class HomeActivity extends AppCompatActivity {
             updateUserToken(userModel.getToken());
         }
 
-        if (preferences.getCartList(this).size()>0)
-        {
+        if (preferences.getCartList(this).size() > 0) {
             orderCartSingleTone.setItemCartModelList(preferences.getCartList(this));
             UpdateCartCounter(orderCartSingleTone.getItemsCount());
         }
@@ -237,8 +240,7 @@ public class HomeActivity extends AppCompatActivity {
                 }, 1);
     }
 
-    private void CreateWelcomeNotification()
-    {
+    private void CreateWelcomeNotification() {
         String sound_path = "android.resource://" + getPackageName() + "/" + R.raw.not;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String CHANNEL_ID = "my_channel_01";
@@ -289,10 +291,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
     /////////////////////////////////////////////////////
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void ListenToNotification(OrderStatusModel orderStatusModel)
-    {
+    public void ListenToNotification(OrderStatusModel orderStatusModel) {
         final int status = orderStatusModel.getStatus();
         RefreshFragmentOrders(status);
         new Handler()
@@ -315,21 +317,16 @@ public class HomeActivity extends AppCompatActivity {
 
                         if (fragment_orders != null && fragment_orders.isAdded()) {
                             fragment_orders.RefreshFragments();
-                            if (status == Tags.accepted_order)
-                            {
+                            if (status == Tags.accepted_order) {
                                 fragment_orders.NavigateToFragmentCurrent();
 
-                            }else if (status == Tags.finished_order)
-                            {
+                            } else if (status == Tags.finished_order) {
                                 fragment_orders.NavigateToFragmentPrevious();
 
-                            }else if (status == Tags.refused_order)
-                            {
+                            } else if (status == Tags.refused_order) {
                                 fragment_orders.NavigateToFragmentNew();
 
-                            }
-                            else if (status == Tags.new_order)
-                            {
+                            } else if (status == Tags.new_order) {
                                 fragment_orders.NavigateToFragmentNew();
 
                             }
@@ -379,45 +376,6 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentHome() {
 
-        Log.e("ss","gg");
-        if (fragment_question != null && fragment_question.isAdded()) {
-            super.onBackPressed();
-
-        }
-        if (fragment_favourite != null && fragment_favourite.isAdded()) {
-            super.onBackPressed();
-
-        }
-        if (fragment_profile != null && fragment_profile.isAdded()) {
-            super.onBackPressed();
-        }
-        if (fragment_client_data != null && fragment_client_data.isAdded()) {
-            super.onBackPressed();
-
-        }
-        if (fragment_order_details != null && fragment_order_details.isAdded()) {
-            super.onBackPressed();
-
-        }
-
-
-        if (fragment_search != null && fragment_search.isAdded()) {
-            super.onBackPressed();
-
-        }
-
-
-        if (fragment_accessories_details != null && fragment_accessories_details.isAdded()) {
-            super.onBackPressed();
-
-        }
-        if (fragment_Lenses_details != null && fragment_Lenses_details.isAdded()) {
-            super.onBackPressed();
-        }
-        if (fragment_cart != null && fragment_cart.isAdded()) {
-            super.onBackPressed();
-        }
-
 
         if (fragment_home == null) {
             fragment_home = Fragment_Home.newInstance();
@@ -433,7 +391,7 @@ public class HomeActivity extends AppCompatActivity {
                             DisplayFragmentStore();
 
                         }
-                    },1);
+                    }, 1);
 
         } else {
 
@@ -445,8 +403,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void DisplayFragmentLensesDetails(ProductDataModel.ProductModel productModel) {
-
-        HideFragmentHome();
+        fragment_count++;
+        //HideFragmentHome();
         fragment_Lenses_details = Fragment_Lenses_Details.newInstance(productModel);
 
         if (!fragment_Lenses_details.isAdded()) {
@@ -455,7 +413,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void DisplayFragmentAccessoriesDetails(ProductDataModel.ProductModel productModel) {
-        HideFragmentHome();
+        fragment_count++;
+
+        //HideFragmentHome();
         fragment_accessories_details = Fragment_Accessories_Details.newInstance(productModel);
 
         if (!fragment_accessories_details.isAdded()) {
@@ -494,7 +454,6 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
-
     }
 
     public void DisplayFragmentColor() {
@@ -529,6 +488,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentTools() {
 
+
         if (fragment_transparent != null && fragment_transparent.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_transparent).commit();
         }
@@ -557,7 +517,9 @@ public class HomeActivity extends AppCompatActivity {
 
     //////////////////////////////////////////////////////////////////
     public void DisplayFragmentSearch() {
+        fragment_count++;
 
+        //HideFragmentHome();
 
         fragment_search = Fragment_Search.newInstance();
 
@@ -569,7 +531,8 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentCart() {
 
-        HideFragmentHome();
+        fragment_count ++;
+        //HideFragmentHome();
         fragment_cart = Fragment_Cart.newInstance();
 
         if (!fragment_cart.isAdded()) {
@@ -580,33 +543,50 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void DisplayFragmentClientData() {
-        if (userModel==null)
-        {
-            Common.CreateUserNotSignInAlertDialog(this,orderCartSingleTone.getItemCartModelList());
-        }else
-            {
-                fragment_client_data = Fragment_Client_Data.newInstance();
+    public void DisplayFragmentClientData(double total_cost) {
 
-                if (!fragment_client_data.isAdded()) {
-                    fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_client_data, "fragment_client_data").addToBackStack("fragment_client_data").commit();
-                } else {
-                    fragmentManager.beginTransaction().show(fragment_client_data).commit();
-                }
+        if (userModel == null) {
+            Common.CreateUserNotSignInAlertDialog(this, orderCartSingleTone.getItemCartModelList());
+        } else {
+            fragment_count++;
+
+            fragment_client_data = Fragment_Client_Data.newInstance(total_cost);
+
+            if (!fragment_client_data.isAdded()) {
+                fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_client_data, "fragment_client_data").addToBackStack("fragment_client_data").commit();
+            } else {
+                fragmentManager.beginTransaction().show(fragment_client_data).commit();
             }
+        }
 
 
     }
 
     public void DisplayFragmentOrderDetails(OrderDataModel.OrderModel orderModel) {
 
-        HideFragmentHome();
+        fragment_count++;
+
+        // HideFragmentHome();
         fragment_order_details = Fragment_Order_Details.newInstance(orderModel);
 
         if (!fragment_order_details.isAdded()) {
             fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_order_details, "fragment_order_details").addToBackStack("fragment_order_details").commit();
         } else {
             fragmentManager.beginTransaction().show(fragment_order_details).commit();
+        }
+
+    }
+
+    public void DisplayFragmentBrandDetails(BrandsDataModel.BrandModel brandModel) {
+        fragment_count++;
+
+       // HideFragmentHome();
+        fragment_brand_details = Fragment_Brand_Details.newInstance(brandModel);
+
+        if (!fragment_brand_details.isAdded()) {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_brand_details, "fragment_brand_details").addToBackStack("fragment_brand_details").commit();
+        } else {
+            fragmentManager.beginTransaction().show(fragment_brand_details).commit();
         }
 
     }
@@ -619,8 +599,8 @@ public class HomeActivity extends AppCompatActivity {
         if (fragment_offers != null && fragment_offers.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_offers).commit();
         }
-        if (fragment_special_order != null && fragment_special_order.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_special_order).commit();
+        if (fragment_special_lenses != null && fragment_special_lenses.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_special_lenses).commit();
         }
         if (fragment_more != null && fragment_more.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_more).commit();
@@ -641,7 +621,7 @@ public class HomeActivity extends AppCompatActivity {
                             DisplayFragmentColor();
 
                         }
-                    },1);
+                    }, 1);
 
         } else {
             fragmentManager.beginTransaction().show(fragment_store).commit();
@@ -655,7 +635,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentOrders(final int status) {
         if (userModel == null) {
-            Common.CreateUserNotSignInAlertDialog(this,orderCartSingleTone.getItemCartModelList());
+            Common.CreateUserNotSignInAlertDialog(this, orderCartSingleTone.getItemCartModelList());
         } else {
 
             if (fragment_store != null && fragment_store.isAdded()) {
@@ -664,8 +644,8 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_offers != null && fragment_offers.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_offers).commit();
             }
-            if (fragment_special_order != null && fragment_special_order.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_special_order).commit();
+            if (fragment_special_lenses != null && fragment_special_lenses.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_special_lenses).commit();
             }
             if (fragment_more != null && fragment_more.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_more).commit();
@@ -685,24 +665,18 @@ public class HomeActivity extends AppCompatActivity {
                     .postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (status==Tags.new_order)
-                            {
+                            if (status == Tags.new_order) {
                                 fragment_orders.NavigateToFragmentNew();
-                            }else if (status == Tags.accepted_order)
-                            {
+                            } else if (status == Tags.accepted_order) {
                                 fragment_orders.NavigateToFragmentCurrent();
-                            }
-                            else if (status == Tags.refused_order)
-                            {
+                            } else if (status == Tags.refused_order) {
                                 fragment_orders.NavigateToFragmentNew();
 
-                            }
-                            else if (status == Tags.finished_order)
-                            {
+                            } else if (status == Tags.finished_order) {
                                 fragment_orders.NavigateToFragmentPrevious();
                             }
                         }
-                    },1);
+                    }, 1);
             UpdateBottomNavigationPosition(1);
         }
 
@@ -718,8 +692,8 @@ public class HomeActivity extends AppCompatActivity {
         if (fragment_orders != null && fragment_orders.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_orders).commit();
         }
-        if (fragment_special_order != null && fragment_special_order.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_special_order).commit();
+        if (fragment_special_lenses != null && fragment_special_lenses.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_special_lenses).commit();
         }
         if (fragment_more != null && fragment_more.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_more).commit();
@@ -742,12 +716,13 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentFavourite() {
         if (userModel == null) {
-            Common.CreateUserNotSignInAlertDialog(this,orderCartSingleTone.getItemCartModelList());
+            Common.CreateUserNotSignInAlertDialog(this, orderCartSingleTone.getItemCartModelList());
 
         } else {
 
+            fragment_count++;
 
-            HideFragmentHome();
+            //HideFragmentHome();
             if (fragment_favourite == null) {
                 fragment_favourite = Fragment_Favourite.newInstance();
             }
@@ -778,14 +753,14 @@ public class HomeActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().hide(fragment_more).commit();
         }
 
-        if (fragment_special_order == null) {
-            fragment_special_order = Fragment_Special_order.newInstance();
+        if (fragment_special_lenses == null) {
+            fragment_special_lenses = Fragment_Special_Lenses.newInstance();
         }
 
-        if (fragment_special_order.isAdded()) {
-            fragmentManager.beginTransaction().show(fragment_special_order).commit();
+        if (fragment_special_lenses.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_special_lenses).commit();
         } else {
-            fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_special_order, "fragment_special_order").addToBackStack("fragment_special_order").commit();
+            fragmentManager.beginTransaction().add(R.id.home_fragment_container, fragment_special_lenses, "fragment_special_lenses").addToBackStack("fragment_special_lenses").commit();
 
         }
         UpdateBottomNavigationPosition(3);
@@ -793,8 +768,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void DisplayFragmentMore()
-    {
+    public void DisplayFragmentMore() {
         if (fragment_store != null && fragment_store.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_store).commit();
         }
@@ -823,11 +797,11 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void DisplayFragmentQuestions()
-    {
+    public void DisplayFragmentQuestions() {
 
+        fragment_count++;
 
-        HideFragmentHome();
+        //HideFragmentHome();
         fragment_question = Fragment_Question.newInstance();
 
         if (!fragment_question.isAdded()) {
@@ -837,11 +811,12 @@ public class HomeActivity extends AppCompatActivity {
 
     public void DisplayFragmentProfile() {
         if (userModel == null) {
-            Common.CreateUserNotSignInAlertDialog(this,orderCartSingleTone.getItemCartModelList());
+            Common.CreateUserNotSignInAlertDialog(this, orderCartSingleTone.getItemCartModelList());
 
         } else {
+            fragment_count++;
 
-            HideFragmentHome();
+            //HideFragmentHome();
             if (fragment_profile == null) {
                 fragment_profile = Fragment_Profile.newInstance();
             }
@@ -870,15 +845,13 @@ public class HomeActivity extends AppCompatActivity {
             CreateCartAlertDialog();
         } else {
 
-            if (userModel!=null)
-            {
+            if (userModel != null) {
                 finish();
-            }else
-                {
-                    Intent intent = new Intent(this, SignInActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+            } else {
+                Intent intent = new Intent(this, SignInActivity.class);
+                startActivity(intent);
+                finish();
+            }
 
 
         }
@@ -916,13 +889,12 @@ public class HomeActivity extends AppCompatActivity {
                 }, 1);
     }
 
-    public void HideFragmentHome()
-    {
-        if (fragment_home!=null&&fragment_home.isAdded())
-        {
+    public void HideFragmentHome() {
+        if (fragment_home != null && fragment_home.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_home).commit();
         }
     }
+
     //////////////////////////////////////////////
     public void SaveItemsData(List<ItemCartModel> itemCartModelList, double total_product_cost) {
         if (orderToUploadModel == null) {
@@ -935,7 +907,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void UploadOrder(String name, String phone, String address, String note, int payment_method) {
+    public void UploadOrder(String name, String phone, String address, String note, int payment_method, double total_after_discount,String coupon_code,double coupon_value) {
 
 
         if (orderToUploadModel != null) {
@@ -946,17 +918,20 @@ public class HomeActivity extends AppCompatActivity {
             orderToUploadModel.setAddress(address);
             orderToUploadModel.setNotes(note);
             orderToUploadModel.setPayment_method(payment_method);
+            orderToUploadModel.setTotal_after_discount(total_after_discount);
+            orderToUploadModel.setCoupon_code(coupon_code);
+            orderToUploadModel.setCoupon_value(coupon_value);
 
-            final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+            final ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
             dialog.show();
             Api.getService()
                     .sendOrder(orderToUploadModel)
                     .enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.isSuccessful())
-                            {
-                                fragmentManager.popBackStack("fragment_client_data", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                            if (response.isSuccessful()) {
+                                fragment_count--;
+                                HomeActivity.super.onBackPressed();
                                 new Handler()
                                         .postDelayed(new Runnable() {
                                             @Override
@@ -966,8 +941,7 @@ public class HomeActivity extends AppCompatActivity {
                                                     fragment_cart.clearCart();
                                                 }
 
-                                                if (fragment_orders!=null&&fragment_orders.isAdded())
-                                                {
+                                                if (fragment_orders != null && fragment_orders.isAdded()) {
                                                     RefreshFragmentOrders(Tags.new_order);
                                                 }
 
@@ -975,13 +949,12 @@ public class HomeActivity extends AppCompatActivity {
                                                 Toast.makeText(HomeActivity.this, getString(R.string.succ), Toast.LENGTH_SHORT).show();
                                             }
                                         }, 1);
-                            }else
-                            {
+                            } else {
                                 dialog.dismiss();
                                 Toast.makeText(HomeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
                                 try {
-                                    Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                                    Log.e("Error_code", response.code() + "_" + response.errorBody().string());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -993,8 +966,9 @@ public class HomeActivity extends AppCompatActivity {
                             try {
                                 dialog.dismiss();
                                 Toast.makeText(HomeActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
-                                Log.e("Error",t.getMessage());
-                            }catch (Exception e){}
+                                Log.e("Error", t.getMessage());
+                            } catch (Exception e) {
+                            }
                         }
                     });
 
@@ -1002,22 +976,18 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
-
-
-
     }
+
     public void NavigateToTermsCondition(int type) {
         Intent intent = new Intent(this, TermsConditionsActivity.class);
-        intent.putExtra("type",type);
+        intent.putExtra("type", type);
         startActivity(intent);
-        if (current_language.equals("ar"))
-        {
-            overridePendingTransition(R.anim.from_right,R.anim.to_left);
-        }else
-            {
-                overridePendingTransition(R.anim.from_left,R.anim.to_right);
+        if (current_language.equals("ar")) {
+            overridePendingTransition(R.anim.from_right, R.anim.to_left);
+        } else {
+            overridePendingTransition(R.anim.from_left, R.anim.to_right);
 
-            }
+        }
     }
 
     @Override
@@ -1109,13 +1079,13 @@ public class HomeActivity extends AppCompatActivity {
 
         fl_delete.setOnClickListener(
                 new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
 
-                clearOrderData();
-            }
-        });
+                        clearOrderData();
+                    }
+                });
         fl_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1139,15 +1109,69 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void Back() {
-
-        if (fragment_home != null && fragment_home.isVisible()) {
-
-            if (fragment_store!=null&&!fragment_store.isVisible())
+        if (fragment_count>0)
+        {
+            Log.e("fragment_count",fragment_count+"_");
+            super.onBackPressed();
+            fragment_count = fragment_count-1;
+        }else if (fragment_count == 0) {
+            if (fragment_home!=null&&!fragment_home.isVisible())
             {
+                DisplayFragmentHome();
+
+            }
+            if (fragment_store != null && !fragment_store.isVisible()) {
+
                 DisplayFragmentStore();
-            }else
-                {
+            } else {
+                if (fragment_color != null && !fragment_color.isVisible()) {
+
+                    DisplayFragmentColor();
+                } else {
+
+                    NavigateToSignInActivity();
+
+                }
+            }
+        }
+       /*
+        }
+
+       *//* if (fragment_brand_details != null && fragment_brand_details.isAdded()) {
+
+        } else if (fragment_accessories_details != null && fragment_accessories_details.isAdded()) {
+            super.onBackPressed();
+
+        } else if (fragment_Lenses_details != null && fragment_Lenses_details.isAdded()) {
+            super.onBackPressed();
+        } else if (fragment_question != null && fragment_question.isAdded()) {
+            super.onBackPressed();
+
+        } else if (fragment_favourite != null && fragment_favourite.isAdded()) {
+            super.onBackPressed();
+
+        } else if (fragment_profile != null && fragment_profile.isAdded()) {
+            super.onBackPressed();
+        } else if (fragment_client_data != null && fragment_client_data.isAdded()) {
+            super.onBackPressed();
+
+        } else if (fragment_order_details != null && fragment_order_details.isAdded()) {
+            super.onBackPressed();
+
+        } else if (fragment_search != null && fragment_search.isAdded()) {
+            super.onBackPressed();
+
+        } else if (fragment_cart != null && fragment_cart.isAdded()) {
+            super.onBackPressed();
+        } else {
+            if (fragment_home != null && fragment_home.isVisible()) {
+
+                if (fragment_store != null && !fragment_store.isVisible()) {
+
+                    DisplayFragmentStore();
+                } else {
                     if (fragment_color != null && !fragment_color.isVisible()) {
+
                         DisplayFragmentColor();
                     } else {
 
@@ -1155,17 +1179,32 @@ public class HomeActivity extends AppCompatActivity {
 
                     }
                 }
-
-
-
-        } else {
-            DisplayFragmentHome();
         }
 
 
+
+            *//**//*if (fragment_store != null && !fragment_store.isVisible()) {
+
+                DisplayFragmentStore();
+            } else {
+                Log.e("1", "1");
+                if (fragment_color != null && !fragment_color.isVisible()) {
+                    Log.e("2", "2");
+
+                    DisplayFragmentColor();
+                } else {
+                    Log.e("3", "3");
+
+                    NavigateToSignInActivity();
+
+                }
+            }*//**//*
+
+
+        }*//*
+         */
+
     }
-
-
 
 
     @Override
@@ -1183,18 +1222,18 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void RefreshActivity(String lang) {
-        Paper.book().write("lang",lang);
-        LocalManager.setNewLocale(this,lang);
+        Paper.book().write("lang", lang);
+        LocalManager.setNewLocale(this, lang);
         new Handler()
                 .postDelayed(new Runnable() {
                     @Override
                     public void run() {
 
-                        Intent intent =  getIntent();
+                        Intent intent = getIntent();
                         finish();
                         startActivity(intent);
                     }
-                },1050);
+                }, 1050);
 
     }
 }

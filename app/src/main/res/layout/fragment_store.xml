@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
+    android:background="@color/gray0"
+
+    >
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -28,48 +30,57 @@
                 app:titleEnabled="false"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 >
-                <FrameLayout
-                    android:id="@+id/fl_slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="70dp"
 
-                    >
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/pager_slider"
+                    <FrameLayout
+                        android:id="@+id/fl_slider"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="70dp"
 
                         >
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/pager_slider"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
 
-                    </android.support.v4.view.ViewPager>
+                            >
 
-                    <android.support.design.widget.TabLayout
-                        android:id="@+id/tab_slider"
-                        android:layout_width="wrap_content"
-                        android:layout_height="8dp"
-                        android:layout_gravity="center_horizontal|bottom"
-                        app:tabGravity="fill"
-                        app:tabMode="scrollable"
-                        app:tabMaxWidth="8dp"
-                        app:tabMinWidth="8dp"
-                        app:tabIndicatorHeight="0dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="8dp"
-                        app:tabBackground="@drawable/tab_indicator"
+                        </android.support.v4.view.ViewPager>
+
+                        <android.support.design.widget.TabLayout
+                            android:id="@+id/tab_slider"
+                            android:layout_width="wrap_content"
+                            android:layout_height="8dp"
+                            android:layout_gravity="center_horizontal|bottom"
+                            app:tabGravity="fill"
+                            app:tabMode="scrollable"
+                            app:tabMaxWidth="8dp"
+                            app:tabMinWidth="8dp"
+                            app:tabIndicatorHeight="0dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="8dp"
+                            app:tabBackground="@drawable/tab_indicator"
 
 
-                        >
+                            >
 
-                    </android.support.design.widget.TabLayout>
+                        </android.support.design.widget.TabLayout>
 
-                    <ProgressBar
-                        android:id="@+id/progressBarSlider"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        />
-                </FrameLayout>
+                        <ProgressBar
+                            android:id="@+id/progressBarSlider"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            />
+                    </FrameLayout>
+
+
+
+
+
+
+
+
                 <LinearLayout
                     android:id="@+id/ll_tab"
                     android:layout_width="match_parent"
@@ -186,26 +197,19 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
+
+        <FrameLayout
+            android:id="@+id/store_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:fitsSystemWindows="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
-
             >
-            <FrameLayout
-                android:id="@+id/store_fragment_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                >
 
-            </FrameLayout>
+        </FrameLayout>
 
 
-        </android.support.v4.widget.NestedScrollView>
+
 
 
     </android.support.design.widget.CoordinatorLayout>
@@ -227,4 +231,3 @@
 
 
 </android.support.constraint.ConstraintLayout>
-

@@ -148,10 +148,23 @@
     <string name="payment_method">طريقة الدفع</string>
     <string name="transfer">تحويل</string>
     <string name="mada">مدى</string>
-    <string name="sel_pay_method">من فضلك اختر طريقة الدفع</string>
+    <string name="sel_pay_method">من فضلك إختر طريقة الدفع</string>
     <string name="most_seller2">الاكثر طلبا</string>
     <string name="the_finest_brands">أرقى المركات</string>
     <string name="there_are_no_brands_to_display">لا توجد مركات لعرضها</string>
-    <string name="sp_order">طلبات خاصة</string>
+    <string name="sp_order">عدسات خاصة</string>
+    <string name="degree_of_deviation">درجة الإنحراف</string>
+    <string name="axis_of_the_eye">محور العين</string>
+    <string name="ch_dev_deg">إختر درجة الإنحراف</string>
+    <string name="ch_ax">إختر محور العين</string>
+    <string name="complete_order">أكمل الطلب</string>
+    <string name="coupon">كوبون الخصم</string>
+    <string name="inactive">غير مفعل</string>
+    <string name="type_coupon_code">أدخل كود الخصم</string>
+    <string name="activate">تفعيل</string>
+    <string name="activated">تم التفعيل</string>
+    <string name="cannot_make_conv">عفوا ليمكنك اجراء محادثة الان حاول مره اخرى لاحقا</string>
+    <string name="have_discount">تم حصولك على</string>
+    <string name="discount">خصم</string>
 
 </resources>

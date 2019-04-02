@@ -36,6 +36,7 @@ public class Fragment_Store extends Fragment{
     private LinearLayout ll_transparent,ll_color,ll_accessories;
     private TextView tv_transparent,tv_colored,tv_accessories;
     private HomeActivity activity;
+
     private ViewPager pager_slider;
     private TabLayout tab_slider;
     private AdsSliderAdapter adsSliderAdapter;
@@ -43,6 +44,8 @@ public class Fragment_Store extends Fragment{
     private Timer timer;
     private TimerTask timerTask;
     private ProgressBar progressBarSlider;
+
+
 
     @Nullable
     @Override
@@ -61,7 +64,11 @@ public class Fragment_Store extends Fragment{
 
     private void initView(View view) {
 
+
         activity = (HomeActivity) getActivity();
+
+
+
 
         ll_transparent = view.findViewById(R.id.ll_transparent);
         ll_color = view.findViewById(R.id.ll_color);
@@ -71,13 +78,16 @@ public class Fragment_Store extends Fragment{
         tv_colored = view.findViewById(R.id.tv_colored);
         tv_accessories = view.findViewById(R.id.tv_accessories);
 
+
         pager_slider = view.findViewById(R.id.pager_slider);
         tab_slider = view.findViewById(R.id.tab_slider);
         tab_slider.setupWithViewPager(pager_slider);
         fl_slider = view.findViewById(R.id.fl_slider);
-
         progressBarSlider = view.findViewById(R.id.progressBarSlider);
         progressBarSlider.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(activity,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+
+
+
         setSelectedDefault();
 
         ll_transparent.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +156,8 @@ public class Fragment_Store extends Fragment{
 
     }
 
+
+
     private void getAds()
     {
         Api.getService()
@@ -199,9 +211,9 @@ public class Fragment_Store extends Fragment{
                 {
                     View view = ((ViewGroup)tab_slider.getChildAt(0)).getChildAt(i);
 
-                   ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                   params.setMargins(4,0,4,0);
-                   tab_slider.requestLayout();
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                    params.setMargins(4,0,4,0);
+                    tab_slider.requestLayout();
                 }
                 timer = new Timer();
                 timerTask = new MyTimerTask();
@@ -215,6 +227,7 @@ public class Fragment_Store extends Fragment{
             fl_slider.setVisibility(View.GONE);
         }
     }
+
 
 
 

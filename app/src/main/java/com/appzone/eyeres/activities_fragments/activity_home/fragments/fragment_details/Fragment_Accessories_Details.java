@@ -226,11 +226,11 @@ public class Fragment_Accessories_Details extends Fragment{
             double total = counter * productModel.getPrice();
 
             if (productModel.getImages().size() > 0) {
-                itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter, total, Tags.ISSIMILAR, "0", "0", 0,0, Tags.PRODUCT_TYPE_ACCESSORIES);
+                itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter, total, Tags.ISSIMILAR, "0", "0","0","0","0","0", 0,0, Tags.PRODUCT_TYPE_ACCESSORIES);
 
             } else {
 
-                itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter, total, Tags.ISSIMILAR, "0", "0", 0,0, Tags.PRODUCT_TYPE_ACCESSORIES);
+                itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter, total, Tags.ISSIMILAR, "0", "0", "0","0","0","0",0,0, Tags.PRODUCT_TYPE_ACCESSORIES);
 
             }
         } else {
@@ -238,10 +238,10 @@ public class Fragment_Accessories_Details extends Fragment{
             double total = counter * productModel.getPrice_after_discount();
 
             if (productModel.getImages().size() > 0) {
-                itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter, total, Tags.ISSIMILAR, "0", "0", 0, 0, Tags.PRODUCT_TYPE_ACCESSORIES);
+                itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter, total, Tags.ISSIMILAR, "0", "0","0","0","0","0", 0, 0, Tags.PRODUCT_TYPE_ACCESSORIES);
 
             } else {
-                itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter, total, Tags.ISSIMILAR, "0", "0", 0, 0, Tags.PRODUCT_TYPE_ACCESSORIES);
+                itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter, total, Tags.ISSIMILAR, "0", "0","0","0","0","0", 0, 0, Tags.PRODUCT_TYPE_ACCESSORIES);
 
             }
 

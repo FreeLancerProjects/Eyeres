@@ -202,7 +202,7 @@ public class Fragment_Search extends Fragment{
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                activity.HideFragmentHome();
+                //activity.HideFragmentHome();
                 ll_search_data_container.setVisibility(View.VISIBLE);
                 ll_search_data_container.clearAnimation();
                 ll_search_data_container.startAnimation(animation2);

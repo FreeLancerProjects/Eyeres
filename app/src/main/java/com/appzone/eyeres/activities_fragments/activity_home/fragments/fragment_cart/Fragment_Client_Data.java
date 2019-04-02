@@ -8,36 +8,50 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
+import com.appzone.eyeres.models.CouponModel;
 import com.appzone.eyeres.models.UserModel;
+import com.appzone.eyeres.remote.Api;
 import com.appzone.eyeres.share.Common;
 import com.appzone.eyeres.singletone.UserSingleTone;
 
 import java.util.Locale;
 
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Fragment_Client_Data extends Fragment {
-    private EditText edt_name, edt_phone, edt_address, edt_note;
+    private static final String TAG = "COST";
+    private EditText edt_name, edt_phone, edt_address, edt_note,edt_coupon_code;
     private CardView card_confirm, card_back;
     private ImageView arrow1, arrow2,image_cash,image_transfer,image_mada;
     private String current_language;
-    private TextView tv_cash,tv_transfer,tv_mada;
+    private ImageView image_coupon_state;
+    private ProgressBar progBar;
+    private TextView tv_cash,tv_transfer,tv_mada,tv_active_coupon,tv_activated;
     private LinearLayout ll_cash,ll_transfer,ll_mada;
     private HomeActivity activity;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private int payment_method =0;
+    private String coupon_code="";
+    private double coupon_value=0;
+    private double total_after_discount = 0;
+    private double total_before_discount = 0;
 
 
     @Nullable
@@ -48,8 +62,14 @@ public class Fragment_Client_Data extends Fragment {
         return view;
     }
 
-    public static Fragment_Client_Data newInstance() {
-        return new Fragment_Client_Data();
+    public static Fragment_Client_Data newInstance(double total_cost) {
+        Log.e("total_before_discount",total_cost+"_");
+
+        Bundle bundle = new Bundle();
+        bundle.putDouble(TAG,total_cost);
+        Fragment_Client_Data fragment_client_data = new Fragment_Client_Data();
+        fragment_client_data.setArguments(bundle);
+        return fragment_client_data;
     }
 
     private void initView(View view) {
@@ -79,6 +99,14 @@ public class Fragment_Client_Data extends Fragment {
         ll_cash = view.findViewById(R.id.ll_cash);
         ll_transfer = view.findViewById(R.id.ll_transfer);
         ll_mada = view.findViewById(R.id.ll_mada);
+
+
+        edt_coupon_code = view.findViewById(R.id.edt_coupon_code);
+        image_coupon_state = view.findViewById(R.id.image_coupon_state);
+        progBar = view.findViewById(R.id.progBar);
+        progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(activity,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        tv_active_coupon = view.findViewById(R.id.tv_active_coupon);
+        tv_activated = view.findViewById(R.id.tv_activated);
 
 
         edt_name = view.findViewById(R.id.edt_name);
@@ -167,6 +195,79 @@ public class Fragment_Client_Data extends Fragment {
             }
         });
 
+        tv_active_coupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String coupon_code = edt_coupon_code.getText().toString().trim();
+                if (!TextUtils.isEmpty(coupon_code))
+                {
+                    CheckCouponActivation(coupon_code);
+
+                }else
+                    {
+                        edt_coupon_code.setError(getString(R.string.field_req));
+
+                    }
+            }
+        });
+
+        Bundle bundle = getArguments();
+        if (bundle!=null)
+        {
+            total_before_discount = bundle.getDouble(TAG);
+
+        }
+
+    }
+
+    private void CheckCouponActivation(final String coupon_code) {
+        progBar.setVisibility(View.VISIBLE);
+        tv_activated.setVisibility(View.GONE);
+
+        Api.getService()
+                .getCouponValue(coupon_code)
+                .enqueue(new Callback<CouponModel>() {
+                    @Override
+                    public void onResponse(Call<CouponModel> call, Response<CouponModel> response) {
+                        progBar.setVisibility(View.GONE);
+                        if (response.isSuccessful()&&response.body()!=null&&response.body().getData()!=null)
+                        {
+
+                            updateCouponData(response.body());
+
+
+                        }else if (response.code() == 404)
+                        {
+                            tv_activated.setText(getString(R.string.inactive));
+                            tv_activated.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CouponModel> call, Throwable t) {
+                        try {
+                            progBar.setVisibility(View.GONE);
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
+    }
+
+    private void updateCouponData(CouponModel couponModel) {
+        tv_activated.setText(getString(R.string.activated));
+        tv_active_coupon.setEnabled(false);
+        edt_coupon_code.setEnabled(false);
+        image_coupon_state.setVisibility(View.VISIBLE);
+
+        coupon_code = couponModel.getData().getCode();
+        coupon_value = couponModel.getData().getValue();
+        total_after_discount = total_before_discount-((total_before_discount*coupon_value)/100);
+
+
+        tv_activated.setText(getString(R.string.activated)+"   ."+getString(R.string.have_discount)+coupon_value+" "+"%"+getString(R.string.discount)+". "+getString(R.string.total)+" : "+total_after_discount+" "+getString(R.string.rsa));
+        tv_activated.setVisibility(View.VISIBLE);
+
+
     }
 
 
@@ -198,7 +299,7 @@ public class Fragment_Client_Data extends Fragment {
             edt_address.setError(null);
             edt_note.setError(null);
             Common.CloseKeyBoard(activity, edt_name);
-            activity.UploadOrder(m_name, m_phone, m_address, m_note,payment_method);
+            activity.UploadOrder(m_name, m_phone, m_address, m_note,payment_method,total_after_discount,coupon_code,coupon_value);
 
         } else {
             if (TextUtils.isEmpty(m_name)) {

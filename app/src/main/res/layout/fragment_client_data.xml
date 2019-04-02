@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:fillViewport="true"
     android:scrollbars="vertical"
-    android:background="@color/gray1">
+    android:background="@color/gray0">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,7 +48,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/edt_sign_up_bg"
+            android:background="@drawable/edt_address_bg"
             android:hint="@string/full_name"
             android:inputType="text"
             android:paddingLeft="20dp"
@@ -144,6 +144,102 @@
 
 
             />
+
+        <LinearLayout
+            android:id="@+id/ll_coupon_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/coupon"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layoutDirection="rtl"
+                tools:ignore="UnusedAttribute"
+                android:background="@drawable/edt_sign_up_bg"
+                android:weightSum="2"
+                android:layout_gravity="center_vertical"
+                >
+                <TextView
+                    android:id="@+id/tv_active_coupon"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight=".5"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:background="@drawable/coupon_bg"
+                    android:text="@string/activate"
+                    />
+                <EditText
+                    android:id="@+id/edt_coupon_code"
+                    android:layout_width="0dp"
+                    android:layout_height="33dp"
+                    android:layout_weight="1.25"
+                    android:background="@color/white"
+                    android:textColorHint="@color/gray"
+                    android:hint="@string/type_coupon_code"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_vertical"
+                    />
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".25"
+
+                    >
+                    <ImageView
+                        android:id="@+id/image_coupon_state"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_activate"
+                        android:tint="@color/colorPrimary"
+                        android:visibility="gone"
+                        />
+                    <ProgressBar
+                        android:id="@+id/progBar"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        />
+                </FrameLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_activated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/activated"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+
+                />
+
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="wrap_content"

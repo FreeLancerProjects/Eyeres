@@ -296,6 +296,7 @@ public class Common {
         return "com.google.android.apps.photos.content".equals(uri
                 .getAuthority());
     }
+
     private static File getFileFromImagePath(String path)
     {
         File file = new File(path);

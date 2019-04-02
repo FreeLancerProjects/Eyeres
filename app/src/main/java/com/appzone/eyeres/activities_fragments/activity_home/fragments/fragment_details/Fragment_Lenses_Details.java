@@ -46,16 +46,16 @@ import retrofit2.Response;
 
 public class Fragment_Lenses_Details extends Fragment {
     private static String TAG = "productModel";
-    private LinearLayout ll_back, ll_eye_left_right, ll_1_eye, ll_add_cart;
+    private LinearLayout ll_back, ll_eye_left_right, ll_1_eye, ll_add_cart, ll_deviation,ll_2_axis_deviation;
     private ImageView arrow, image_2_left_increase, image_2_left_decrease, image_2_right_increase, image_2_right_decrease, image_increase_1_left_right, image_decrease_1_left_right;
     private ViewPager pager_slider;
     private TabLayout tab_slider;
     private TextView tv_name, tv_details, tv_counter_2_left, tv_counter_2_right, tv_counter_1_left_right;
-    private Spinner spinner_2_left, spinner_2_right, spinner_1_left_right;
+    private Spinner spinner_2_left, spinner_2_right, spinner_1_left_right, spinner_deviation_1_left_right, spinner_axis_1_left_right,spinner_deviation_2_left,spinner_deviation_2_right,spinner_axis_2_left,spinner_axis_2_right;
     private CheckBox checkbox;
     private int similar_eye = 1;
     private int counter_left_right = 1, counter_left = 1, counter_right = 1;
-    private String degree_2_left = "", degree_2_right = "", degree_1_left_right = "";
+    private String degree_2_left = "", degree_2_right = "", degree_1_left_right = "", deviation_degree_1_left_right = "", deviation_degree_left = "", deviation_degree_right = "", axis_1_left_right = "", axis_left = "", axis_right = "";
     private SliderAdapter sliderAdapter;
     private ProductDataModel.ProductModel productModel;
     private String current_language;
@@ -64,6 +64,7 @@ public class Fragment_Lenses_Details extends Fragment {
     private TimerTask timerTask;
     private LinearLayout ll_container;
     private OrderCartSingleTone orderCartSingleTone;
+    private List<String> deviationDegreeList, axisList;
 
     @Nullable
     @Override
@@ -83,6 +84,8 @@ public class Fragment_Lenses_Details extends Fragment {
 
     private void initView(View view) {
 
+        deviationDegreeList = new ArrayList<>();
+        axisList = new ArrayList<>();
 
         orderCartSingleTone = OrderCartSingleTone.newInstance();
         activity = (HomeActivity) getActivity();
@@ -100,6 +103,10 @@ public class Fragment_Lenses_Details extends Fragment {
 
         ll_back = view.findViewById(R.id.ll_back);
         ll_eye_left_right = view.findViewById(R.id.ll_eye_left_right);
+        ll_deviation = view.findViewById(R.id.ll_deviation);
+        ll_2_axis_deviation = view.findViewById(R.id.ll_2_axis_deviation);
+
+
         ll_add_cart = view.findViewById(R.id.ll_add_cart);
         image_2_left_increase = view.findViewById(R.id.image_2_left_increase);
         image_2_left_decrease = view.findViewById(R.id.image_2_left_decrease);
@@ -119,6 +126,22 @@ public class Fragment_Lenses_Details extends Fragment {
         spinner_2_left = view.findViewById(R.id.spinner_2_left);
         spinner_2_right = view.findViewById(R.id.spinner_2_right);
         spinner_1_left_right = view.findViewById(R.id.spinner_1_left_right);
+
+        spinner_deviation_1_left_right = view.findViewById(R.id.spinner_deviation_1_left_right);
+        spinner_axis_1_left_right = view.findViewById(R.id.spinner_axis_1_left_right);
+
+
+
+        /////***
+
+
+        spinner_deviation_2_left = view.findViewById(R.id.spinner_deviation_2_left);
+        spinner_deviation_2_right = view.findViewById(R.id.spinner_deviation_2_right);
+        spinner_axis_2_left = view.findViewById(R.id.spinner_axis_2_left);
+        spinner_axis_2_right = view.findViewById(R.id.spinner_axis_2_right);
+
+
+
         ll_1_eye = view.findViewById(R.id.ll_1_eye);
         checkbox = view.findViewById(R.id.checkbox);
         tab_slider.setupWithViewPager(pager_slider);
@@ -168,6 +191,138 @@ public class Fragment_Lenses_Details extends Fragment {
                     degree_1_left_right = "";
                 } else {
                     degree_1_left_right = spinner_1_left_right.getSelectedItem().toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        deviationDegreeList.add(getString(R.string.choose2));
+        deviationDegreeList.add("-0.75");
+        deviationDegreeList.add("-1.25");
+        deviationDegreeList.add("-1.75");
+
+        axisList.add(getString(R.string.choose2));
+        axisList.add("20");
+        axisList.add("90");
+        axisList.add("160");
+        axisList.add("180");
+
+        ArrayAdapter adapter2 = new ArrayAdapter<>(activity, R.layout.spinner_row, deviationDegreeList);
+        ArrayAdapter adapter3 = new ArrayAdapter<>(activity, R.layout.spinner_row, axisList);
+
+        spinner_deviation_1_left_right.setAdapter(adapter2);
+        spinner_axis_1_left_right.setAdapter(adapter3);
+        spinner_deviation_2_left.setAdapter(adapter2);
+        spinner_deviation_2_right.setAdapter(adapter2);
+        spinner_axis_2_left.setAdapter(adapter3);
+        spinner_axis_2_right.setAdapter(adapter3);
+
+        spinner_deviation_1_left_right.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position==0)
+                {
+                    deviation_degree_1_left_right ="";
+                }else
+                    {
+                        deviation_degree_1_left_right = deviationDegreeList.get(position);
+                    }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinner_axis_1_left_right.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position==0)
+                {
+                    axis_1_left_right ="";
+                }else
+                {
+                    axis_1_left_right = axisList.get(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+        spinner_deviation_2_left.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position==0)
+                {
+                    deviation_degree_left ="";
+                }else
+                {
+                    deviation_degree_left = deviationDegreeList.get(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinner_deviation_2_right.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position==0)
+                {
+                    deviation_degree_right ="";
+                }else
+                {
+                    deviation_degree_right = deviationDegreeList.get(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        spinner_axis_2_left.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position==0)
+                {
+                    axis_left ="";
+                }else
+                {
+                    axis_left = axisList.get(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinner_axis_2_right.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position==0)
+                {
+                    axis_right ="";
+                }else
+                {
+                    axis_right = axisList.get(position);
                 }
             }
 
@@ -274,12 +429,11 @@ public class Fragment_Lenses_Details extends Fragment {
             timerTask = new MyTimerTask();
             timer.scheduleAtFixedRate(timerTask, 6000, 6000);
 
-            for (int i = 0;i<tab_slider.getTabCount()-1;i++)
-            {
-                View view = ((ViewGroup)tab_slider.getChildAt(0)).getChildAt(i);
+            for (int i = 0; i < tab_slider.getTabCount() - 1; i++) {
+                View view = ((ViewGroup) tab_slider.getChildAt(0)).getChildAt(i);
 
                 ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                params.setMargins(4,0,4,0);
+                params.setMargins(4, 0, 4, 0);
             }
         }
 
@@ -288,23 +442,63 @@ public class Fragment_Lenses_Details extends Fragment {
                 tv_name.setText(productModel.getName_ar());
 
 
-                tv_details.setText(productModel.getDescription_ar() + "\n" + productModel.getBrand().getName_ar() + " " + productModel.getPrice() + " " + getString(R.string.rsa));
+                if (productModel.getBrand()!=null)
+                {
+                    tv_details.setText(productModel.getDescription_ar() + "\n" + productModel.getBrand().getName_ar() + " " + productModel.getPrice() + " " + getString(R.string.rsa));
+
+                }else
+                    {
+                        tv_details.setText(productModel.getDescription_ar() + "\n" + " " + productModel.getPrice() + " " + getString(R.string.rsa));
+
+                    }
             } else {
                 tv_name.setText(productModel.getName_en());
-                tv_details.setText(productModel.getDescription_en() + "\n" + productModel.getBrand().getName_en() + " " + productModel.getPrice() + " " + getString(R.string.rsa));
+
+                if (productModel.getBrand()!=null)
+                {
+                    tv_details.setText(productModel.getDescription_en() + "\n" + productModel.getBrand().getName_en() + " " + productModel.getPrice() + " " + getString(R.string.rsa));
+
+                }else
+                {
+                    tv_details.setText(productModel.getDescription_en() + "\n" + " " + productModel.getPrice() + " " + getString(R.string.rsa));
+
+                }
 
             }
 
         } else {
+
+
+
+
+
             if (current_language.equals("ar")) {
                 tv_name.setText(productModel.getName_ar());
 
 
-                tv_details.setText(productModel.getDescription_ar() + "\n" + productModel.getBrand().getName_ar() + " " + productModel.getPrice_after_discount() + " " + getString(R.string.rsa));
-            } else {
-                tv_name.setText(productModel.getName_en());
-                tv_details.setText(productModel.getDescription_en() + "\n" + productModel.getBrand().getName_en() + " " + productModel.getPrice_after_discount() + " " + getString(R.string.rsa));
+                if (productModel.getBrand()!=null)
+                {
+                    tv_details.setText(productModel.getDescription_ar() + "\n" + productModel.getBrand().getName_ar() + " " + productModel.getPrice() + " " + getString(R.string.rsa));
 
+                }else
+                {
+                    tv_details.setText(productModel.getDescription_ar() + "\n" + " " + productModel.getPrice() + " " + getString(R.string.rsa));
+
+                }
+
+            } else {
+
+
+                tv_name.setText(productModel.getName_en());
+                if (productModel.getBrand()!=null)
+                {
+                    tv_details.setText(productModel.getDescription_en() + "\n" + productModel.getBrand().getName_en() + " " + productModel.getPrice() + " " + getString(R.string.rsa));
+
+                }else
+                {
+                    tv_details.setText(productModel.getDescription_en() + "\n" + " " + productModel.getPrice() + " " + getString(R.string.rsa));
+
+                }
             }
         }
 
@@ -315,91 +509,215 @@ public class Fragment_Lenses_Details extends Fragment {
 
         }
 
+        if (productModel.getType() == 2) {
+            ll_deviation.setVisibility(View.VISIBLE);
+            ll_2_axis_deviation.setVisibility(View.VISIBLE);
+        } else {
+            ll_deviation.setVisibility(View.GONE);
+            ll_2_axis_deviation.setVisibility(View.GONE);
+        }
+
 
     }
 
     private void CheckData() {
         if (similar_eye == 1) {
-            if (!TextUtils.isEmpty(degree_1_left_right)) {
-                ItemCartModel itemCartModel;
-                /////not offer price
-                if (productModel.getFeatured() == 0) {
-                    double total = counter_left_right * productModel.getPrice();
 
-                    if (productModel.getImages().size() > 0) {
-                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+            if (productModel.getType() == 2) {
+                if (!TextUtils.isEmpty(degree_1_left_right) && !TextUtils.isEmpty(deviation_degree_1_left_right) && !TextUtils.isEmpty(axis_1_left_right)) {
+                    ItemCartModel itemCartModel;
+                    if (productModel.getFeatured() == 0) {
+                        double total = counter_left_right * productModel.getPrice();
 
+                        if (productModel.getImages().size() > 0) {
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, deviation_degree_1_left_right, deviation_degree_left, axis_1_left_right, axis_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        } else {
+
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, deviation_degree_1_left_right, deviation_degree_1_left_right, axis_1_left_right, axis_1_left_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        }
                     } else {
 
-                        itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+                        double total = counter_left_right * productModel.getPrice_after_discount();
+
+                        if (productModel.getImages().size() > 0) {
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, deviation_degree_1_left_right, deviation_degree_1_left_right, axis_1_left_right, axis_1_left_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        } else {
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, deviation_degree_1_left_right, deviation_degree_1_left_right, axis_1_left_right, axis_1_left_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        }
 
                     }
+
+                    orderCartSingleTone.Add_Update_Item(itemCartModel);
+                    int total_item_cart = orderCartSingleTone.getItemsCount();
+                    activity.UpdateCartCounter(total_item_cart);
+                    Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
+
                 } else {
 
-                    double total = counter_left_right * productModel.getPrice_after_discount();
+                    if (TextUtils.isEmpty(degree_1_left_right)) {
+                        Common.CreateSignAlertDialog(activity, getString(R.string.Choose_deg));
 
-                    if (productModel.getImages().size() > 0) {
-                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+                    } else if (TextUtils.isEmpty(deviation_degree_1_left_right)) {
+                        Common.CreateSignAlertDialog(activity, getString(R.string.ch_dev_deg));
 
                     } else {
-                        itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+                        Common.CreateSignAlertDialog(activity, getString(R.string.ch_ax));
 
                     }
 
+
                 }
-
-                orderCartSingleTone.Add_Update_Item(itemCartModel);
-                int total_item_cart = orderCartSingleTone.getItemsCount();
-                activity.UpdateCartCounter(total_item_cart);
-                Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
-
             } else {
-                Common.CreateSignAlertDialog(activity, getString(R.string.Choose_deg));
+
+
+                if (!TextUtils.isEmpty(degree_1_left_right)) {
+                    ItemCartModel itemCartModel;
+                    if (productModel.getFeatured() == 0) {
+                        double total = counter_left_right * productModel.getPrice();
+
+                        if (productModel.getImages().size() > 0) {
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, deviation_degree_1_left_right, deviation_degree_left, axis_1_left_right, axis_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        } else {
+
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, deviation_degree_1_left_right, deviation_degree_left, axis_1_left_right, axis_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        }
+                    } else {
+
+                        double total = counter_left_right * productModel.getPrice_after_discount();
+
+                        if (productModel.getImages().size() > 0) {
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, deviation_degree_1_left_right, deviation_degree_left, axis_1_left_right, axis_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        } else {
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, Tags.ISSIMILAR, degree_1_left_right, degree_1_left_right, deviation_degree_1_left_right, deviation_degree_left, axis_1_left_right, axis_right, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        }
+
+                    }
+
+                    orderCartSingleTone.Add_Update_Item(itemCartModel);
+                    int total_item_cart = orderCartSingleTone.getItemsCount();
+                    activity.UpdateCartCounter(total_item_cart);
+                    Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Common.CreateSignAlertDialog(activity, getString(R.string.Choose_deg));
+                }
             }
         } else if (similar_eye == 2) {
 
 
-            if (!TextUtils.isEmpty(degree_2_left) && !TextUtils.isEmpty(degree_2_right)) {
-                ItemCartModel itemCartModel;
-                /////not offer price
-                if (productModel.getFeatured() == 0) {
-                    int quantity = counter_left + counter_right;
-                    double total = quantity * productModel.getPrice();
+            if (productModel.getType() == 2) {
 
-                    if (productModel.getImages().size() > 0) {
-                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+                if (!TextUtils.isEmpty(degree_2_left) && !TextUtils.isEmpty(degree_2_right)&&!TextUtils.isEmpty(deviation_degree_left)&&!TextUtils.isEmpty(deviation_degree_right)&&!TextUtils.isEmpty(axis_left)&&!TextUtils.isEmpty(axis_right)) {
+                    ItemCartModel itemCartModel;
+                    if (productModel.getFeatured() == 0) {
+                        int quantity = counter_left + counter_right;
+                        double total = quantity * productModel.getPrice();
 
+                        if (productModel.getImages().size() > 0) {
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left,counter_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        } else {
+
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        }
                     } else {
 
-                        itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+                        int quantity = counter_left + counter_right;
+
+                        double total = quantity * productModel.getPrice();
+
+                        if (productModel.getImages().size() > 0) {
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        } else {
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        }
 
                     }
+
+                    orderCartSingleTone.Add_Update_Item(itemCartModel);
+                    int total_item_cart = orderCartSingleTone.getItemsCount();
+                    activity.UpdateCartCounter(total_item_cart);
+                    Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
+
                 } else {
 
-                    int quantity = counter_left + counter_right;
+                    if (TextUtils.isEmpty(degree_2_left)||TextUtils.isEmpty(degree_2_right)||(TextUtils.isEmpty(degree_2_left)&&TextUtils.isEmpty(degree_2_right)))
+                    {
+                        Common.CreateSignAlertDialog(activity, getString(R.string.Choose_deg));
 
-                    double total = quantity * productModel.getPrice();
+                    }else if (TextUtils.isEmpty(deviation_degree_left)||TextUtils.isEmpty(deviation_degree_right)||(TextUtils.isEmpty(deviation_degree_left)&&TextUtils.isEmpty(deviation_degree_right)))
+                    {
+                        Common.CreateSignAlertDialog(activity, getString(R.string.ch_dev_deg));
 
-                    if (productModel.getImages().size() > 0) {
-                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+                    }
+                    else if (TextUtils.isEmpty(axis_left)||TextUtils.isEmpty(axis_right)||(TextUtils.isEmpty(axis_left)&&TextUtils.isEmpty(axis_right)))
+                    {
+                        Common.CreateSignAlertDialog(activity, getString(R.string.ch_ax));
 
+                    }
+                }
+
+
+            } else {
+
+                if (!TextUtils.isEmpty(degree_2_left) && !TextUtils.isEmpty(degree_2_right)) {
+                    ItemCartModel itemCartModel;
+                    if (productModel.getFeatured() == 0) {
+                        int quantity = counter_left + counter_right;
+                        double total = quantity * productModel.getPrice();
+
+                        if (productModel.getImages().size() > 0) {
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left,counter_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        } else {
+
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        }
                     } else {
-                        itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        int quantity = counter_left + counter_right;
+
+                        double total = quantity * productModel.getPrice();
+
+                        if (productModel.getImages().size() > 0) {
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        } else {
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+
+                        }
 
                     }
 
+                    orderCartSingleTone.Add_Update_Item(itemCartModel);
+                    int total_item_cart = orderCartSingleTone.getItemsCount();
+                    activity.UpdateCartCounter(total_item_cart);
+                    Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Common.CreateSignAlertDialog(activity, getString(R.string.Choose_deg));
                 }
 
-                orderCartSingleTone.Add_Update_Item(itemCartModel);
-                int total_item_cart = orderCartSingleTone.getItemsCount();
-                activity.UpdateCartCounter(total_item_cart);
-                Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
 
-            } else {
-                Common.CreateSignAlertDialog(activity, getString(R.string.Choose_deg));
+
             }
 
+
         }
+
+
     }
 
     private void getPackageSize() {

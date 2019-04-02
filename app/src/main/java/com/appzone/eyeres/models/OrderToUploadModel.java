@@ -12,8 +12,10 @@ public class OrderToUploadModel implements Serializable {
     private String address;
     private String notes;
     private double total;
+    private double total_after_discount;
     private int payment_method;
-
+    private String coupon_code;
+    private double coupon_value;
     private List<ItemCartModel> itemsList;
 
     public OrderToUploadModel() {
@@ -90,5 +92,29 @@ public class OrderToUploadModel implements Serializable {
 
     public void setPayment_method(int payment_method) {
         this.payment_method = payment_method;
+    }
+
+    public double getTotal_after_discount() {
+        return total_after_discount;
+    }
+
+    public void setTotal_after_discount(double total_after_discount) {
+        this.total_after_discount = total_after_discount;
+    }
+
+    public String getCoupon_code() {
+        return coupon_code;
+    }
+
+    public void setCoupon_code(String coupon_code) {
+        this.coupon_code = coupon_code;
+    }
+
+    public double getCoupon_value() {
+        return coupon_value;
+    }
+
+    public void setCoupon_value(double coupon_value) {
+        this.coupon_value = coupon_value;
     }
 }

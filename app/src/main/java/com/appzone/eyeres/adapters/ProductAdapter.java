@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.appzone.eyeres.R;
+import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.Fragment_Brand_Details;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Color;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Tools;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_home.fragment_store.Fragment_Transparent;
@@ -90,6 +91,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         fragment_tools.UpdateFavorite(productModel,holder.getAdapterPosition());
 
                     }
+
                 }
             });
             myHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +112,11 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     {
                         Fragment_Tools fragment_tools = (Fragment_Tools) fragment;
                         fragment_tools.setItemData(productModel);
+
+                    }else if (fragment instanceof Fragment_Brand_Details)
+                    {
+                        Fragment_Brand_Details fragment_brand_details = (Fragment_Brand_Details) fragment;
+                        fragment_brand_details.setItemData(productModel);
 
                     }
 
@@ -144,18 +151,27 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         public void BindData(ProductDataModel.ProductModel productModel) {
             if (isSignUp) {
-                image_fav.setVisibility(View.VISIBLE);
-
-                if (productModel.getIs_favorite() == 0)
+                if (fragment instanceof Fragment_Brand_Details)
                 {
-                    image_fav.setImageResource(R.drawable.check_box_fav);
+                    image_fav.setVisibility(View.GONE);
 
                 }else
                     {
-                        image_fav.setImageResource(R.drawable.fav_heart);
+                        image_fav.setVisibility(View.VISIBLE);
+
+                        if (productModel.getIs_favorite() == 0)
+                        {
+                            image_fav.setImageResource(R.drawable.check_box_fav);
+
+                        }else
+                        {
+                            image_fav.setImageResource(R.drawable.fav_heart);
 
 
+                        }
                     }
+
+
 
             } else {
                 image_fav.setVisibility(View.INVISIBLE);
