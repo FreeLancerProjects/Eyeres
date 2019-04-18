@@ -102,12 +102,16 @@
                         android:paddingBottom="5dp"
                         android:background="@color/colorPrimary"
                         >
-                        <ImageView
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/image_transparent"
+
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/transparent"
                             android:clickable="false"
                             android:longClickable="false"
+                            app:civ_border_width="1dp"
+                            app:civ_border_color="@color/colorPrimary"
                             />
                         <TextView
                             android:id="@+id/tv_transparent"
@@ -134,12 +138,16 @@
                         android:paddingBottom="5dp"
                         android:background="@color/colorPrimary"
                         >
-                        <ImageView
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/image_colored"
+
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/color"
                             android:clickable="false"
                             android:longClickable="false"
+                            app:civ_border_width="1dp"
+                            app:civ_border_color="@color/colorPrimary"
                             />
                         <TextView
                             android:id="@+id/tv_colored"
@@ -165,12 +173,15 @@
                         android:paddingBottom="5dp"
                         android:background="@color/colorPrimary"
                         >
-                        <ImageView
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/image_accessories"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/accessories"
                             android:clickable="false"
                             android:longClickable="false"
+                            app:civ_border_width="1dp"
+                            app:civ_border_color="@color/colorPrimary"
                             />
                         <TextView
                             android:id="@+id/tv_accessories"

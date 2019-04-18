@@ -231,7 +231,7 @@ public class Fragment_Complete_Profile extends Fragment {
 
 
     public void acceptRule() {
-
+        isAccept = true;
 
     }
 }

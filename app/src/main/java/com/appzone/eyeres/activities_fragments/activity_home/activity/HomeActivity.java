@@ -424,6 +424,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    public void removeFragmentLensesDetails_AccessoriesDetails_DisplayFragmentCart()
+    {
+        fragment_count-=1;
+        super.onBackPressed();
+        new Handler()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                     DisplayFragmentCart();
+                    }
+                },1);
+    }
+
     /////////////////////////////////////////////////////////////////
 
     public void DisplayFragmentTransparent() {
@@ -478,7 +491,7 @@ public class HomeActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             fragment_color.getProducts();
-                            fragment_store.setSelectedDefault();
+                            //fragment_store.setSelectedDefault();
                         }
                     }, 1);
 

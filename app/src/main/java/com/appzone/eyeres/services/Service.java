@@ -3,6 +3,7 @@ package com.appzone.eyeres.services;
 import com.appzone.eyeres.models.AdsModel;
 import com.appzone.eyeres.models.BrandsDataModel;
 import com.appzone.eyeres.models.CouponModel;
+import com.appzone.eyeres.models.DegreeModel;
 import com.appzone.eyeres.models.FavoriteIdModel;
 import com.appzone.eyeres.models.OrderDataModel;
 import com.appzone.eyeres.models.OrderToUploadModel;
@@ -133,4 +134,7 @@ public interface Service {
 
     @GET("api/get-coupon-value/{code}")
     Call<CouponModel> getCouponValue(@Path("code") String code);
+
+    @GET("api/degrees")
+    Call<DegreeModel> getDegrees();
 }

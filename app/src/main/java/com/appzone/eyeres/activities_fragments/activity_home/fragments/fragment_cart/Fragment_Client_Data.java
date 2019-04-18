@@ -6,12 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,11 +49,12 @@ public class Fragment_Client_Data extends Fragment {
     private HomeActivity activity;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
-    private int payment_method =0;
+    private int payment_method =0;//default 0
     private String coupon_code="";
     private double coupon_value=0;
     private double total_after_discount = 0;
     private double total_before_discount = 0;
+    private boolean inSideRiadCity = false;
 
 
     @Nullable
@@ -63,7 +66,6 @@ public class Fragment_Client_Data extends Fragment {
     }
 
     public static Fragment_Client_Data newInstance(double total_cost) {
-        Log.e("total_before_discount",total_cost+"_");
 
         Bundle bundle = new Bundle();
         bundle.putDouble(TAG,total_cost);
@@ -134,19 +136,7 @@ public class Fragment_Client_Data extends Fragment {
         ll_cash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                payment_method = 1;
-
-                ll_cash.setBackgroundResource(R.drawable.payment_checked);
-                image_cash.setColorFilter(ContextCompat.getColor(activity,R.color.white), PorterDuff.Mode.SRC_IN);
-                tv_cash.setTextColor(ContextCompat.getColor(activity,R.color.white));
-
-                ll_transfer.setBackgroundResource(R.drawable.payment_unchecked);
-                image_transfer.setColorFilter(ContextCompat.getColor(activity,R.color.gray), PorterDuff.Mode.SRC_IN);
-                tv_transfer.setTextColor(ContextCompat.getColor(activity,R.color.gray));
-
-                ll_mada.setBackgroundResource(R.drawable.payment_unchecked);
-                image_mada.setImageResource(R.drawable.mada_gay);
-                tv_mada.setTextColor(ContextCompat.getColor(activity,R.color.gray));
+               CreateAlertDialog();
 
 
 
@@ -218,6 +208,23 @@ public class Fragment_Client_Data extends Fragment {
 
         }
 
+    }
+
+    private void updateCashSelect()
+    {
+        payment_method = 1;
+
+        ll_cash.setBackgroundResource(R.drawable.payment_checked);
+        image_cash.setColorFilter(ContextCompat.getColor(activity,R.color.white), PorterDuff.Mode.SRC_IN);
+        tv_cash.setTextColor(ContextCompat.getColor(activity,R.color.white));
+
+        ll_transfer.setBackgroundResource(R.drawable.payment_unchecked);
+        image_transfer.setColorFilter(ContextCompat.getColor(activity,R.color.gray), PorterDuff.Mode.SRC_IN);
+        tv_transfer.setTextColor(ContextCompat.getColor(activity,R.color.gray));
+
+        ll_mada.setBackgroundResource(R.drawable.payment_unchecked);
+        image_mada.setImageResource(R.drawable.mada_gay);
+        tv_mada.setTextColor(ContextCompat.getColor(activity,R.color.gray));
     }
 
     private void CheckCouponActivation(final String coupon_code) {
@@ -299,7 +306,24 @@ public class Fragment_Client_Data extends Fragment {
             edt_address.setError(null);
             edt_note.setError(null);
             Common.CloseKeyBoard(activity, edt_name);
-            activity.UploadOrder(m_name, m_phone, m_address, m_note,payment_method,total_after_discount,coupon_code,coupon_value);
+
+            if (payment_method ==1)
+            {
+                if (inSideRiadCity)
+                {
+                    activity.UploadOrder(m_name, m_phone, m_address, m_note,payment_method,total_after_discount,coupon_code,coupon_value);
+
+                }else
+                    {
+                        CreateAlertDialog();
+                    }
+
+            }else
+                {
+                    activity.UploadOrder(m_name, m_phone, m_address, m_note,payment_method,total_after_discount,coupon_code,coupon_value);
+
+                }
+
 
         } else {
             if (TextUtils.isEmpty(m_name)) {
@@ -332,5 +356,39 @@ public class Fragment_Client_Data extends Fragment {
 
         }
 
+    }
+
+    public void CreateAlertDialog()
+    {
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setCancelable(true)
+                .create();
+
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_cash_city,null);
+        Button btn_continue = view.findViewById(R.id.btn_continue);
+        Button btn_cancel = view.findViewById(R.id.btn_cancel);
+
+        btn_continue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inSideRiadCity = true;
+                updateCashSelect();
+                dialog.dismiss();
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inSideRiadCity = false;
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations=R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setView(view);
+        dialog.show();
     }
 }

@@ -213,7 +213,7 @@ public class Fragment_Transparent extends Fragment {
 
                                     productModelList.addAll(response.body().getData());
                                     if (productModelList.size() > 0) {
-                                        ll_orderBy.setVisibility(View.VISIBLE);
+                                       // ll_orderBy.setVisibility(View.VISIBLE);
                                         adapter.notifyDataSetChanged();
                                         tv_no_product.setVisibility(View.GONE);
                                     } else {
@@ -310,7 +310,7 @@ public class Fragment_Transparent extends Fragment {
 
                                 productModelList.addAll(response.body().getData());
                                 if (productModelList.size() > 0) {
-                                    ll_orderBy.setVisibility(View.VISIBLE);
+                                    //ll_orderBy.setVisibility(View.VISIBLE);
                                     adapter.notifyDataSetChanged();
                                     tv_no_product.setVisibility(View.GONE);
                                 } else {

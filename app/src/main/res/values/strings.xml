@@ -164,6 +164,10 @@
     <string name="cannot_make_conv">Cannot make a Conversation now try again later</string>
     <string name="have_discount">You have received a</string>
     <string name="discount">discount</string>
+    <string name="product_added_to_cart_successfully">Product added to cart successfully</string>
+    <string name="continue3">Continue</string>
+    <string name="payment">Payment</string>
+    <string name="payment_cash_is_only_available_within_riyadh_city">Cash payment is only available within Riyadh city. Delivery within Riyadh ?</string>
 
 
 </resources>

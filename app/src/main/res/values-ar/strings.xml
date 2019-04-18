@@ -166,5 +166,9 @@
     <string name="cannot_make_conv">عفوا ليمكنك اجراء محادثة الان حاول مره اخرى لاحقا</string>
     <string name="have_discount">تم حصولك على</string>
     <string name="discount">خصم</string>
+    <string name="product_added_to_cart_successfully">تم إضافة المنتج الى السلة بنجاج</string>
+    <string name="continue3">إستمرار عملية الشراء</string>
+    <string name="payment">إستكمال عملية الدفع</string>
+    <string name="payment_cash_is_only_available_within_riyadh_city">الدفع كاش متاح فقط داخل مدينة الرياض. التوصيل داخل الرياض ؟</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 import com.appzone.eyeres.adapters.SliderAdapter;
+import com.appzone.eyeres.models.DegreeModel;
 import com.appzone.eyeres.models.ItemCartModel;
 import com.appzone.eyeres.models.PackageSizeModel;
 import com.appzone.eyeres.models.ProductDataModel;
@@ -46,12 +49,12 @@ import retrofit2.Response;
 
 public class Fragment_Lenses_Details extends Fragment {
     private static String TAG = "productModel";
-    private LinearLayout ll_back, ll_eye_left_right, ll_1_eye, ll_add_cart, ll_deviation,ll_2_axis_deviation;
+    private LinearLayout ll_back, ll_eye_left_right, ll_1_eye, ll_add_cart, ll_deviation, ll_2_axis_deviation;
     private ImageView arrow, image_2_left_increase, image_2_left_decrease, image_2_right_increase, image_2_right_decrease, image_increase_1_left_right, image_decrease_1_left_right;
     private ViewPager pager_slider;
     private TabLayout tab_slider;
     private TextView tv_name, tv_details, tv_counter_2_left, tv_counter_2_right, tv_counter_1_left_right;
-    private Spinner spinner_2_left, spinner_2_right, spinner_1_left_right, spinner_deviation_1_left_right, spinner_axis_1_left_right,spinner_deviation_2_left,spinner_deviation_2_right,spinner_axis_2_left,spinner_axis_2_right;
+    private Spinner spinner_2_left, spinner_2_right, spinner_1_left_right, spinner_deviation_1_left_right, spinner_axis_1_left_right, spinner_deviation_2_left, spinner_deviation_2_right, spinner_axis_2_left, spinner_axis_2_right;
     private CheckBox checkbox;
     private int similar_eye = 1;
     private int counter_left_right = 1, counter_left = 1, counter_right = 1;
@@ -64,7 +67,7 @@ public class Fragment_Lenses_Details extends Fragment {
     private TimerTask timerTask;
     private LinearLayout ll_container;
     private OrderCartSingleTone orderCartSingleTone;
-    private List<String> deviationDegreeList, axisList;
+    private List<String> deviationDegreeList, axisList,degreeList;
 
     @Nullable
     @Override
@@ -86,6 +89,11 @@ public class Fragment_Lenses_Details extends Fragment {
 
         deviationDegreeList = new ArrayList<>();
         axisList = new ArrayList<>();
+        degreeList = new ArrayList<>();
+
+        deviationDegreeList.add(getString(R.string.choose2));
+        axisList.add(getString(R.string.choose2));
+        degreeList.add(getString(R.string.choose2));
 
         orderCartSingleTone = OrderCartSingleTone.newInstance();
         activity = (HomeActivity) getActivity();
@@ -131,7 +139,6 @@ public class Fragment_Lenses_Details extends Fragment {
         spinner_axis_1_left_right = view.findViewById(R.id.spinner_axis_1_left_right);
 
 
-
         /////***
 
 
@@ -141,18 +148,12 @@ public class Fragment_Lenses_Details extends Fragment {
         spinner_axis_2_right = view.findViewById(R.id.spinner_axis_2_right);
 
 
-
         ll_1_eye = view.findViewById(R.id.ll_1_eye);
         checkbox = view.findViewById(R.id.checkbox);
         tab_slider.setupWithViewPager(pager_slider);
 
         ///////////////////////spinners/////////////////////
-        List<String> degreeList = getDegreeList();
-        ArrayAdapter arrayAdapter = new ArrayAdapter<>(activity, R.layout.spinner_row, degreeList);
 
-        spinner_2_left.setAdapter(arrayAdapter);
-        spinner_2_right.setAdapter(arrayAdapter);
-        spinner_1_left_right.setAdapter(arrayAdapter);
 
         spinner_2_left.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -200,37 +201,17 @@ public class Fragment_Lenses_Details extends Fragment {
             }
         });
 
-        deviationDegreeList.add(getString(R.string.choose2));
-        deviationDegreeList.add("-0.75");
-        deviationDegreeList.add("-1.25");
-        deviationDegreeList.add("-1.75");
 
-        axisList.add(getString(R.string.choose2));
-        axisList.add("20");
-        axisList.add("90");
-        axisList.add("160");
-        axisList.add("180");
 
-        ArrayAdapter adapter2 = new ArrayAdapter<>(activity, R.layout.spinner_row, deviationDegreeList);
-        ArrayAdapter adapter3 = new ArrayAdapter<>(activity, R.layout.spinner_row, axisList);
-
-        spinner_deviation_1_left_right.setAdapter(adapter2);
-        spinner_axis_1_left_right.setAdapter(adapter3);
-        spinner_deviation_2_left.setAdapter(adapter2);
-        spinner_deviation_2_right.setAdapter(adapter2);
-        spinner_axis_2_left.setAdapter(adapter3);
-        spinner_axis_2_right.setAdapter(adapter3);
 
         spinner_deviation_1_left_right.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position==0)
-                {
-                    deviation_degree_1_left_right ="";
-                }else
-                    {
-                        deviation_degree_1_left_right = deviationDegreeList.get(position);
-                    }
+                if (position == 0) {
+                    deviation_degree_1_left_right = "";
+                } else {
+                    deviation_degree_1_left_right = deviationDegreeList.get(position);
+                }
             }
 
             @Override
@@ -242,11 +223,9 @@ public class Fragment_Lenses_Details extends Fragment {
         spinner_axis_1_left_right.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position==0)
-                {
-                    axis_1_left_right ="";
-                }else
-                {
+                if (position == 0) {
+                    axis_1_left_right = "";
+                } else {
                     axis_1_left_right = axisList.get(position);
                 }
             }
@@ -258,15 +237,12 @@ public class Fragment_Lenses_Details extends Fragment {
         });
 
 
-
         spinner_deviation_2_left.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position==0)
-                {
-                    deviation_degree_left ="";
-                }else
-                {
+                if (position == 0) {
+                    deviation_degree_left = "";
+                } else {
                     deviation_degree_left = deviationDegreeList.get(position);
                 }
             }
@@ -280,11 +256,9 @@ public class Fragment_Lenses_Details extends Fragment {
         spinner_deviation_2_right.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position==0)
-                {
-                    deviation_degree_right ="";
-                }else
-                {
+                if (position == 0) {
+                    deviation_degree_right = "";
+                } else {
                     deviation_degree_right = deviationDegreeList.get(position);
                 }
             }
@@ -299,11 +273,9 @@ public class Fragment_Lenses_Details extends Fragment {
         spinner_axis_2_left.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position==0)
-                {
-                    axis_left ="";
-                }else
-                {
+                if (position == 0) {
+                    axis_left = "";
+                } else {
                     axis_left = axisList.get(position);
                 }
             }
@@ -317,11 +289,9 @@ public class Fragment_Lenses_Details extends Fragment {
         spinner_axis_2_right.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position==0)
-                {
-                    axis_right ="";
-                }else
-                {
+                if (position == 0) {
+                    axis_right = "";
+                } else {
                     axis_right = axisList.get(position);
                 }
             }
@@ -413,6 +383,69 @@ public class Fragment_Lenses_Details extends Fragment {
         }
 
         //getPackageSize();
+
+        getDegree();
+    }
+
+    private void getDegree() {
+
+        final ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
+        dialog.show();
+        dialog.setCancelable(false);
+        Api.getService()
+                .getDegrees()
+                .enqueue(new Callback<DegreeModel>() {
+                    @Override
+                    public void onResponse(Call<DegreeModel> call, Response<DegreeModel> response) {
+                        dialog.dismiss();
+
+                        if (response.isSuccessful() && response.body() != null) {
+
+                            UpdateAllSpinnerAdapter(response.body());
+
+                        } else {
+                            Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                            try {
+                                Log.e("Error_code", response.code() + "_" + response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DegreeModel> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                            Log.e("Error", t.getMessage());
+                        } catch (Exception e) {
+                        }
+                    }
+                });
+    }
+
+    private void UpdateAllSpinnerAdapter(DegreeModel degreeModel) {
+
+        degreeList.addAll(degreeModel.getMyopia());
+        ArrayAdapter arrayAdapter = new ArrayAdapter<>(activity, R.layout.spinner_row, degreeList);
+        spinner_2_left.setAdapter(arrayAdapter);
+        spinner_2_right.setAdapter(arrayAdapter);
+        spinner_1_left_right.setAdapter(arrayAdapter);
+
+        deviationDegreeList.addAll(degreeModel.getDeviation());
+        axisList.addAll(degreeModel.getAxis());
+
+        ArrayAdapter adapter2 = new ArrayAdapter<>(activity, R.layout.spinner_row, deviationDegreeList);
+        ArrayAdapter adapter3 = new ArrayAdapter<>(activity, R.layout.spinner_row, axisList);
+
+        spinner_deviation_1_left_right.setAdapter(adapter2);
+        spinner_axis_1_left_right.setAdapter(adapter3);
+        spinner_deviation_2_left.setAdapter(adapter2);
+        spinner_deviation_2_right.setAdapter(adapter2);
+        spinner_axis_2_left.setAdapter(adapter3);
+        spinner_axis_2_right.setAdapter(adapter3);
     }
 
 
@@ -442,24 +475,20 @@ public class Fragment_Lenses_Details extends Fragment {
                 tv_name.setText(productModel.getName_ar());
 
 
-                if (productModel.getBrand()!=null)
-                {
+                if (productModel.getBrand() != null) {
                     tv_details.setText(productModel.getDescription_ar() + "\n" + productModel.getBrand().getName_ar() + " " + productModel.getPrice() + " " + getString(R.string.rsa));
 
-                }else
-                    {
-                        tv_details.setText(productModel.getDescription_ar() + "\n" + " " + productModel.getPrice() + " " + getString(R.string.rsa));
+                } else {
+                    tv_details.setText(productModel.getDescription_ar() + "\n" + " " + productModel.getPrice() + " " + getString(R.string.rsa));
 
-                    }
+                }
             } else {
                 tv_name.setText(productModel.getName_en());
 
-                if (productModel.getBrand()!=null)
-                {
+                if (productModel.getBrand() != null) {
                     tv_details.setText(productModel.getDescription_en() + "\n" + productModel.getBrand().getName_en() + " " + productModel.getPrice() + " " + getString(R.string.rsa));
 
-                }else
-                {
+                } else {
                     tv_details.setText(productModel.getDescription_en() + "\n" + " " + productModel.getPrice() + " " + getString(R.string.rsa));
 
                 }
@@ -469,19 +498,14 @@ public class Fragment_Lenses_Details extends Fragment {
         } else {
 
 
-
-
-
             if (current_language.equals("ar")) {
                 tv_name.setText(productModel.getName_ar());
 
 
-                if (productModel.getBrand()!=null)
-                {
+                if (productModel.getBrand() != null) {
                     tv_details.setText(productModel.getDescription_ar() + "\n" + productModel.getBrand().getName_ar() + " " + productModel.getPrice() + " " + getString(R.string.rsa));
 
-                }else
-                {
+                } else {
                     tv_details.setText(productModel.getDescription_ar() + "\n" + " " + productModel.getPrice() + " " + getString(R.string.rsa));
 
                 }
@@ -490,12 +514,10 @@ public class Fragment_Lenses_Details extends Fragment {
 
 
                 tv_name.setText(productModel.getName_en());
-                if (productModel.getBrand()!=null)
-                {
+                if (productModel.getBrand() != null) {
                     tv_details.setText(productModel.getDescription_en() + "\n" + productModel.getBrand().getName_en() + " " + productModel.getPrice() + " " + getString(R.string.rsa));
 
-                }else
-                {
+                } else {
                     tv_details.setText(productModel.getDescription_en() + "\n" + " " + productModel.getPrice() + " " + getString(R.string.rsa));
 
                 }
@@ -554,7 +576,8 @@ public class Fragment_Lenses_Details extends Fragment {
                     orderCartSingleTone.Add_Update_Item(itemCartModel);
                     int total_item_cart = orderCartSingleTone.getItemsCount();
                     activity.UpdateCartCounter(total_item_cart);
-                    Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
+                    CreateAlertDialog();
+
 
                 } else {
 
@@ -604,7 +627,8 @@ public class Fragment_Lenses_Details extends Fragment {
                     orderCartSingleTone.Add_Update_Item(itemCartModel);
                     int total_item_cart = orderCartSingleTone.getItemsCount();
                     activity.UpdateCartCounter(total_item_cart);
-                    Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
+                    CreateAlertDialog();
+
 
                 } else {
                     Common.CreateSignAlertDialog(activity, getString(R.string.Choose_deg));
@@ -615,18 +639,18 @@ public class Fragment_Lenses_Details extends Fragment {
 
             if (productModel.getType() == 2) {
 
-                if (!TextUtils.isEmpty(degree_2_left) && !TextUtils.isEmpty(degree_2_right)&&!TextUtils.isEmpty(deviation_degree_left)&&!TextUtils.isEmpty(deviation_degree_right)&&!TextUtils.isEmpty(axis_left)&&!TextUtils.isEmpty(axis_right)) {
+                if (!TextUtils.isEmpty(degree_2_left) && !TextUtils.isEmpty(degree_2_right) && !TextUtils.isEmpty(deviation_degree_left) && !TextUtils.isEmpty(deviation_degree_right) && !TextUtils.isEmpty(axis_left) && !TextUtils.isEmpty(axis_right)) {
                     ItemCartModel itemCartModel;
                     if (productModel.getFeatured() == 0) {
                         int quantity = counter_left + counter_right;
                         double total = quantity * productModel.getPrice();
 
                         if (productModel.getImages().size() > 0) {
-                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left,counter_right, Tags.PRODUCT_TYPE_LENSES);
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left, axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
 
                         } else {
 
-                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left, axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
 
                         }
                     } else {
@@ -636,10 +660,10 @@ public class Fragment_Lenses_Details extends Fragment {
                         double total = quantity * productModel.getPrice();
 
                         if (productModel.getImages().size() > 0) {
-                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left, axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
 
                         } else {
-                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left, axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
 
                         }
 
@@ -648,21 +672,18 @@ public class Fragment_Lenses_Details extends Fragment {
                     orderCartSingleTone.Add_Update_Item(itemCartModel);
                     int total_item_cart = orderCartSingleTone.getItemsCount();
                     activity.UpdateCartCounter(total_item_cart);
-                    Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
+                    CreateAlertDialog();
+
 
                 } else {
 
-                    if (TextUtils.isEmpty(degree_2_left)||TextUtils.isEmpty(degree_2_right)||(TextUtils.isEmpty(degree_2_left)&&TextUtils.isEmpty(degree_2_right)))
-                    {
+                    if (TextUtils.isEmpty(degree_2_left) || TextUtils.isEmpty(degree_2_right) || (TextUtils.isEmpty(degree_2_left) && TextUtils.isEmpty(degree_2_right))) {
                         Common.CreateSignAlertDialog(activity, getString(R.string.Choose_deg));
 
-                    }else if (TextUtils.isEmpty(deviation_degree_left)||TextUtils.isEmpty(deviation_degree_right)||(TextUtils.isEmpty(deviation_degree_left)&&TextUtils.isEmpty(deviation_degree_right)))
-                    {
+                    } else if (TextUtils.isEmpty(deviation_degree_left) || TextUtils.isEmpty(deviation_degree_right) || (TextUtils.isEmpty(deviation_degree_left) && TextUtils.isEmpty(deviation_degree_right))) {
                         Common.CreateSignAlertDialog(activity, getString(R.string.ch_dev_deg));
 
-                    }
-                    else if (TextUtils.isEmpty(axis_left)||TextUtils.isEmpty(axis_right)||(TextUtils.isEmpty(axis_left)&&TextUtils.isEmpty(axis_right)))
-                    {
+                    } else if (TextUtils.isEmpty(axis_left) || TextUtils.isEmpty(axis_right) || (TextUtils.isEmpty(axis_left) && TextUtils.isEmpty(axis_right))) {
                         Common.CreateSignAlertDialog(activity, getString(R.string.ch_ax));
 
                     }
@@ -678,11 +699,11 @@ public class Fragment_Lenses_Details extends Fragment {
                         double total = quantity * productModel.getPrice();
 
                         if (productModel.getImages().size() > 0) {
-                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left,counter_right, Tags.PRODUCT_TYPE_LENSES);
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left, axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
 
                         } else {
 
-                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left, axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
 
                         }
                     } else {
@@ -692,10 +713,10 @@ public class Fragment_Lenses_Details extends Fragment {
                         double total = quantity * productModel.getPrice();
 
                         if (productModel.getImages().size() > 0) {
-                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right ,counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left, axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
 
                         } else {
-                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left,axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
+                            itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), quantity, total, Tags.NOTSIMILAR, degree_2_left, degree_2_right, deviation_degree_left, deviation_degree_right, axis_left, axis_right, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES);
 
                         }
 
@@ -704,12 +725,10 @@ public class Fragment_Lenses_Details extends Fragment {
                     orderCartSingleTone.Add_Update_Item(itemCartModel);
                     int total_item_cart = orderCartSingleTone.getItemsCount();
                     activity.UpdateCartCounter(total_item_cart);
-                    Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
-
+                    CreateAlertDialog();
                 } else {
                     Common.CreateSignAlertDialog(activity, getString(R.string.Choose_deg));
                 }
-
 
 
             }
@@ -718,6 +737,37 @@ public class Fragment_Lenses_Details extends Fragment {
         }
 
 
+    }
+
+    public void CreateAlertDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setCancelable(true)
+                .create();
+
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_continue_goto_cart, null);
+        Button btn_continue = view.findViewById(R.id.btn_continue);
+        Button btn_payment = view.findViewById(R.id.btn_payment);
+
+        btn_continue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btn_payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                activity.removeFragmentLensesDetails_AccessoriesDetails_DisplayFragmentCart();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setView(view);
+        dialog.show();
     }
 
     private void getPackageSize() {
@@ -815,20 +865,6 @@ public class Fragment_Lenses_Details extends Fragment {
     private List<String> getDegreeList() {
         List<String> degreeList = new ArrayList<>();
         degreeList.add(getString(R.string.choose2));
-        for (double i = 6.00; i >= -6.00; i -= .25) {
-            if (i > 0.00) {
-                degreeList.add("+" + i);
-            } else if (i < 0.00) {
-                degreeList.add(String.valueOf(i));
-
-            }
-        }
-
-
-        for (double i = -6.50; i >= -12.00; i -= 0.50) {
-            degreeList.add(String.valueOf(i));
-
-        }
 
         return degreeList;
     }

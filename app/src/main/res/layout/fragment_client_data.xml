@@ -368,6 +368,7 @@
                 android:descendantFocusability="blocksDescendants"
                 android:layout_marginLeft="13dp"
                 android:layout_marginRight="13dp"
+                android:visibility="gone"
                 >
                 <ImageView
                     android:id="@+id/image_transfer"
@@ -405,6 +406,8 @@
                 android:paddingRight="5dp"
                 android:background="@drawable/payment_unchecked"
                 android:descendantFocusability="blocksDescendants"
+                android:visibility="gone"
+
                 >
                 <ImageView
                     android:id="@+id/image_mada"

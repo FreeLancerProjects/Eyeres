@@ -42,7 +42,7 @@ public class AdsSliderAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.slider_row,container,false);
         ImageView image = view.findViewById(R.id.image);
-        Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL+adsList.get(position).getImage())).fit().into(image);
+        Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL+adsList.get(position).getImage())).into(image);
         container.addView(view);
         return view;
     }

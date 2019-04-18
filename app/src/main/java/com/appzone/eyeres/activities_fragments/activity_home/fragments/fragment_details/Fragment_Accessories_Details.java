@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
@@ -250,8 +250,9 @@ public class Fragment_Accessories_Details extends Fragment{
         orderCartSingleTone.Add_Update_Item(itemCartModel);
         int total_item_cart = orderCartSingleTone.getItemsCount();
         activity.UpdateCartCounter(total_item_cart);
-        Toast.makeText(activity, getString(R.string.succ), Toast.LENGTH_SHORT).show();
+        CreateAlertDialog();
 
+        //////11111111111111111111
 
     }
 
@@ -262,6 +263,38 @@ public class Fragment_Accessories_Details extends Fragment{
         tv_counter.setText(String.valueOf(counter));
     }
 
+
+    public void CreateAlertDialog()
+    {
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setCancelable(true)
+                .create();
+
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_continue_goto_cart,null);
+        Button btn_continue = view.findViewById(R.id.btn_continue);
+        Button btn_payment = view.findViewById(R.id.btn_payment);
+
+        btn_continue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btn_payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                activity.removeFragmentLensesDetails_AccessoriesDetails_DisplayFragmentCart();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations=R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setView(view);
+        dialog.show();
+    }
     private class MyTimerTask extends TimerTask
     {
         @Override
