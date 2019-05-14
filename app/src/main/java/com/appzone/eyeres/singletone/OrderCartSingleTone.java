@@ -26,26 +26,38 @@ public class OrderCartSingleTone {
     public void Add_Update_Item(ItemCartModel itemCartModel)
     {
 
+        Log.e("mmm","lflf");
         if (itemCartModel!=null)
         {
-            if (getItemPosition(itemCartModel) == -1)
+            Log.e("52","52");
+
+            if (itemCartModelList.size() == 0)
             {
                 itemCartModelList.add(itemCartModel);
+
 
             }else
             {
                 int pos = getItemPosition(itemCartModel);
-                double oldTotal = itemCartModelList.get(pos).getTotal();
-                int oldQuantity = itemCartModelList.get(pos).getQuantity();
+                if (pos==-1)
+                {
+                    itemCartModelList.add(itemCartModel);
 
-                int totalQuantity = oldQuantity+itemCartModel.getQuantity();
-                double totalCost = oldTotal+itemCartModel.getTotal();
+                }else
+                    {
+                        double oldTotal = itemCartModelList.get(pos).getTotal();
+                        int oldQuantity = itemCartModelList.get(pos).getQuantity();
 
-                itemCartModel.setQuantity(totalQuantity);
-                itemCartModel.setTotal(totalCost);
+                        int totalQuantity = oldQuantity+itemCartModel.getQuantity();
+                        double totalCost = oldTotal+itemCartModel.getTotal();
 
-                itemCartModelList.set(pos,itemCartModel);
-                Log.e("2","2");
+                        itemCartModel.setQuantity(totalQuantity);
+                        itemCartModel.setTotal(totalCost);
+
+                        itemCartModelList.set(pos,itemCartModel);
+                    }
+
+
 
 
             }
@@ -63,7 +75,7 @@ public class OrderCartSingleTone {
                 ItemCartModel item = itemCartModelList.get(index);
 
 
-                if (item.getProduct_id() == itemCartModel.getProduct_id())
+                if (item.getProduct_id() == itemCartModel.getProduct_id()&&item.getSimilar()!=itemCartModel.getSimilar())
                 {
                     pos = index;
                     break;

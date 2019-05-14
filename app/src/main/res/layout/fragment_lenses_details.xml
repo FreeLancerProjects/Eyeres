@@ -144,37 +144,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone"
                     android:clickable="false"
                     android:longClickable="false"
                     >
-                    <!--<TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/package_size"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16sp"
-
-                        />-->
-                    <!--<FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/spinner_bg"
-                        android:padding="5dp">
-
-                        <Spinner
-                            android:id="@+id/spinner_package_size"
-                            android:layout_width="match_parent"
-                            android:layout_height="28dp"
-                            android:spinnerMode="dropdown"
-
-                            >
-
-                        </Spinner>
-
-                    </FrameLayout>-->
 
                     <CheckBox
                         android:id="@+id/checkbox"
@@ -186,7 +158,9 @@
                         android:text="@string/a_different_prescription_for_each_eye"
                         android:textColor="@color/black"
                         android:textSize="17sp"
-                        tools:ignore="RtlCompat" />
+                        tools:ignore="RtlCompat"
+                        android:visibility="gone"
+                        />
 
                     <LinearLayout
                         android:id="@+id/ll_eye_left_right"
@@ -200,6 +174,7 @@
                         >
 
                         <LinearLayout
+                            android:id="@+id/ll_degree_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -299,198 +274,186 @@
 
                         </LinearLayout>
 
-
                         <LinearLayout
-                            android:id="@+id/ll_2_axis_deviation"
+                            android:id="@+id/ll_deviation_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="vertical"
-                            android:visibility="gone"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:clickable="false"
+                            android:longClickable="false"
 
                             >
+
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="2"
+                                android:layout_marginEnd="3dp"
+                                android:layout_weight=".8"
+                                android:orientation="vertical"
+                                tools:ignore="RtlCompat"
                                 android:clickable="false"
                                 android:longClickable="false"
-
                                 >
 
-                                <LinearLayout
-                                    android:layout_width="0dp"
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="3dp"
-                                    android:layout_weight=".8"
-                                    android:orientation="vertical"
-                                    tools:ignore="RtlCompat"
-                                    android:clickable="false"
-                                    android:longClickable="false"
-                                    >
+                                    android:layout_marginTop="8dp"
+                                    android:background="@drawable/spinner_bg"
+                                    android:padding="5dp">
 
-
-                                    <FrameLayout
+                                    <Spinner
+                                        android:id="@+id/spinner_deviation_2_left"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="8dp"
-                                        android:background="@drawable/spinner_bg"
-                                        android:padding="5dp">
+                                        android:layout_height="22dp"
+                                        android:spinnerMode="dropdown"
 
-                                        <Spinner
-                                            android:id="@+id/spinner_deviation_2_left"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="22dp"
-                                            android:spinnerMode="dropdown"
+                                        >
 
-                                            >
+                                    </Spinner>
 
-                                        </Spinner>
-
-                                    </FrameLayout>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="3dp"
-                                    android:layout_weight=".8"
-                                    android:orientation="vertical"
-                                    tools:ignore="RtlCompat">
-
-
-                                    <FrameLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="8dp"
-                                        android:background="@drawable/spinner_bg"
-                                        android:padding="5dp">
-
-                                        <Spinner
-                                            android:id="@+id/spinner_deviation_2_right"
-
-                                            android:layout_width="match_parent"
-                                            android:layout_height="23dp"
-                                            android:spinnerMode="dropdown"
-
-                                            >
-
-                                        </Spinner>
-
-                                    </FrameLayout>
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_weight=".4"
-                                    android:gravity="center"
-                                    android:text="@string/degree_of_deviation"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-
-
+                                </FrameLayout>
                             </LinearLayout>
+
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:orientation="horizontal"
-                                android:weightSum="2"
+                                android:layout_marginStart="3dp"
+                                android:layout_weight=".8"
+                                android:orientation="vertical"
+                                tools:ignore="RtlCompat">
+
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@drawable/spinner_bg"
+                                    android:padding="5dp">
+
+                                    <Spinner
+                                        android:id="@+id/spinner_deviation_2_right"
+
+                                        android:layout_width="match_parent"
+                                        android:layout_height="23dp"
+                                        android:spinnerMode="dropdown"
+
+                                        >
+
+                                    </Spinner>
+
+                                </FrameLayout>
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight=".4"
+                                android:gravity="center"
+                                android:text="@string/degree_of_deviation"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/ll_axis_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:clickable="false"
+                            android:longClickable="false"
+
+                            >
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="3dp"
+                                android:layout_weight=".8"
+                                android:orientation="vertical"
+                                tools:ignore="RtlCompat"
                                 android:clickable="false"
                                 android:longClickable="false"
-
                                 >
 
-                                <LinearLayout
-                                    android:layout_width="0dp"
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="3dp"
-                                    android:layout_weight=".8"
-                                    android:orientation="vertical"
-                                    tools:ignore="RtlCompat"
-                                    android:clickable="false"
-                                    android:longClickable="false"
-                                    >
+                                    android:layout_marginTop="8dp"
+                                    android:background="@drawable/spinner_bg"
+                                    android:padding="5dp">
 
-
-                                    <FrameLayout
+                                    <Spinner
+                                        android:id="@+id/spinner_axis_2_left"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="8dp"
-                                        android:background="@drawable/spinner_bg"
-                                        android:padding="5dp">
+                                        android:layout_height="22dp"
+                                        android:spinnerMode="dropdown"
 
-                                        <Spinner
-                                            android:id="@+id/spinner_axis_2_left"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="22dp"
-                                            android:spinnerMode="dropdown"
+                                        >
 
-                                            >
+                                    </Spinner>
 
-                                        </Spinner>
-
-                                    </FrameLayout>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="3dp"
-                                    android:layout_weight=".8"
-                                    android:orientation="vertical"
-                                    tools:ignore="RtlCompat">
-
-
-                                    <FrameLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="8dp"
-                                        android:background="@drawable/spinner_bg"
-                                        android:padding="5dp">
-
-                                        <Spinner
-                                            android:id="@+id/spinner_axis_2_right"
-
-                                            android:layout_width="match_parent"
-                                            android:layout_height="23dp"
-                                            android:spinnerMode="dropdown"
-
-                                            >
-
-                                        </Spinner>
-
-                                    </FrameLayout>
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_weight=".4"
-                                    android:gravity="center"
-                                    android:text="@string/axis_of_the_eye"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-
-
+                                </FrameLayout>
                             </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:layout_weight=".8"
+                                android:orientation="vertical"
+                                tools:ignore="RtlCompat">
+
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@drawable/spinner_bg"
+                                    android:padding="5dp">
+
+                                    <Spinner
+                                        android:id="@+id/spinner_axis_2_right"
+
+                                        android:layout_width="match_parent"
+                                        android:layout_height="23dp"
+                                        android:spinnerMode="dropdown"
+
+                                        >
+
+                                    </Spinner>
+
+                                </FrameLayout>
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight=".4"
+                                android:gravity="center"
+                                android:text="@string/axis_of_the_eye"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+
                         </LinearLayout>
 
-
-
-
-
-
                         <LinearLayout
+                            android:id="@+id/ll_counter_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:orientation="horizontal"
-                            android:weightSum="2">
+                            android:weightSum="2"
+
+                            >
 
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -592,13 +555,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:orientation="vertical"
-                        android:visibility="visible"
                         >
 
                         <LinearLayout
+                            android:id="@+id/ll_degree_1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:visibility="gone"
                             android:weightSum="2">
 
                             <LinearLayout
@@ -643,114 +607,114 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/ll_deviation"
+                            android:id="@+id/ll_deviation_1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
+                            android:orientation="horizontal"
                             android:layout_marginTop="8dp"
+                            android:weightSum="2"
                             android:visibility="gone"
-
                             >
+
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="2">
+                                android:layout_marginEnd="3dp"
+                                android:layout_weight="1.2"
+                                android:orientation="vertical"
+                                tools:ignore="RtlCompat">
 
-                                <LinearLayout
-                                    android:layout_width="0dp"
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="3dp"
-                                    android:layout_weight="1.2"
-                                    android:orientation="vertical"
-                                    tools:ignore="RtlCompat">
+                                    android:background="@drawable/spinner_bg"
+                                    android:padding="5dp">
 
-
-                                    <FrameLayout
+                                    <Spinner
+                                        android:id="@+id/spinner_deviation_1_left_right"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:background="@drawable/spinner_bg"
-                                        android:padding="5dp">
+                                        android:layout_height="23dp"
+                                        android:spinnerMode="dropdown"
 
-                                        <Spinner
-                                            android:id="@+id/spinner_deviation_1_left_right"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="23dp"
-                                            android:spinnerMode="dropdown"
+                                        >
 
-                                            >
+                                    </Spinner>
 
-                                        </Spinner>
-
-                                    </FrameLayout>
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:layout_weight=".8"
-                                    android:gravity="center"
-                                    android:text="@string/degree_of_deviation"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-
+                                </FrameLayout>
                             </LinearLayout>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight=".8"
+                                android:gravity="center"
+                                android:text="@string/degree_of_deviation"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_axis_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="8dp"
+                            android:weightSum="2"
+                            android:visibility="gone"
+                            >
+
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="8dp"
-                                android:weightSum="2">
+                                android:layout_marginEnd="3dp"
+                                android:layout_weight="1.2"
+                                android:orientation="vertical"
+                                tools:ignore="RtlCompat">
 
-                                <LinearLayout
-                                    android:layout_width="0dp"
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="3dp"
-                                    android:layout_weight="1.2"
-                                    android:orientation="vertical"
-                                    tools:ignore="RtlCompat">
+                                    android:background="@drawable/spinner_bg"
+                                    android:padding="5dp">
 
-
-                                    <FrameLayout
+                                    <Spinner
+                                        android:id="@+id/spinner_axis_1_left_right"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:background="@drawable/spinner_bg"
-                                        android:padding="5dp">
+                                        android:layout_height="23dp"
+                                        android:spinnerMode="dropdown"
 
-                                        <Spinner
-                                            android:id="@+id/spinner_axis_1_left_right"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="23dp"
-                                            android:spinnerMode="dropdown"
+                                        >
 
-                                            >
+                                    </Spinner>
 
-                                        </Spinner>
-
-                                    </FrameLayout>
-                                </LinearLayout>
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
-                                    android:layout_weight=".8"
-                                    android:gravity="center"
-                                    android:text="@string/axis_of_the_eye"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-
+                                </FrameLayout>
                             </LinearLayout>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_weight=".8"
+                                android:gravity="center"
+                                android:text="@string/axis_of_the_eye"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
 
                         <LinearLayout
+                            android:id="@+id/ll_counter_1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:weightSum="2">
+                            android:weightSum="2"
+                            android:visibility="gone"
+                            >
 
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -826,6 +790,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:layout_marginBottom="15dp"
+                android:visibility="gone"
                 >
 
                 <ImageView
@@ -855,6 +820,10 @@
 
                     />
             </LinearLayout>
+
+
+
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

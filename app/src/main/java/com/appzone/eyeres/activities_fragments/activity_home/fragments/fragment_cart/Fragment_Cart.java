@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,6 +118,7 @@ public class Fragment_Cart extends Fragment{
         itemCartModelList = new ArrayList<>();
         itemCartModelList.addAll(orderCartSingleTone.getItemCartModelList());
 
+        Log.e("itemCartModelList",itemCartModelList.size()+"_");
 
 
         if (itemCartModelList.size()>0)
@@ -153,7 +155,9 @@ public class Fragment_Cart extends Fragment{
 
     public void Delete(int pos)
     {
+        Log.e("pos",pos+"_");
         itemCartModelList.remove(pos);
+        adapter.notifyItemRemoved(pos);
         orderCartSingleTone.Delete_Item(pos);
         if (itemCartModelList.size()==0)
         {

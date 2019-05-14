@@ -101,7 +101,7 @@ public class Fragment_Store extends Fragment {
                 image_colored.setPadding(15,15,15,15);
 
                 activity.DisplayFragmentTransparent();
-                ll_transparent.setBackgroundResource(R.color.white);
+                ll_transparent.setBackgroundResource(R.drawable.selected_view);
                 tv_transparent.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
 
                 ll_color.setBackgroundResource(R.drawable.unselected_tools);
@@ -118,6 +118,7 @@ public class Fragment_Store extends Fragment {
 
 
                 setSelectedDefault();
+                activity.DisplayFragmentColor();
 
 
             }
@@ -139,7 +140,7 @@ public class Fragment_Store extends Fragment {
                 ll_color.setBackgroundResource(R.drawable.unselected_trans);
                 tv_colored.setTextColor(ContextCompat.getColor(activity, R.color.white));
 
-                ll_accessories.setBackgroundResource(R.color.white);
+                ll_accessories.setBackgroundResource(R.drawable.selected_view);
                 tv_accessories.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
 
 
@@ -153,8 +154,6 @@ public class Fragment_Store extends Fragment {
     public void setSelectedDefault() {
 
 
-        activity.DisplayFragmentColor();
-
         image_transparent.setPadding(15,15,15,15);
         image_accessories.setPadding(15,15,15,15);
         image_colored.setPadding(0,0,0,0);
@@ -163,7 +162,7 @@ public class Fragment_Store extends Fragment {
         ll_transparent.setBackgroundResource(R.drawable.unselected_trans);
         tv_transparent.setTextColor(ContextCompat.getColor(activity, R.color.white));
 
-        ll_color.setBackgroundResource(R.color.white);
+        ll_color.setBackgroundResource(R.drawable.selected_view);
         tv_colored.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
 
         ll_accessories.setBackgroundResource(R.drawable.unselected_tools);

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-import android.widget.TextView;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
@@ -25,9 +24,8 @@ import io.paperdb.Paper;
 
 public class Fragment_More extends Fragment {
 
-    private LinearLayout ll_terms,ll_developer,ll_profile,ll_language,ll_about,ll_question,ll_policy,ll_favorite;
+    private LinearLayout ll_terms,ll_profile,ll_language,ll_about,ll_question,ll_policy,ll_favorite;
     private ImageView arrow1,arrow2,arrow3,arrow4,arrow5,arrow6,arrow7,image_instagram,image_twitter,image_snapchat;
-    private TextView tv_developer;
     private String current_language;
     private HomeActivity activity;
     private String [] language_array;
@@ -87,9 +85,7 @@ public class Fragment_More extends Fragment {
 
 
         ll_terms = view.findViewById(R.id.ll_terms);
-        ll_developer = view.findViewById(R.id.ll_developer);
         ll_profile = view.findViewById(R.id.ll_profile);
-        tv_developer = view.findViewById(R.id.tv_developer);
         ll_language = view.findViewById(R.id.ll_language);
         ll_about = view.findViewById(R.id.ll_about);
         ll_question = view.findViewById(R.id.ll_question);
@@ -101,7 +97,6 @@ public class Fragment_More extends Fragment {
         image_snapchat = view.findViewById(R.id.image_snapchat);
 
 
-        tv_developer.setText(getString(R.string.developers)+"   "+"009660539044145");
         ll_terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,15 +127,7 @@ public class Fragment_More extends Fragment {
 
 
 
-        ll_developer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:"+"009660539044145"));
-                startActivity(intent);
-            }
-        });
+
 
         ll_question.setOnClickListener(new View.OnClickListener() {
             @Override

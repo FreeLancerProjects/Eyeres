@@ -50,25 +50,33 @@
         <Button
             android:id="@+id/btn_continue"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:textColor="@color/colorPrimary"
+            android:layout_height="35dp"
+            android:background="@drawable/add_cart_bg"
+            android:textColor="@color/white"
             android:textSize="14sp"
             android:text="@string/continue3"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_margin="5dp"
+
+
+
             />
 
         <Button
             android:id="@+id/btn_payment"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:textColor="@color/gray"
+            android:layout_height="35dp"
+            android:background="@drawable/add_payment"
+            android:textColor="@color/white"
             android:textSize="14sp"
             android:text="@string/payment"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_margin="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+
             />
     </LinearLayout>
 </LinearLayout>

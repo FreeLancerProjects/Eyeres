@@ -33,6 +33,9 @@ public class ProductDataModel implements Serializable {
         private int has_sizes;
         private int type;
         private Brand brand;
+        private Degrees degrees;
+
+
 
         public int getId() {
             return id;
@@ -105,6 +108,10 @@ public class ProductDataModel implements Serializable {
         public int getType() {
             return type;
         }
+
+        public Degrees getDegrees() {
+            return degrees;
+        }
     }
 
     public class Brand implements Serializable
@@ -123,6 +130,25 @@ public class ProductDataModel implements Serializable {
 
         public int getId() {
             return id;
+        }
+    }
+
+    public class Degrees implements Serializable
+    {
+        private List<String> axis;
+        private List<String> deviation;
+        private List<String> myopia;
+
+        public List<String> getAxis() {
+            return axis;
+        }
+
+        public List<String> getDeviation() {
+            return deviation;
+        }
+
+        public List<String> getMyopia() {
+            return myopia;
         }
     }
 

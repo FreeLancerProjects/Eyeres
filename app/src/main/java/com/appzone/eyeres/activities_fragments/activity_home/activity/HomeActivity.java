@@ -374,9 +374,10 @@ public class HomeActivity extends AppCompatActivity {
                 });
     }
 
-    public void DisplayFragmentHome() {
+    public void DisplayFragmentHome()
+    {
 
-
+        fragment_count+=1;
         if (fragment_home == null) {
             fragment_home = Fragment_Home.newInstance();
         }
@@ -403,7 +404,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void DisplayFragmentLensesDetails(ProductDataModel.ProductModel productModel) {
-        fragment_count++;
+        fragment_count+=1;
         //HideFragmentHome();
         fragment_Lenses_details = Fragment_Lenses_Details.newInstance(productModel);
 
@@ -497,6 +498,14 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
+        new Handler()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fragment_store.setSelectedDefault();
+
+                    }
+                },1);
     }
 
     public void DisplayFragmentTools() {
@@ -1122,21 +1131,14 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void Back() {
-        if (fragment_count>0)
+        if (fragment_count>1)
         {
-            Log.e("fragment_count",fragment_count+"_");
             super.onBackPressed();
             fragment_count = fragment_count-1;
-        }else if (fragment_count == 0) {
-            if (fragment_home!=null&&!fragment_home.isVisible())
+        }else  {
+
+            if (fragment_store!=null&&fragment_store.isVisible())
             {
-                DisplayFragmentHome();
-
-            }
-            if (fragment_store != null && !fragment_store.isVisible()) {
-
-                DisplayFragmentStore();
-            } else {
                 if (fragment_color != null && !fragment_color.isVisible()) {
 
                     DisplayFragmentColor();
@@ -1145,7 +1147,11 @@ public class HomeActivity extends AppCompatActivity {
                     NavigateToSignInActivity();
 
                 }
-            }
+            }else
+                {
+                    DisplayFragmentStore();
+                }
+
         }
        /*
         }

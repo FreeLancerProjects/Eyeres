@@ -94,7 +94,7 @@ public class Fragment_Tools extends Fragment{
         manager = new GridLayoutManager(getActivity(),2);
         recView.setLayoutManager(manager);
         recView.setHasFixedSize(true);
-        recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recView.setDrawingCacheEnabled(true);
         recView.setItemViewCacheSize(25);
         recView.setNestedScrollingEnabled(true);
@@ -191,7 +191,6 @@ public class Fragment_Tools extends Fragment{
                                 progBar.setVisibility(View.GONE);
                                 if (response.body() != null) {
 
-                                    Log.e("size2",response.body().getData().size()+"_");
 
                                     productModelList.clear();
 
@@ -252,24 +251,40 @@ public class Fragment_Tools extends Fragment{
                             if (response.body() != null) {
 
                                 productModelList.remove(productModelList.size()-1);
-                                adapter.notifyItemChanged(productModelList.size()-1);
+                                adapter.notifyItemRemoved(productModelList.size()-1);
 
                                 if (response.body().getData().size()>0)
                                 {
                                     current_page = response.body().getMeta().getCurrent_page();
+                                    int old_pos = productModelList.size()-1;
                                     productModelList.addAll(response.body().getData());
+                                    adapter.notifyItemRangeInserted(old_pos,productModelList.size());
 
                                 }
                                 isLoading = false;
-                                adapter.notifyDataSetChanged();
 
-                            }
+                            }else
+                                {
+                                    isLoading = false;
+                                    productModelList.remove(productModelList.size()-1);
+                                    adapter.notifyItemRemoved(productModelList.size()-1);
+
+                                }
+                        }else
+                        {
+                            isLoading = false;
+                            productModelList.remove(productModelList.size()-1);
+                            adapter.notifyItemRemoved(productModelList.size()-1);
+
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ProductDataModel> call, Throwable t) {
                         try {
+                            isLoading = false;
+                            productModelList.remove(productModelList.size()-1);
+                            adapter.notifyItemRemoved(productModelList.size()-1);
                             Log.e("Error", t.getMessage());
 
                         } catch (Exception e) {

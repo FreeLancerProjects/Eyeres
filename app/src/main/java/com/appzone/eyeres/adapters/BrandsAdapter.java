@@ -1,8 +1,10 @@
 package com.appzone.eyeres.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +20,9 @@ import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_
 import com.appzone.eyeres.models.BrandsDataModel;
 import com.appzone.eyeres.tags.Tags;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -102,7 +106,6 @@ public class BrandsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public void BindData(BrandsDataModel.BrandModel brandModel) {
 
-            Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL+brandModel.getImage())).fit().into(image);
             if (current_language.equals("ar")) {
                 tv_name.setText(brandModel.getName_ar());
             } else {
@@ -110,9 +113,49 @@ public class BrandsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             }
 
+            new MyAsyncTask().execute(brandModel.getImage());
+
 
 
         }
+
+        public class MyAsyncTask extends AsyncTask<String,Void,Bitmap> {
+            @Override
+            protected Bitmap doInBackground(String... strings) {
+                Bitmap bitmap = null;
+                try {
+                    bitmap = Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL+strings[0])).priority(Picasso.Priority.HIGH).transform(new Transformation() {
+                        @Override
+                        public Bitmap transform(Bitmap source) {
+                            int size = Math.min(source.getWidth(), source.getHeight());
+                            int x = (source.getWidth() - size) / 2;
+                            int y = (source.getHeight() - size) / 2;
+                            Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
+                            if (result != source) {
+                                source.recycle();
+                            }
+                            return result;
+
+                        }
+
+                        @Override
+                        public String key() {
+                            return "square()";
+                        }
+                    }).get();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return bitmap;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+                image.setImageBitmap(bitmap);
+            }
+        }
+
     }
 
     public class LoadMoreHolder extends RecyclerView.ViewHolder {
