@@ -22,9 +22,12 @@ public class ItemCartModel implements Serializable{
     private int left_amount;
     private int right_amount;
     private int type;
+    private int base_amount_left;
+    private int base_amount_right;
 
 
-    public ItemCartModel(int product_id, String product_image, String product_name_ar, String product_name_en, double product_cost, int quantity, double total, int similar, String left_degree, String right_degree, String left_deviation, String right_deviation, String left_axis, String right_axis, int left_amount, int right_amount, int type) {
+
+    public ItemCartModel(int product_id, String product_image, String product_name_ar, String product_name_en, double product_cost, int quantity, double total, int similar, String left_degree, String right_degree, String left_deviation, String right_deviation, String left_axis, String right_axis, int left_amount, int right_amount, int type,int base_amount_left,int base_amount_right) {
         this.product_id = product_id;
         this.product_image = product_image;
         this.product_name_ar = product_name_ar;
@@ -42,6 +45,8 @@ public class ItemCartModel implements Serializable{
         this.left_amount = left_amount;
         this.right_amount = right_amount;
         this.type = type;
+        this.base_amount_left= base_amount_left;
+        this.base_amount_right = base_amount_right;
     }
 
     public int getProduct_id() {
@@ -188,4 +193,22 @@ public class ItemCartModel implements Serializable{
     public void setType(int type) {
         this.type = type;
     }
+
+    public int getBase_amount_left() {
+        return base_amount_left;
+    }
+
+    public void setBase_amount_left(int base_amount_left) {
+        this.base_amount_left = base_amount_left;
+    }
+
+    public int getBase_amount_right() {
+        return base_amount_right;
+    }
+
+    public void setBase_amount_right(int base_amount_right) {
+        this.base_amount_right = base_amount_right;
+    }
+
+
 }

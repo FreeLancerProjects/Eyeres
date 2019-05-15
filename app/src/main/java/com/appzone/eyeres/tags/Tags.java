@@ -24,4 +24,9 @@ public class Tags {
     public static final int ISSIMILAR = 1;
     public static final int NOTSIMILAR = 0;
 
+    public static final int PRO_TYPE_LENSES = 1;
+    public static final int PRO_TYPE_ACCESSORIES = 1;
+
+
+
 }

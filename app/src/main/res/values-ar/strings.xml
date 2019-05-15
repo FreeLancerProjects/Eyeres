@@ -170,5 +170,7 @@
     <string name="continue3">إستمرار عملية الشراء</string>
     <string name="payment">إستكمال عملية الدفع</string>
     <string name="payment_cash_is_only_available_within_riyadh_city">الدفع كاش متاح فقط داخل مدينة الرياض. التوصيل داخل الرياض ؟</string>
+    <string name="left_eye_amount">العين اليسرى الكمية</string>
+    <string name="right_eye_amount">العين اليمنى الكمية</string>
 
 </resources>

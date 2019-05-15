@@ -21,6 +21,7 @@ import com.appzone.eyeres.adapters.CartAdapter;
 import com.appzone.eyeres.models.ItemCartModel;
 import com.appzone.eyeres.preferences.Preferences;
 import com.appzone.eyeres.singletone.OrderCartSingleTone;
+import com.appzone.eyeres.tags.Tags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +119,6 @@ public class Fragment_Cart extends Fragment{
         itemCartModelList = new ArrayList<>();
         itemCartModelList.addAll(orderCartSingleTone.getItemCartModelList());
 
-        Log.e("itemCartModelList",itemCartModelList.size()+"_");
 
 
         if (itemCartModelList.size()>0)
@@ -147,7 +147,15 @@ public class Fragment_Cart extends Fragment{
         double cost = 0.0;
         for (ItemCartModel itemCartModel : itemCartModelList)
         {
-            cost += itemCartModel.getTotal();
+            if (itemCartModel.getProduct_type() == Tags.PRODUCT_TYPE_LENSES)
+            {
+                cost += (itemCartModel.getLeft_amount()+itemCartModel.getRight_amount())*itemCartModel.getProduct_cost();
+
+            }else
+                {
+                    cost += itemCartModel.getQuantity()*itemCartModel.getProduct_cost();
+
+                }
         }
 
         return cost;

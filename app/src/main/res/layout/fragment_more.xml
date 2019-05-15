@@ -315,6 +315,13 @@
                 android:padding="10dp"
                 android:src="@drawable/snapchat"
                 />
+            <ImageView
+                android:id="@+id/image_whatsapp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="8dp"
+                android:src="@drawable/whatsapp"
+                />
         </LinearLayout>
 
     </LinearLayout>

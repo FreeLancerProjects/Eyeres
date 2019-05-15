@@ -25,7 +25,7 @@ import io.paperdb.Paper;
 public class Fragment_More extends Fragment {
 
     private LinearLayout ll_terms,ll_profile,ll_language,ll_about,ll_question,ll_policy,ll_favorite;
-    private ImageView arrow1,arrow2,arrow3,arrow4,arrow5,arrow6,arrow7,image_instagram,image_twitter,image_snapchat;
+    private ImageView arrow1,arrow2,arrow3,arrow4,arrow5,arrow6,arrow7,image_instagram,image_twitter,image_snapchat,image_whatsapp;
     private String current_language;
     private HomeActivity activity;
     private String [] language_array;
@@ -95,6 +95,7 @@ public class Fragment_More extends Fragment {
         image_twitter = view.findViewById(R.id.image_twitter);
         image_instagram = view.findViewById(R.id.image_instagram);
         image_snapchat = view.findViewById(R.id.image_snapchat);
+        image_whatsapp = view.findViewById(R.id.image_whatsapp);
 
 
         ll_terms.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +164,21 @@ public class Fragment_More extends Fragment {
             public void onClick(View v) {
                 createSocialIntent("https://twitter.com/iristore");
 
+            }
+        });
+        image_snapchat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createSocialIntent("https://www.snapchat.com/add/iristore");
+
+            }
+        });
+
+        image_whatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("whatsapp://send?phone=+9660530512812"));
+                startActivity(intent);
             }
         });
 
