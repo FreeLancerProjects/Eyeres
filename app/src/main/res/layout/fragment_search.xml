@@ -98,13 +98,13 @@
                     android:textSize="17sp"
                     android:text="@string/recently_search"
                     />
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recViewSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >
 
-                </android.support.v7.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </net.cachapa.expandablelayout.ExpandableLayout>
         <RelativeLayout
@@ -118,14 +118,14 @@
                 android:layout_alignParentTop="true"
                 android:layout_above="@id/fl"
                 >
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
 
                     >
 
-                </android.support.v7.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <ProgressBar
                     android:id="@+id/progBar"

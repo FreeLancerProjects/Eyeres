@@ -172,5 +172,12 @@
     <string name="payment_cash_is_only_available_within_riyadh_city">الدفع كاش متاح فقط داخل مدينة الرياض. التوصيل داخل الرياض ؟</string>
     <string name="left_eye_amount">العين اليسرى الكمية</string>
     <string name="right_eye_amount">العين اليمنى الكمية</string>
+    <string name="ch_del_city">إختر مدينة التوصيل</string>
+
+    <string-array name="city_array">
+        <item>إختر</item>
+        <item>داخل الرياض</item>
+        <item>خارج الرياض</item>
+    </string-array>
 
 </resources>

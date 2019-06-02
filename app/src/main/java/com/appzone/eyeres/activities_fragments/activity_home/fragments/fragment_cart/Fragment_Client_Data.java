@@ -2,24 +2,28 @@ package com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
@@ -29,6 +33,8 @@ import com.appzone.eyeres.remote.Api;
 import com.appzone.eyeres.share.Common;
 import com.appzone.eyeres.singletone.UserSingleTone;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import io.paperdb.Paper;
@@ -47,6 +53,8 @@ public class Fragment_Client_Data extends Fragment {
     private TextView tv_cash,tv_transfer,tv_mada,tv_active_coupon,tv_activated;
     private LinearLayout ll_cash,ll_transfer,ll_mada;
     private HomeActivity activity;
+    private Spinner spinner;
+    private List<String> cityList;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private int payment_method =0;//default 0
@@ -55,6 +63,7 @@ public class Fragment_Client_Data extends Fragment {
     private double total_after_discount = 0;
     private double total_before_discount = 0;
     private boolean inSideRiadCity = false;
+    private String city="";
 
 
     @Nullable
@@ -101,8 +110,6 @@ public class Fragment_Client_Data extends Fragment {
         ll_cash = view.findViewById(R.id.ll_cash);
         ll_transfer = view.findViewById(R.id.ll_transfer);
         ll_mada = view.findViewById(R.id.ll_mada);
-
-
         edt_coupon_code = view.findViewById(R.id.edt_coupon_code);
         image_coupon_state = view.findViewById(R.id.image_coupon_state);
         progBar = view.findViewById(R.id.progBar);
@@ -117,6 +124,10 @@ public class Fragment_Client_Data extends Fragment {
         edt_note = view.findViewById(R.id.edt_note);
         card_confirm = view.findViewById(R.id.card_confirm);
         card_back = view.findViewById(R.id.card_back);
+
+        spinner = view.findViewById(R.id.spinner);
+        cityList = Arrays.asList(getResources().getStringArray(R.array.city_array));
+        spinner.setAdapter(new ArrayAdapter<>(activity,R.layout.spinner_row,cityList));
 
         card_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,6 +218,29 @@ public class Fragment_Client_Data extends Fragment {
             total_before_discount = bundle.getDouble(TAG);
 
         }
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position)
+                {
+                    case 0:
+                        city = "";
+                        break;
+                    case 1:
+                        city = "داخل الرياض";
+                        break;
+                    case 2:
+                        city ="خارج الرياض";
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
@@ -299,19 +333,21 @@ public class Fragment_Client_Data extends Fragment {
         if (!TextUtils.isEmpty(m_name) &&
                 !TextUtils.isEmpty(m_phone) &&
                 !TextUtils.isEmpty(m_address)&&
+                !TextUtils.isEmpty(city)&&
                 payment_method!=0
         ) {
             edt_name.setError(null);
             edt_phone.setError(null);
             edt_address.setError(null);
             edt_note.setError(null);
+            String address = m_address+" "+city;
             Common.CloseKeyBoard(activity, edt_name);
 
             if (payment_method ==1)
             {
                 if (inSideRiadCity)
                 {
-                    activity.UploadOrder(m_name, m_phone, m_address, m_note,payment_method,total_after_discount,coupon_code,coupon_value);
+                    activity.UploadOrder(m_name, m_phone, address, m_note,payment_method,total_after_discount,coupon_code,coupon_value);
 
                 }else
                     {
@@ -352,6 +388,11 @@ public class Fragment_Client_Data extends Fragment {
             if (payment_method == 0)
             {
                 Toast.makeText(activity, R.string.sel_pay_method, Toast.LENGTH_LONG).show();
+            }
+
+            if (TextUtils.isEmpty(city))
+            {
+                Toast.makeText(activity,getString(R.string.ch_del_city), Toast.LENGTH_LONG).show();
             }
 
         }

@@ -13,9 +13,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +21,15 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 import com.appzone.eyeres.models.ItemCartModel;
 import com.appzone.eyeres.preferences.Preferences;
 import com.appzone.eyeres.singletone.OrderCartSingleTone;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.List;
@@ -72,7 +73,7 @@ public class Common {
         });
 
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
-        TextView textView = layout.findViewById(android.support.design.R.id.snackbar_text);
+        TextView textView = layout.findViewById(com.google.android.material.R.id.snackbar_text);
         textView.setVisibility(View.INVISIBLE);
         layout.setPadding(0,0,0,0);
         layout.addView(view);

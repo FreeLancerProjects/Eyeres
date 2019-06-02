@@ -170,6 +170,12 @@
     <string name="payment_cash_is_only_available_within_riyadh_city">Cash payment is only available within Riyadh city. Delivery within Riyadh ?</string>
     <string name="left_eye_amount">Left eye amount</string>
     <string name="right_eye_amount">Right eye amount</string>
+    <string name="ch_del_city">Choose delivery city</string>
+    <string-array name="city_array">
+        <item>Choose</item>
+        <item>Inside Riyadh</item>
+        <item>Outside Riyadh</item>
+    </string-array>
 
 
 </resources>

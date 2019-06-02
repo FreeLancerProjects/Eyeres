@@ -4,13 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_cart.Fragment_Cart;
@@ -28,6 +29,7 @@ import io.paperdb.Paper;
 public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int ITEM_LENSES = 1;
     private final int ITEM_ACCESSORIES = 2;
+
     private List<ItemCartModel> itemCartModelList;
     private Context context;
     private Fragment_Cart fragment;

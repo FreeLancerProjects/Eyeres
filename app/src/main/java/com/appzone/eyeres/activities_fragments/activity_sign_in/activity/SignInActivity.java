@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
@@ -298,7 +298,7 @@ public class SignInActivity extends AppCompatActivity {
 
                             dialog.dismiss();
 
-                            if (response.code()==422)
+                            if (response.code()== 422)
                             {
                                 Common.CreateSignAlertDialog(SignInActivity.this,getString(R.string.phone_number_exists));
 

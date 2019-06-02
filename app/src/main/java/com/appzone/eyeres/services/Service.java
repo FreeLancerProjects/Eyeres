@@ -38,8 +38,8 @@ public interface Service {
     @Multipart
     @POST("api/sign-up")
     Call<UserModel> SignUp(@Part("name") RequestBody name,
-                                    @Part("phone") RequestBody phone,
-                                    @Part("email") RequestBody email
+                           @Part("phone") RequestBody phone,
+                           @Part("email") RequestBody email
 
     );
 
@@ -48,14 +48,14 @@ public interface Service {
                                        @Query("page") int page_index,
                                        @Query("type") int type,
                                        @Query("token") String token
-                                       );
+    );
 
 
     @FormUrlEncoded
     @POST("/api/favorites")
     Call<FavoriteIdModel> makeFavorite(@Field("token") String token,
                                        @Field("product_id") int product_id
-                                       );
+    );
 
     @FormUrlEncoded
     @POST("/api/favorites/{favorite_id}")
@@ -65,7 +65,7 @@ public interface Service {
     );
 
     @GET("/api/favorites")
-    Call<ProductDataModel> getFavorites(@Query("token") String user_token,@Query("page") int page);
+    Call<ProductDataModel> getFavorites(@Query("token") String user_token, @Query("page") int page);
 
     @GET("api/offers")
     Call<ProductDataModel> getOffers(@Query("page") int page_index);
@@ -84,17 +84,18 @@ public interface Service {
     @POST("/api/edit-profile")
     Call<UserModel> updateImage(@Part("token") RequestBody user_token,
                                 @Part MultipartBody.Part avatar
-                                );
+    );
 
     @FormUrlEncoded
     @POST("/api/edit-profile")
     Call<UserModel> updateName(@Field("token") String user_token,
-                                @Field("name") String name
+                               @Field("name") String name
     );
+
     @FormUrlEncoded
     @POST("/api/edit-profile")
     Call<UserModel> updateEmail(@Field("token") String user_token,
-                               @Field("email") String email
+                                @Field("email") String email
     );
 
     @GET("/api/search-products")
@@ -114,7 +115,7 @@ public interface Service {
     Call<OrderDataModel> getMyOrders(@Query("type") String order_type,
                                      @Query("token") String user_token,
                                      @Query("page") int page_index
-                                     );
+    );
 
     @GET("/api/q&a")
     Call<QuestionsDataModel> getQuestions(@Query("page") int page_index
@@ -127,7 +128,7 @@ public interface Service {
     Call<BrandsDataModel> getBrands(@Query("page") int page_index);
 
     @GET("api/trends/{trend_id}")
-    Call<ProductDataModel> getProductOfTrends(@Path("trend_id") int trend_id,@Query("page") int page);
+    Call<ProductDataModel> getProductOfTrends(@Path("trend_id") int trend_id, @Query("page") int page);
 
     @GET("api/get-special-lenses")
     Call<Special_Lenses_Model> getSpecialLenses();

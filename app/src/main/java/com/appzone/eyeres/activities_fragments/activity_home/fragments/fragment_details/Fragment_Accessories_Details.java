@@ -1,12 +1,6 @@
 package com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment_details;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +11,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 import com.appzone.eyeres.adapters.SliderAdapter;
@@ -24,6 +24,7 @@ import com.appzone.eyeres.models.ItemCartModel;
 import com.appzone.eyeres.models.ProductDataModel;
 import com.appzone.eyeres.singletone.OrderCartSingleTone;
 import com.appzone.eyeres.tags.Tags;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.Locale;
 import java.util.Timer;
@@ -162,8 +163,10 @@ public class Fragment_Accessories_Details extends Fragment{
 
             }else
             {
+
                 sliderAdapter = new SliderAdapter(productModel.getImages(),activity);
                 pager_slider.setAdapter(sliderAdapter);
+                pager_slider.setOffscreenPageLimit(productModel.getImages().size());
                 timer = new Timer();
                 timerTask = new MyTimerTask();
                 timer.scheduleAtFixedRate(timerTask,6000,6000);

@@ -2,12 +2,6 @@ package com.appzone.eyeres.activities_fragments.activity_home.fragments.fragment
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +12,18 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.activities_fragments.activity_home.activity.HomeActivity;
 import com.appzone.eyeres.adapters.AdsSliderAdapter;
 import com.appzone.eyeres.models.AdsModel;
 import com.appzone.eyeres.remote.Api;
+import com.google.android.material.tabs.TabLayout;
 
 import java.io.IOException;
 import java.util.List;
@@ -216,6 +217,7 @@ public class Fragment_Store extends Fragment {
             fl_slider.setVisibility(View.VISIBLE);
             adsSliderAdapter = new AdsSliderAdapter(data, activity);
             pager_slider.setAdapter(adsSliderAdapter);
+            pager_slider.setOffscreenPageLimit(data.size());
             if (data.size() > 1) {
                 for (int i = 0; i < tab_slider.getTabCount() - 1; i++) {
                     View view = ((ViewGroup) tab_slider.getChildAt(0)).getChildAt(i);
@@ -227,7 +229,6 @@ public class Fragment_Store extends Fragment {
                 timer = new Timer();
                 timerTask = new MyTimerTask();
                 timer.scheduleAtFixedRate(timerTask, 6000, 6000);
-
 
             }
 

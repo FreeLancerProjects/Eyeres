@@ -4,12 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.models.AdsModel;
@@ -47,6 +49,8 @@ public class AdsSliderAdapter extends PagerAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.slider_row,container,false);
         image = view.findViewById(R.id.image);
         new MyAsyncTask().execute(adsList.get(position).getImage());
+        Log.e("image"+position,adsList.get(position).getImage());
+
         container.addView(view);
         return view;
     }
