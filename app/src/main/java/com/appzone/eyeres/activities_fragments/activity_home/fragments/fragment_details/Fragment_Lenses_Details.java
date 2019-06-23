@@ -142,7 +142,6 @@ public class Fragment_Lenses_Details extends Fragment {
         spinner_axis_1_left_right = view.findViewById(R.id.spinner_axis_1_left_right);
 
 
-        /////***
 
 
         spinner_deviation_2_left = view.findViewById(R.id.spinner_deviation_2_left);
@@ -826,22 +825,22 @@ public class Fragment_Lenses_Details extends Fragment {
                 double total = counter_left_right * productModel.getPrice();
 
                 if (productModel.getImages().size() > 0) {
-                    itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, Tags.ISSIMILAR, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
+                    itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
 
                 } else {
 
-                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, Tags.ISSIMILAR, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
+                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
 
                 }
             } else {
                 double total = (counter_left * productModel.getPrice()) + (counter_right * productModel.getPrice());
                 int total_amount = counter_left + counter_right;
                 if (productModel.getImages().size() > 0) {
-                    itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total, Tags.ISSIMILAR, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
+                    itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
 
                 } else {
 
-                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total, Tags.ISSIMILAR, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
+                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
 
                 }
             }
@@ -853,22 +852,22 @@ public class Fragment_Lenses_Details extends Fragment {
                 double total = counter_left_right * productModel.getPrice_after_discount();
 
                 if (productModel.getImages().size() > 0) {
-                    itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, Tags.ISSIMILAR, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
+                    itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
 
                 } else {
 
-                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, Tags.ISSIMILAR, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
+                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
 
                 }
             } else {
                 double total = (counter_left * productModel.getPrice_after_discount()) + (counter_right * productModel.getPrice_after_discount());
                 int total_amount = counter_left + counter_right;
                 if (productModel.getImages().size() > 0) {
-                    itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), total_amount, total, Tags.ISSIMILAR, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
+                    itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), total_amount, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
 
                 } else {
 
-                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), total_amount, total, Tags.ISSIMILAR, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
+                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), total_amount, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
 
                 }
             }

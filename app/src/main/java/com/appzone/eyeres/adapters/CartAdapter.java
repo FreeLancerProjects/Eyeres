@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,9 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
                     ItemCartModel itemCartModel = itemCartModelList.get(l_holder.getAdapterPosition());
                     int counter = Integer.parseInt(l_holder.tv_amount.getText().toString().trim()) + 1;
+
                     l_holder.tv_amount.setText(String.valueOf(counter));
+
                     itemCartModel.setQuantity(counter);
                     double item_total_cost = counter * (itemCartModel.getBase_amount_left() + itemCartModel.getBase_amount_right()) * itemCartModel.getProduct_cost();
                     itemCartModel.setTotal(item_total_cost);
@@ -91,7 +94,29 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     l_holder.tv_cost.setText(item_total_cost + " " + context.getString(R.string.rsa));
 
                     l_holder.tv_left_eye_amount.setText((itemCartModel.getBase_amount_left() * counter) + "");
-                    l_holder.tv_right_eye_amount.setText((itemCartModel.getBase_amount_right() * counter) + "");
+
+                    if (!TextUtils.isEmpty(itemCartModel.getLeft_degree())||!TextUtils.isEmpty(itemCartModel.getRight_degree()))
+                    {
+                        if (itemCartModel.getSimilar()==2&&!itemCartModel.getLeft_degree().equals(itemCartModel.getRight_degree()))
+                        {
+                            l_holder. tv_right_eye_amount.setText((itemCartModel.getBase_amount_right() * counter) + "");
+
+                        }else
+                        {
+                            l_holder.tv_right_eye_amount.setText("0");
+
+                        }
+                    }else
+                    {
+
+                        l_holder.tv_right_eye_amount.setText((itemCartModel.getBase_amount_right() * counter) + "");
+
+                    }
+
+
+
+
+
 
                     itemCartModel.setLeft_amount((itemCartModel.getBase_amount_left() * counter));
                     itemCartModel.setRight_amount((itemCartModel.getBase_amount_right() * counter));
@@ -116,7 +141,30 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         l_holder.tv_cost.setText(item_total_cost + " " + context.getString(R.string.rsa));
 
                         l_holder.tv_left_eye_amount.setText((itemCartModel.getBase_amount_left() * counter) + "");
-                        l_holder.tv_right_eye_amount.setText((itemCartModel.getBase_amount_right() * counter) + "");
+                        //l_holder.tv_right_eye_amount.setText((itemCartModel.getBase_amount_right() * counter) + "");
+
+
+                        if (!TextUtils.isEmpty(itemCartModel.getLeft_degree())||!TextUtils.isEmpty(itemCartModel.getRight_degree()))
+                        {
+                            if (itemCartModel.getSimilar()==2&&!itemCartModel.getLeft_degree().equals(itemCartModel.getRight_degree()))
+                            {
+                                l_holder. tv_right_eye_amount.setText((itemCartModel.getBase_amount_right() * counter) + "");
+
+                            }else
+                            {
+                                l_holder.tv_right_eye_amount.setText("0");
+
+                            }
+                        }else
+                        {
+
+                            l_holder.tv_right_eye_amount.setText((itemCartModel.getBase_amount_right() * counter) + "");
+
+                        }
+
+
+
+
 
                         itemCartModel.setLeft_amount((itemCartModel.getBase_amount_left() * counter));
                         itemCartModel.setRight_amount((itemCartModel.getBase_amount_right() * counter));
@@ -228,7 +276,43 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
             tv_left_eye_amount.setText(String.valueOf(itemCartModel.getLeft_amount()));
-            tv_right_eye_amount.setText(String.valueOf(itemCartModel.getRight_amount()));
+
+
+
+
+
+           /* if (itemCartModel.getSimilar()==1&&!itemCartModel.getLeft_axis().equals(itemCartModel.getRight_axis()))
+            {
+                tv_right_eye_amount.setText(String.valueOf(itemCartModel.getRight_amount()));
+
+            }else
+                {
+                    tv_right_eye_amount.setText("0");
+
+                }
+*/
+
+
+            if (!TextUtils.isEmpty(itemCartModel.getLeft_degree())||!TextUtils.isEmpty(itemCartModel.getRight_degree()))
+            {
+                if (itemCartModel.getSimilar()==2&&!itemCartModel.getLeft_degree().equals(itemCartModel.getRight_degree()))
+                {
+                    tv_right_eye_amount.setText(itemCartModel.getRight_amount()+"");
+
+                }else
+                {
+                    tv_right_eye_amount.setText("0");
+
+                }
+            }else
+            {
+
+                tv_right_eye_amount.setText(itemCartModel.getRight_amount()+"");
+
+            }
+
+
+
 
             new MyAsyncTask().execute(itemCartModel.getProduct_image());
         }

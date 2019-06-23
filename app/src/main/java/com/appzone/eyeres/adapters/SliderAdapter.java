@@ -4,12 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
 
 import com.appzone.eyeres.R;
 import com.appzone.eyeres.tags.Tags;
@@ -45,7 +46,8 @@ public class SliderAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.slider_row,container,false);
         image = view.findViewById(R.id.image);
-        new MyAsyncTask().execute(imageList.get(position));
+        Picasso.with(context).load(Tags.IMAGE_URL+imageList.get(position)).fit().into(image);
+        //new MyAsyncTask().execute(imageList.get(position));
         container.addView(view);
         return view;
     }
