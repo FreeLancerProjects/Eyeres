@@ -894,14 +894,14 @@ public class Fragment_Lenses_Details extends Fragment {
         if (productModel.getFeatured() == 0) {
 
             if (similar_eye == 1) {
-                double total = counter_left_right * productModel.getPrice();
+                double total = (counter_left_right * productModel.getPrice())/2;
 
                 if (productModel.getImages().size() > 0) {
-                    itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
+                    itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, 0, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
 
                 } else {
 
-                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, counter_left_right, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
+                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, 0, Tags.PRODUCT_TYPE_LENSES, counter_left_right, counter_left_right);
 
                  }
             } else {
