@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -269,6 +270,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     tv_name.setText(itemCartModel.getProduct_name_en());
 
                 }
+            Log.e("r_amount",itemCartModel.getRight_amount()+"_");
             double total_cost = (itemCartModel.getLeft_amount()+itemCartModel.getRight_amount())*itemCartModel.getProduct_cost();
 
             tv_amount.setText("1");

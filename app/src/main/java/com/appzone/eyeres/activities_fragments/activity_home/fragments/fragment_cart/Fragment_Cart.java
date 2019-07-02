@@ -122,6 +122,7 @@ public class Fragment_Cart extends Fragment{
 
 
 
+
         if (itemCartModelList.size()>0)
         {
             ll_empty_cart.setVisibility(View.GONE);

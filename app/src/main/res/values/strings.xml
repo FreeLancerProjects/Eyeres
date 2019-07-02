@@ -57,7 +57,7 @@
     <string name="something">Something went haywire</string>
     <string name="add_recently">Recently Added </string>
     <string name="most_seller">Most seller</string>
-    <string name="transparent">Transparent</string>
+    <string name="transparent">Medical</string>
     <string name="color">Colored</string>
     <string name="tools">Accessories</string>
     <string name="store">Store</string>
@@ -66,7 +66,7 @@
     <string name="more">More</string>
     <string name="package_size">Package size</string>
     <string name="a_different_prescription_for_each_eye">A different prescription for each eye</string>
-    <string name="degree_of_length_or_shortness_of_victory">Degree of length or shortness of victory</string>
+    <string name="degree_of_length_or_shortness_of_victory">Sphere (power)</string>
     <string name="left_eye">Left eye</string>
     <string name="right_eye">Right eye</string>
     <string name="number_of_boxes">Number of boxes</string>
@@ -151,8 +151,8 @@
     <string name="the_finest_brands">The finest brands</string>
     <string name="there_are_no_brands_to_display">There are no product to display</string>
     <string name="sp_order">Special lenses</string>
-    <string name="degree_of_deviation">Degree of deviation</string>
-    <string name="axis_of_the_eye">Axis of the eye</string>
+    <string name="degree_of_deviation">Cylinder</string>
+    <string name="axis_of_the_eye">Axis</string>
     <string name="ch_dev_deg">Choose deviation degree</string>
     <string name="ch_ax">Choose axis of eye</string>
     <string name="complete_order">Complete order</string>
