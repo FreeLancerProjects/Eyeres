@@ -141,8 +141,6 @@ public class Fragment_Lenses_Details extends Fragment {
         spinner_axis_1_left_right = view.findViewById(R.id.spinner_axis_1_left_right);
 
 
-
-
         spinner_deviation_2_left = view.findViewById(R.id.spinner_deviation_2_left);
         spinner_deviation_2_right = view.findViewById(R.id.spinner_deviation_2_right);
         spinner_axis_2_left = view.findViewById(R.id.spinner_axis_2_left);
@@ -159,13 +157,13 @@ public class Fragment_Lenses_Details extends Fragment {
                 if (position == 0) {
                     degree_2_left = "";
                 } else {
-                    if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())){
+                    if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())) {
 
 
                         degree_2_left = spinner_2_left.getSelectedItem().toString();
-                        counter_right=0;
+                        counter_right = 0;
 
-                    }else {
+                    } else {
                         degree_2_left = spinner_2_left.getSelectedItem().toString();
                         ll_counter_2.setVisibility(View.VISIBLE);
 
@@ -185,11 +183,11 @@ public class Fragment_Lenses_Details extends Fragment {
                     degree_2_right = "";
                 } else {
 
-                    if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())){
+                    if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())) {
                         degree_2_right = spinner_2_right.getSelectedItem().toString();
-                        counter_right=0;
+                        counter_right = 0;
 
-                    }else {
+                    } else {
                         degree_2_right = spinner_2_right.getSelectedItem().toString();
                         ll_counter_2.setVisibility(View.VISIBLE);
                     }
@@ -346,17 +344,80 @@ public class Fragment_Lenses_Details extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())){
-                    counter_left+=1;
-                    counter_right+=1;
-                    tv_counter_2_left.setText(String.valueOf(counter_left));
-                    tv_counter_2_right.setText(String.valueOf(counter_left));
+                if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())) {
+
+                    if (hasDeviation&&hasAxis)
+                    {
+
+                        if (spinner_axis_2_left.getSelectedItem().toString().equals(spinner_axis_2_right.getSelectedItem().toString())&&
+                                spinner_deviation_2_left.getSelectedItem().toString().equals(spinner_deviation_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            counter_left += 1;
+                            counter_right += 1;
+                            tv_counter_2_left.setText(String.valueOf(counter_left));
+                            tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                        }else
+                        {
+                            increase_2_left_eye_counter();
+
+                        }
+
+                    }else if (hasDeviation)
+                    {
+                        if (spinner_deviation_2_left.getSelectedItem().toString().equals(spinner_deviation_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            counter_left += 1;
+                            counter_right += 1;
+                            tv_counter_2_left.setText(String.valueOf(counter_left));
+                            tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                        }else
+                        {
+                            increase_2_left_eye_counter();
+
+                        }
+
+                    }else if (hasAxis)
+                    {
+                        if (spinner_axis_2_left.getSelectedItem().toString().equals(spinner_axis_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            counter_left += 1;
+                            counter_right += 1;
+                            tv_counter_2_left.setText(String.valueOf(counter_left));
+                            tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                        }else
+                        {
+                            increase_2_left_eye_counter();
+
+                        }
+                    }else
+                        {
+                            counter_left += 1;
+                            counter_right += 1;
+                            tv_counter_2_left.setText(String.valueOf(counter_left));
+                            tv_counter_2_right.setText(String.valueOf(counter_left));
+                        }
+
+
+
+
+
+
+
 
                     /*increase_2_left_eye_counter();
                     increase_2_right_eye_counter();*/
 
 
-                }else {
+                } else {
                     increase_2_left_eye_counter();
 
                 }
@@ -366,23 +427,113 @@ public class Fragment_Lenses_Details extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())){
-                    if(counter_left>0&&counter_right>0)
+                if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())
+                )
+
+                {
+
+                    if (hasDeviation&&hasAxis)
                     {
-                        counter_left-=1;
-                        counter_right-=1;
 
-                        tv_counter_2_left.setText(String.valueOf(counter_left));
-                        tv_counter_2_right.setText(String.valueOf(counter_left));
+                        if (spinner_axis_2_left.getSelectedItem().toString().equals(spinner_axis_2_right.getSelectedItem().toString())&&
+                                spinner_deviation_2_left.getSelectedItem().toString().equals(spinner_deviation_2_right.getSelectedItem().toString())
 
-                    }
+                        )
+                        {
+                            if (counter_left > 0 && counter_right > 0) {
+                                counter_left -= 1;
+                                counter_right -= 1;
+
+                                tv_counter_2_left.setText(String.valueOf(counter_left));
+                                tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                            }
+
+                        }else
+                        {
+                            decrease_2_left_eye_counter();
+
+                        }
+
+                    }else if (hasDeviation)
+                    {
+                        if (spinner_deviation_2_left.getSelectedItem().toString().equals(spinner_deviation_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            if (counter_left > 0 && counter_right > 0) {
+                                counter_left -= 1;
+                                counter_right -= 1;
+
+                                tv_counter_2_left.setText(String.valueOf(counter_left));
+                                tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                            }
+
+                        }else
+                        {
+                            decrease_2_left_eye_counter();
+
+                        }
+
+                    }else if (hasAxis)
+                    {
+                        if (spinner_axis_2_left.getSelectedItem().toString().equals(spinner_axis_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            if (counter_left > 0 && counter_right > 0) {
+                                counter_left -= 1;
+                                counter_right -= 1;
+
+                                tv_counter_2_left.setText(String.valueOf(counter_left));
+                                tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                            }
+
+                        }else
+                        {
+                            decrease_2_left_eye_counter();
+
+                        }
+                    }else
+                        {
+                            if (counter_left > 0 && counter_right > 0) {
+                                counter_left -= 1;
+                                counter_right -= 1;
+
+                                tv_counter_2_left.setText(String.valueOf(counter_left));
+                                tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                            }
+                        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     /*decrease_2_left_eye_counter();
                     decrease_2_right_eye_counter();*/
 
 
-
-                }else {
+                } else {
                     decrease_2_left_eye_counter();
 
 
@@ -394,19 +545,90 @@ public class Fragment_Lenses_Details extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())){
+                if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())
+                ) {
                     /*increase_2_left_eye_counter();
                     increase_2_right_eye_counter();*/
 
-                    counter_right+=1;
-                    counter_left+=1;
-                    tv_counter_2_left.setText(String.valueOf(counter_left));
-                    tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                    if (hasDeviation&&hasAxis)
+                    {
+
+                        if (spinner_axis_2_left.getSelectedItem().toString().equals(spinner_axis_2_right.getSelectedItem().toString())&&
+                                spinner_deviation_2_left.getSelectedItem().toString().equals(spinner_deviation_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            counter_right += 1;
+                            counter_left += 1;
+                            tv_counter_2_left.setText(String.valueOf(counter_left));
+                            tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                        }else
+                        {
+                            increase_2_right_eye_counter();
+
+                        }
+
+                    }else if (hasDeviation)
+                    {
+                        if (spinner_deviation_2_left.getSelectedItem().toString().equals(spinner_deviation_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            counter_right += 1;
+                            counter_left += 1;
+                            tv_counter_2_left.setText(String.valueOf(counter_left));
+                            tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                        }else
+                        {
+                            increase_2_right_eye_counter();
+
+                        }
+
+                    }else if (hasAxis)
+                    {
+                        if (spinner_axis_2_left.getSelectedItem().toString().equals(spinner_axis_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            counter_right += 1;
+                            counter_left += 1;
+                            tv_counter_2_left.setText(String.valueOf(counter_left));
+                            tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                        }else
+                        {
+                            increase_2_right_eye_counter();
+
+                        }
+                    }else
+                        {
+                            counter_right += 1;
+                            counter_left += 1;
+                            tv_counter_2_left.setText(String.valueOf(counter_left));
+                            tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                        }
 
 
 
 
-                }else {
+
+
+
+
+
+
+
+
+
+
+
+
+
+                } else {
                     increase_2_right_eye_counter();
 
                 }
@@ -415,21 +637,92 @@ public class Fragment_Lenses_Details extends Fragment {
         image_2_right_decrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())){
+                if (spinner_2_left.getSelectedItem().toString().equals(spinner_2_right.getSelectedItem().toString())
+                ) {
 //                    decrease_2_left_eye_counter();
 //                    decrease_2_right_eye_counter();
-                    if(counter_left>0&&counter_right>0)
+
+
+                    if (hasDeviation&&hasAxis)
                     {
-                        counter_right-=1;
-                        counter_left-=1;
-                        tv_counter_2_left.setText(String.valueOf(counter_left));
-                        tv_counter_2_right.setText(String.valueOf(counter_left));
 
-                    }
+                        if (spinner_axis_2_left.getSelectedItem().toString().equals(spinner_axis_2_right.getSelectedItem().toString())&&
+                                spinner_deviation_2_left.getSelectedItem().toString().equals(spinner_deviation_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            if (counter_left > 0 && counter_right > 0) {
+                                counter_right -= 1;
+                                counter_left -= 1;
+                                tv_counter_2_left.setText(String.valueOf(counter_left));
+                                tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                            }
+
+                        }else
+                        {
+                            decrease_2_right_eye_counter();
+
+                        }
+
+                    }else if (hasDeviation)
+                    {
+                        if (spinner_deviation_2_left.getSelectedItem().toString().equals(spinner_deviation_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            if (counter_left > 0 && counter_right > 0) {
+                                counter_right -= 1;
+                                counter_left -= 1;
+                                tv_counter_2_left.setText(String.valueOf(counter_left));
+                                tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                            }
+
+                        }else
+                        {
+                            decrease_2_right_eye_counter();
+
+                        }
+
+                    }else if (hasAxis)
+                    {
+                        if (spinner_axis_2_left.getSelectedItem().toString().equals(spinner_axis_2_right.getSelectedItem().toString())
+
+                        )
+                        {
+                            if (counter_left > 0 && counter_right > 0) {
+                                counter_right -= 1;
+                                counter_left -= 1;
+                                tv_counter_2_left.setText(String.valueOf(counter_left));
+                                tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                            }
+
+                        }else
+                        {
+                            decrease_2_right_eye_counter();
+
+                        }
+                    }else
+                        {
+                            if (counter_left > 0 && counter_right > 0) {
+                                counter_right -= 1;
+                                counter_left -= 1;
+                                tv_counter_2_left.setText(String.valueOf(counter_left));
+                                tv_counter_2_right.setText(String.valueOf(counter_left));
+
+                            }
+
+                        }
 
 
 
-                }else {
+
+
+
+
+                } else {
                     decrease_2_right_eye_counter();
 
 
@@ -782,8 +1075,7 @@ public class Fragment_Lenses_Details extends Fragment {
             if (hasDegree && hasAxis && hasDeviation) {
                 if (!TextUtils.isEmpty(degree_2_left) && !TextUtils.isEmpty(degree_2_right) && !TextUtils.isEmpty(deviation_degree_left) && !TextUtils.isEmpty(deviation_degree_right) && !TextUtils.isEmpty(axis_left) && !TextUtils.isEmpty(axis_right)) {
 
-                       AddItemToCart(degree_2_left, degree_2_right, axis_left, axis_right, deviation_degree_left, deviation_degree_right);
-
+                    AddItemToCart(degree_2_left, degree_2_right, axis_left, axis_right, deviation_degree_left, deviation_degree_right);
 
 
                 } else {
@@ -808,7 +1100,7 @@ public class Fragment_Lenses_Details extends Fragment {
                 if (!TextUtils.isEmpty(degree_2_left) && !TextUtils.isEmpty(degree_2_right) && !TextUtils.isEmpty(axis_left) && !TextUtils.isEmpty(axis_right)) {
 
 
-                        AddItemToCart(degree_2_left, degree_2_right, axis_left, axis_right, "", "");
+                    AddItemToCart(degree_2_left, degree_2_right, axis_left, axis_right, "", "");
 
 
                 } else {
@@ -831,8 +1123,7 @@ public class Fragment_Lenses_Details extends Fragment {
 
                 if (!TextUtils.isEmpty(degree_2_left) && !TextUtils.isEmpty(degree_2_right) && !TextUtils.isEmpty(deviation_degree_left) && !TextUtils.isEmpty(deviation_degree_right)) {
 
-                        AddItemToCart(degree_2_left, degree_2_right, "", "", deviation_degree_left, deviation_degree_right);
-
+                    AddItemToCart(degree_2_left, degree_2_right, "", "", deviation_degree_left, deviation_degree_right);
 
 
                 } else {
@@ -853,7 +1144,7 @@ public class Fragment_Lenses_Details extends Fragment {
 
                 if (!TextUtils.isEmpty(degree_2_left) && !TextUtils.isEmpty(degree_2_right)) {
 
-                        AddItemToCart(degree_2_left, degree_2_right, "", "", "", "");
+                    AddItemToCart(degree_2_left, degree_2_right, "", "", "", "");
 
 
                 } else {
@@ -924,7 +1215,7 @@ public class Fragment_Lenses_Details extends Fragment {
         if (productModel.getFeatured() == 0) {
 
             if (similar_eye == 1) {
-                double total = (counter_left_right * productModel.getPrice())/2;
+                double total = (counter_left_right * productModel.getPrice()) / 2;
 
                 if (productModel.getImages().size() > 0) {
                     itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, 0, Tags.PRODUCT_TYPE_LENSES, counter_left_right, 0);
@@ -933,30 +1224,30 @@ public class Fragment_Lenses_Details extends Fragment {
 
                     itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, 0, Tags.PRODUCT_TYPE_LENSES, counter_left_right, 0);
 
-                 }
+                }
             } else {
+
                 double total = (counter_left * productModel.getPrice()) + (counter_right * productModel.getPrice());
                 int total_amount = counter_left + counter_right;
                 if (productModel.getImages().size() > 0) {
-                    if (left_degree.equals(right_degree))
-                    {
-                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, 0, Tags.PRODUCT_TYPE_LENSES, counter_left, 0);
+                    if (left_degree.equals(right_degree)&&
+                            left_axis.equals(right_axis)&&
+                            left_deviation.equals(right_deviation)
+                    ) {
+                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, 0, Tags.PRODUCT_TYPE_LENSES, counter_left, 0);
 
-                    }else
-                        {
-                            itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
+                    } else {
+                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
 
-                        }
+                    }
 
                 } else {
 
-                    if (left_degree.equals(right_degree))
-                    {
-                        itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, 0, Tags.PRODUCT_TYPE_LENSES, counter_left, 0);
+                    if (left_degree.equals(right_degree)&&left_axis.equals(right_axis)&&left_deviation.equals(right_deviation)) {
+                        itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, 0, Tags.PRODUCT_TYPE_LENSES, counter_left, 0);
 
-                    }else
-                    {
-                        itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
+                    } else {
+                        itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice(), total_amount, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
 
                     }
 
@@ -967,17 +1258,15 @@ public class Fragment_Lenses_Details extends Fragment {
 
 
             if (similar_eye == 1) {
-                double total = (counter_left_right * productModel.getPrice_after_discount())/2;
+                double total = (counter_left_right * productModel.getPrice_after_discount()) / 2;
 
                 if (productModel.getImages().size() > 0) {
                     itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, 0, Tags.PRODUCT_TYPE_LENSES, counter_left_right, 0);
 
 
-
-
                 } else {
 
-                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, 0, Tags.PRODUCT_TYPE_LENSES, counter_left_right, 0);
+                    itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), counter_left_right, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left_right, 0, Tags.PRODUCT_TYPE_LENSES, counter_left_right, 0);
 
                 }
             } else {
@@ -985,24 +1274,24 @@ public class Fragment_Lenses_Details extends Fragment {
                 int total_amount = counter_left + counter_right;
                 if (productModel.getImages().size() > 0) {
 
-                    if (left_degree.equals(right_degree))
-                    {
-                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), total_amount, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, 0, Tags.PRODUCT_TYPE_LENSES, counter_left, 0);
+                    if (left_degree.equals(right_degree)&&
+                            left_axis.equals(right_axis)&&
+                            left_deviation.equals(right_deviation)) {
+                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), total_amount, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, 0, Tags.PRODUCT_TYPE_LENSES, counter_left, 0);
 
-                    }else
-                    {
-                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), total_amount, total,similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
+                    } else {
+                        itemCartModel = new ItemCartModel(productModel.getId(), productModel.getImages().get(0), productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), total_amount, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
 
                     }
 
                 } else {
 
-                    if (left_degree.equals(right_degree))
-                    {
+                    if (left_degree.equals(right_degree)&&
+                            left_axis.equals(right_axis)&&
+                            left_deviation.equals(right_deviation)) {
                         itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), total_amount, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, 0, Tags.PRODUCT_TYPE_LENSES, counter_left, 0);
 
-                    }else
-                    {
+                    } else {
                         itemCartModel = new ItemCartModel(productModel.getId(), "", productModel.getName_ar(), productModel.getName_en(), productModel.getPrice_after_discount(), total_amount, total, similar_eye, left_degree, right_degree, left_deviation, right_deviation, left_axis, right_axis, counter_left, counter_right, Tags.PRODUCT_TYPE_LENSES, counter_left, counter_right);
 
                     }
