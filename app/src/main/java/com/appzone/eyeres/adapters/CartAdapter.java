@@ -293,17 +293,30 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 }
 */
+            Log.e("ddd",itemCartModel.getLeft_axis()+"____"+itemCartModel.getRight_axis());
+            Log.e("mmm",itemCartModel.getLeft_deviation()+"____"+itemCartModel.getRight_deviation());
 
 
-            if (!TextUtils.isEmpty(itemCartModel.getLeft_degree())||!TextUtils.isEmpty(itemCartModel.getRight_degree()))
+            if ((!TextUtils.isEmpty(itemCartModel.getLeft_degree())||!TextUtils.isEmpty(itemCartModel.getRight_degree()))&&(TextUtils.isEmpty(itemCartModel.getLeft_axis())||!TextUtils.isEmpty(itemCartModel.getRight_axis()))&&(TextUtils.isEmpty(itemCartModel.getLeft_deviation())||!TextUtils.isEmpty(itemCartModel.getRight_deviation())))
             {
                 if (itemCartModel.getSimilar()==2&&!itemCartModel.getLeft_degree().equals(itemCartModel.getRight_degree()))
                 {
                     tv_right_eye_amount.setText(itemCartModel.getRight_amount()+"");
 
+
                 }else
                 {
-                    tv_right_eye_amount.setText("0");
+
+                    if (itemCartModel.getLeft_axis().equals(itemCartModel.getRight_axis())&&(itemCartModel.getLeft_deviation().equals(itemCartModel.getRight_deviation())))
+                    {
+                        tv_right_eye_amount.setText("0");
+
+                    }else
+                        {
+                            tv_right_eye_amount.setText(itemCartModel.getRight_amount()+"");
+
+                        }
+
 
                 }
             }else
