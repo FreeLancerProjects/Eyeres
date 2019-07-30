@@ -36,7 +36,7 @@ public class Fragment_Special_Lenses extends Fragment {
     private TextView tv_content;
     private HomeActivity activity;
     private String current_language;
-    private String phone="";
+    private String phone="",lang="";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -90,17 +90,30 @@ public class Fragment_Special_Lenses extends Fragment {
     }
 
     private void getSpecialLenses() {
+
+        if (current_language.equals("ar"))
+        {
+            lang="ar";
+        }else
+        {
+            lang="en";
+        }
+
+
         Api.getService()
-                .getSpecialLenses()
+                .getSpecialLenses(lang)
                 .enqueue(new Callback<Special_Lenses_Model>() {
                     @Override
                     public void onResponse(Call<Special_Lenses_Model> call, Response<Special_Lenses_Model> response) {
                         progBar.setVisibility(View.GONE);
                         if (response.isSuccessful() && response.body()!=null&&response.body().getSpecial_lenses()!=null)
                         {
+
                             updateUI(response.body());
+
                         }else
                             {
+                                Toast.makeText(activity, lang, Toast.LENGTH_SHORT).show();
                                 Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                             }
                     }
@@ -121,13 +134,13 @@ public class Fragment_Special_Lenses extends Fragment {
         btn_whatsApp.setVisibility(View.VISIBLE);
         phone = special_lenses_model.getSpecial_lenses().getPhone();
 
-        if (current_language.equals("ar"))
-        {
+       /* if (current_language.equals("ar")&&lang=="ar")
+        {*/
             tv_content.setText(special_lenses_model.getSpecial_lenses().getDescription().getAr());
-        }else
+       /* }else
             {
-                tv_content.setText(special_lenses_model.getSpecial_lenses().getDescription().getEn());
+                tv_content.setText(special_lenses_model.getSpecial_lenses().getDescription().getAr());
 
-            }
+            }*/
     }
 }

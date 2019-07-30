@@ -131,7 +131,7 @@ public interface Service {
     Call<ProductDataModel> getProductOfTrends(@Path("trend_id") int trend_id, @Query("page") int page);
 
     @GET("api/get-special-lenses")
-    Call<Special_Lenses_Model> getSpecialLenses();
+    Call<Special_Lenses_Model> getSpecialLenses(@Query("lang") String lang);
 
     @GET("api/get-coupon-value/{code}")
     Call<CouponModel> getCouponValue(@Path("code") String code);

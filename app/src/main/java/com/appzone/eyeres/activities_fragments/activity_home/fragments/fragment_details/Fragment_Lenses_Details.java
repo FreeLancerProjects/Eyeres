@@ -254,6 +254,8 @@ public class Fragment_Lenses_Details extends Fragment {
                 if (position == 0) {
                     deviation_degree_1_left_right = "";
                 } else {
+
+
                     deviation_degree_1_left_right = deviationDegreeList.get(position);
                 }
             }
@@ -316,6 +318,16 @@ public class Fragment_Lenses_Details extends Fragment {
                         }
                     }
 
+
+                    if (spinner_deviation_2_left.getSelectedItem().toString().equals(spinner_deviation_2_right.getSelectedItem().toString())){
+                        deviation_degree_left = spinner_deviation_2_right.getSelectedItem().toString();
+                        counter_right=0;
+
+                    }else {
+                        deviation_degree_right = spinner_deviation_2_right.getSelectedItem().toString();
+                        ll_counter_2.setVisibility(View.VISIBLE);
+                    }
+                 //   deviation_degree_left = deviationDegreeList.get(position);
                 }
             }
 
@@ -362,9 +374,18 @@ public class Fragment_Lenses_Details extends Fragment {
                     }
 
 
+
+                    if (spinner_deviation_2_right.getSelectedItem().toString().equals(spinner_deviation_2_left.getSelectedItem().toString())){
+                        deviation_degree_right = spinner_deviation_2_left.getSelectedItem().toString();
+                        counter_right=0;
+
+                    }else {
+                        deviation_degree_left = spinner_deviation_2_left.getSelectedItem().toString();
+                        ll_counter_2.setVisibility(View.VISIBLE);
+                    }
+                  //  deviation_degree_right = deviationDegreeList.get(position);
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 

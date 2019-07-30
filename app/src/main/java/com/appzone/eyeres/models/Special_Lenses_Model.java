@@ -14,6 +14,7 @@ public class Special_Lenses_Model implements Serializable {
     {
         private String phone;
         private Description description;
+        private String lang;
 
         public String getPhone() {
             return phone;
@@ -21,6 +22,14 @@ public class Special_Lenses_Model implements Serializable {
 
         public Description getDescription() {
             return description;
+        }
+
+        public String getLang() {
+            return lang;
+        }
+
+        public void setLang(String lang) {
+            this.lang = lang;
         }
     }
 
